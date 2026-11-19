@@ -1,0 +1,45 @@
+name: Deploy 多彩贵州
+
+# 只在这个子目录变更时部署，避免改 README 或后端代码也触发一次 Pages 构建
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'projects/08-guizhou-tourism-web/**'
+      - '.github/workflows/deploy-guizhou.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # enablement: true 让它在 Pages 尚未启用时自动建站点，省去手动去 Settings 点一次
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
+
+      # 站点根就是这个子目录：index.html、more-attractions.html、photos/、assets/
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: projects/08-guizhou-tourism-web
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
