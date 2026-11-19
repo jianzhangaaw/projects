@@ -20,7 +20,6 @@
 | 05 前端回归 | puppeteer 走 11 个页面（学生端 5 + 企业端 4 + 管理端 2） | 全部正常渲染，0 个 `/api` 请求失败、0 个 JS 异常 |
 | 06 小程序 | 开发者工具打开项目 → 登录 / 首页 / 学习 / 统计 | 4 个页面渲染正常，跳转与进度条工作；修掉废弃 API + 基础库固定 3.15.0 后控制台 **0 错误**，见 `projects/06-word-memo-miniprogram/docs/` |
 | 06 静态校验 | `node tools/check-miniprogram.js .` | 49 项通过、0 失败（页面完整性 / JSON / JS 语法 / WXML 配对 / 188 条词库 / 记忆算法 17 项断言） |
-| 07 Java Swing | `javac -encoding UTF-8 -d build src/*.java` → `java -cp build Shot docs` | 编译 exit 0，10 个 class；窗口渲染出登录页与主界面，6 条学生数据正确显示 |
 | 08 网页 | 用 Chrome 打开 `index.html` 截图 | 3 张截图，无失败请求；26 张照片引用全部命中磁盘 |
 
 ### 04 的完整交叉验证结果

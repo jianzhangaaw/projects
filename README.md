@@ -1,6 +1,6 @@
 # 软件工程作品集
 
-南昌大学软件工程专业在读。这里是我从课程作业里挑出来、重新整理并逐个跑通过的项目，覆盖数据分析、机器学习、后端、移动端、桌面与前端。
+南昌大学软件工程专业在读。这里是我从课程作业里挑出来、重新整理并逐个跑通过的项目，覆盖数据分析、机器学习、后端、移动端与前端。
 
 每个目录下的 README 都写了「怎么跑」。我在一台干净环境里按 README 从头跑过一遍，跑不通的不放进来。
 
@@ -91,35 +91,17 @@ Apriori / DHP / FP-Growth 全部用标准库从零实现，用暴力枚举校验
 
 ---
 
-### 07 · 学生成绩管理系统（Java Swing）
-
-抽象类 + 继承 + 序列化持久化的桌面程序，800 行 Java。GUI 只负责收集输入与展示，业务逻辑全部在 `StudentManager`，不在事件监听里。
-
-<img src="projects/07-student-score-swing/docs/screenshot.png" width="560">
-
-`Java 17` `Swing` `序列化`
-
-[代码与说明 →](projects/07-student-score-swing/)
-
----
-
-### 08 · 多彩贵州 · 旅游站点
+### 07 · 多彩贵州 · 旅游站点
 
 纯静态双页站点，26 张实景图。原始 19.3 MB 的 PNG 压到 4.8 MB；修掉了原代码里写死的绝对路径和 5 张依赖外部图床的图片。
 
-<img src="projects/08-guizhou-tourism-web/docs/web-home.png" width="720">
+<img src="projects/07-guizhou-tourism-web/docs/web-home.png" width="720">
 
 `HTML` `CSS` `Tailwind` `原生 JS`
 
-[代码与说明 →](projects/08-guizhou-tourism-web/) · **在线预览：https://jianzhangaaw.github.io/projects/**
+[代码与说明 →](projects/07-guizhou-tourism-web/) · **在线预览：https://jianzhangaaw.github.io/projects/**
 
 ---
-
-## 关于这些项目
-
-- **都是课程作业，但都重写过一遍**：删掉了模板文档、答辩材料和已失效的外部依赖，补了 README 和启动脚本，路径改成相对路径。
-- **跑通的标准是「在干净目录里按 README 从零跑」**，不是「原来那台机器上能跑」。这一步抓出过不少问题：写死的绝对路径、GBK 控制台下会崩的 Unicode 字符、实体字段和表结构对不上的列、原项目配置里的明文数据库密码。
-- **数字都能追到产物**：README 里的指标来自 `results.json` / `metrics.csv` 这类文件，不是手抄的。
 
 ## 环境
 
