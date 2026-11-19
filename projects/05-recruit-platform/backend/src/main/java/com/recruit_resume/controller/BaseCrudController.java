@@ -82,13 +82,20 @@ public abstract class BaseCrudController<T> {
 
     /**
      * 按 id 取记录并校验归属；不存在抛 404，不属于当前用户抛 403。
+     *
+     * <p>管理员放行：审核场景需要读任意记录。注意 /api/student/ 与 /api/company/ 前缀
+     * 在拦截器里就已经把管理员挡住了，所以这个例外只影响 /api/jobs/ 这类公共前缀的读接口。
      */
     protected T requireOwned(Long id) {
         T entity = service.getById(id);
         if (entity == null) {
             throw new BusinessException(ResultCode.NOT_FOUND);
         }
-        if (!isOwnedBy(entity, CurrentUserContext.require())) {
+        CurrentUser user = CurrentUserContext.require();
+        if ("ADMIN".equals(user.getRole())) {
+            return entity;
+        }
+        if (!isOwnedBy(entity, user)) {
             throw new BusinessException(ResultCode.FORBIDDEN);
         }
         return entity;

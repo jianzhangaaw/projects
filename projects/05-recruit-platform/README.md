@@ -64,9 +64,11 @@ npm run dev
 
 本机已有 MySQL 8 的话，手动执行 `backend/src/main/resources/db/schema.sql` 和 `02-seed.sql`，再把 `DB_URL` / `DB_USERNAME` / `DB_PASSWORD` 环境变量指过去即可。
 
-## 安全
+## 安全与一致性
 
-初版有三处水平越权：企业改别家资料（改个 query 参数）、学生删别人简历（改个 path 参数）、企业遍历自增 id 下载全平台简历。2026-11 做了一轮止血：
+初版有三处水平越权：企业改别家资料（改个 query 参数）、学生删别人简历（改个 path 参数）、企业遍历自增 id 下载全平台简历。做了两轮修复。
+
+**第一轮（安全止血）**
 
 - 企业资料接口不再信任客户端传来的 `userId`
 - 泛型 CRUD 的 `get/update/delete` 加了归属校验，不属于自己返回 403
@@ -76,10 +78,19 @@ npm run dev
 - 连续 5 次登录失败锁定 15 分钟
 - CORS 从 `*` 收紧到白名单（`CORS_ALLOWED_ORIGINS` 覆盖）
 
+**第二轮（数据一致性）**
+
+- 投递 / 审核的业务逻辑下沉到 `JobApplicationService`、`AdminReviewService`，多表操作进了事务
+- 投递、岗位、企业各自加了状态机，终态不可回退
+- 重复投递捕获唯一索引冲突，返回 400 而不是 500
+- 建岗位 / 建企业资料时忽略请求体里的 `companyId`、`userId`、`status`、`reviewStatus`
+- 列表详情的 N+1 换成批量装配（2 条投递从 7 条 SQL 降到 5 条，且与条数无关）
+
 验证脚本（需要后端在跑）：
 
 ```bash
-python scripts/check-authz.py          # 18 项断言，退出码 0 表示全过
+python scripts/check-authz.py        # 18 项：越权、合法请求、认证、CORS
+python scripts/check-consistency.py  # 25 项：事务、状态机、审核字段、自封与冒名
 ```
 
 完整的问题清单、文件行号与四阶段优化方案见 [docs/BACKEND-REVIEW.md](docs/BACKEND-REVIEW.md)。

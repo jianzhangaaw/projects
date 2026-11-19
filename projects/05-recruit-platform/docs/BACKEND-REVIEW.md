@@ -119,7 +119,7 @@ registry.addMapping("/**")
 
 ## P1 正确性
 
-### 8. 投递 + 发通知没有事务
+### 8. 投递 + 发通知没有事务　`已修复`
 
 `JobApplicationController.java:97-120`
 
@@ -132,7 +132,7 @@ createNotification(...);         // 通知失败不影响上面
 
 **改法**：这两个方法下沉到 Service 并加 `@Transactional`。注意 `@Transactional` 只在同类方法互调时失效的问题——`doReviewCompany` 是 private，被同类 public 方法调用，加了注解也不生效，必须挪到独立 Service。
 
-### 9. 重复投递有并发窗口
+### 9. 重复投递有并发窗口　`已修复`
 
 `JobApplicationController.java:101`
 
@@ -146,7 +146,7 @@ service.save(body);                          // 再插
 
 **改法**：加唯一索引 `uk_application_student_job (student_id, job_id)`，插入时 catch `DuplicateKeyException` 转成业务提示。查询可以保留（提前给出友好提示），但正确性靠数据库。
 
-### 10. 投递状态没有状态机
+### 10. 投递状态没有状态机　`已修复`
 
 `JobApplicationController.java:203`
 
@@ -159,7 +159,7 @@ if (!"PENDING".equals(status) && !"PASSED".equals(status) && !"REJECTED".equals(
 
 **改法**：定义 `PENDING → PASSED | REJECTED`，已终态拒绝再改。
 
-### 11. 审核通过后驳回原因残留
+### 11. 审核通过后驳回原因残留　`已修复`
 
 `AdminReviewController.java:201` 附近，草稿分支通过时只设 `reviewStatus = "APPROVED"`，没清 `reviewReason`。上一次驳回的原因会一直挂在这条记录上，前端展示出来就是"已通过，原因：材料不全"。
 
@@ -167,7 +167,7 @@ if (!"PENDING".equals(status) && !"PASSED".equals(status) && !"REJECTED".equals(
 
 ## P2 性能
 
-### 12. 列表接口 N+1
+### 12. 列表接口 N+1　`已修复`
 
 `JobApplicationController.toCompanyDetail`：每条投递查 3 次（job、student、resume）。企业端 100 条投递 = 300 次查询。
 
@@ -194,7 +194,7 @@ logging:
 
 ## P3 架构
 
-### 15. Service 层是空壳
+### 15. Service 层是空壳　`部分修复`
 
 13 个 `*ServiceImpl`，11 个只有这 9 行：
 
@@ -325,3 +325,68 @@ public class StudentProfileServiceImpl extends ServiceImpl<StudentProfileMapper,
 ### 还没做的
 
 P1–P4 原样保留：投递/审核仍无事务、重复投递仍靠 count 兜底、列表仍有 N+1、11 个 ServiceImpl 仍是空壳、日志仍是 DEBUG 全量打 SQL。这些在阶段二、三处理。
+
+---
+
+## 修复记录（阶段二：数据一致性）
+
+对应 `scripts/check-consistency.py` 的 25 条断言，全部通过；阶段一的 `check-authz.py` 18 条同时回归通过；前端 11 个页面无请求失败。
+
+### 1. 业务下沉到 Service，事务落在正确的位置
+
+| 新增 | 职责 |
+| --- | --- |
+| `JobApplicationService` / `Impl` | 投递、撤回、状态变更、分页、详情装配 |
+| `AdminReviewService` / `Impl` | 待审列表、企业审核、岗位审核 |
+
+两个 Controller 从 370 / 229 行降到约 190 / 150 行，只做参数解析、角色门禁、包 `Result`。
+
+事务边界：
+
+- `apply`：插入投递 + 写通知 —— 一个事务，通知失败整体回滚
+- `updateStatus`：改状态 + 写通知 —— 一个事务
+- `reviewCompany`：改主表 + 删草稿 + 写通知 —— 一个事务
+- `reviewJob`：改状态 + 写通知 —— 一个事务
+
+Service 方法都显式接收 `userId` / `role`，不读 `CurrentUserContext`——单测里不用伪造 ThreadLocal。
+
+### 2. 重复投递：唯一索引早就有，缺的是异常处理
+
+排查时发现 `job_application` 上已经有 `uk_job_application_job_student (job_id, student_id)`，报告里写「表上也没有唯一索引」是我看漏了。数据库层本来拦得住，问题是代码没捕获 `DuplicateKeyException`，并发时第二个请求返回 500。现在 catch 后转成 400「已投递过该岗位」。
+
+### 3. 状态机
+
+| 对象 | 允许的流转 | 原来 |
+| --- | --- | --- |
+| 投递 | `PENDING → PASSED \| REJECTED`，终态不可回退 | 可从 PASSED 改回 PENDING，学生收到「通过」再被改成「拒绝」 |
+| 岗位审核 | `PENDING → PUBLISHED \| REJECTED` | 可对任意状态的岗位反复审核 |
+| 企业审核 | `PENDING → APPROVED \| REJECTED` | 已通过的企业可以再审一次 |
+
+### 4. 一个 MyBatis-Plus 的坑
+
+「审核通过后 reviewReason 残留」第一版改成 `update.setReviewReason(null)` + `updateById`——**不生效**。`updateById` 默认 `FieldStrategy.NOT_NULL`，null 字段直接跳过，不会生成 `SET review_reason = NULL`。是测试脚本直接查库才发现的（接口返回的还是旧值）。
+
+改用 `LambdaUpdateWrapper.set(field, null)` 显式置空。同样的坑还埋在 `JobController.updateStatus` 和 `CompanyController.saveMine`（重新提交时清驳回原因），一起修了。
+
+### 5. 建岗位 / 建企业资料时的自封与冒名
+
+`POST /api/jobs` 和 `POST /api/company/companies` 原来走泛型 create，`companyId` / `userId` / `status` / `reviewStatus` 全由请求体决定：企业可以给别家发岗位、把自己建到别人名下、岗位直接建成 PUBLISHED、企业自封 APPROVED。
+
+两个 Controller 各覆写 create：强制当前用户、强制草稿态 / 待审态，请求体里的这些字段一律忽略。
+
+### 6. N+1 顺手消掉
+
+`by-company/detail` 原来每条投递查 3 次（job / student / resume），100 条就是 300 次查询。改成批量装配后实测：**2 条投递只发 5 条 SQL**（1 查企业 + 1 查投递 + 3 次批量），与投递条数无关；改前是 1 + 3×2 = 7 条。
+
+### 7. 顺带修的两个回归
+
+- `BaseCrudController.requireOwned` 加了归属校验后，管理员访问 `/api/jobs/{id}` 也被 403——审核场景需要读任意记录，加了 ADMIN 例外（`/api/student/`、`/api/company/` 前缀在拦截器层就挡住了管理员，所以这个例外只影响公共前缀的读接口）。
+- `CompanyController.updateLogo` 改成从上下文取 userId 后，`CompanyControllerTest` 没设置登录上下文，测试从「400 企业不存在」变成「401 未登录」——修了测试，并补了一条「传别人的 userId 返回 403」的用例。
+
+### 还没做的（阶段三、四）
+
+- 日志仍是 DEBUG 全量打 SQL（`application-logging` 没拆 dev/prod）
+- 没有 Actuator、连接池仍是默认 10
+- `HTTP 状态码恒 200`：业务失败也返回 200，只有 body 里 code 不同
+- 另外 9 个 `ServiceImpl` 仍是空壳（`Resume`、`Company`、`Job`、`StudentProfile` 等），它们的业务逻辑还在 Controller
+- 每个动作的 PATCH/PUT 双端点还在

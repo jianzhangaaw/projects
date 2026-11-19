@@ -8,6 +8,7 @@ import com.recruit_resume.common.PageQuery;
 import com.recruit_resume.entity.Company;
 import com.recruit_resume.entity.Job;
 import com.recruit_resume.security.CurrentUser;
+import com.recruit_resume.security.CurrentUserContext;
 import com.recruit_resume.service.CompanyService;
 import com.recruit_resume.service.JobService;
 import org.springframework.util.StringUtils;
@@ -43,6 +44,29 @@ public class JobController extends BaseCrudController<Job> {
         }
         Company company = companyService.getById(entity.getCompanyId());
         return company != null && user.getUserId().equals(company.getUserId());
+    }
+
+    /**
+     * 建岗位。原来走的是 BaseCrud 的 create，companyId 由请求体决定，
+     * 企业能给别家发岗位；status 也能自己填成 PUBLISHED 绕过审核。
+     * 这里强制用当前企业、强制草稿态。
+     */
+    @Override
+    @org.springframework.web.bind.annotation.PostMapping
+    public Result<Job> create(@org.springframework.web.bind.annotation.RequestBody Job body) {
+        Company company = companyService.getOne(new LambdaQueryWrapper<Company>()
+                .eq(Company::getUserId, CurrentUserContext.userId())
+                .last("limit 1"));
+        if (company == null) {
+            throw new com.recruit_resume.common.BusinessException("请先完善企业信息");
+        }
+        body.setId(null);
+        body.setCompanyId(company.getId());
+        body.setStatus("DRAFT");
+        body.setReviewReason(null);
+        body.setViewCount(0);
+        service.save(body);
+        return Result.success(body);
     }
 
     @GetMapping("/published")
@@ -102,13 +126,12 @@ public class JobController extends BaseCrudController<Job> {
         if ("PUBLISHED".equals(existing.getStatus()) && "PENDING".equals(status)) {
             throw new com.recruit_resume.common.BusinessException("已发布岗位不能重新提交审核");
         }
-        Job job = new Job();
-        job.setId(id);
-        job.setStatus(status);
-        if (!"REJECTED".equals(status)) {
-            job.setReviewReason(null);
-        }
-        service.updateById(job);
+        // 只允许 DRAFT/PENDING/OFFLINE，重新提交时要把上一次的驳回原因清掉。
+        // updateById 会跳过 null 字段，所以用 UpdateWrapper 显式 set(null)。
+        service.update(new com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper<Job>()
+                .eq(Job::getId, id)
+                .set(Job::getStatus, status)
+                .set(Job::getReviewReason, null));
         return Result.success();
     }
 }

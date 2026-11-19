@@ -43,7 +43,10 @@ class FileResourceControllerTest {
         FileResourceController controller = new FileResourceController(
                 fileResourceService,
                 ossStorageService,
-                filePreviewService
+                filePreviewService,
+                mock(com.recruit_resume.service.ResumeService.class),
+                mock(com.recruit_resume.service.JobApplicationService.class),
+                mock(com.recruit_resume.service.CompanyService.class)
         );
 
         BusinessException exception = assertThrows(
@@ -70,7 +73,10 @@ class FileResourceControllerTest {
         FileResourceController controller = new FileResourceController(
                 fileResourceService,
                 ossStorageService,
-                filePreviewService
+                filePreviewService,
+                mock(com.recruit_resume.service.ResumeService.class),
+                mock(com.recruit_resume.service.JobApplicationService.class),
+                mock(com.recruit_resume.service.CompanyService.class)
         );
         MockMultipartFile file = new MockMultipartFile(
                 "file",

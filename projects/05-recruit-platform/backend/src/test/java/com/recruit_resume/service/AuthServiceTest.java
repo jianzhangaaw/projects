@@ -25,7 +25,7 @@ class AuthServiceTest {
         StudentProfileService studentProfileService = mock(StudentProfileService.class);
         JwtTokenProvider jwtTokenProvider = mock(JwtTokenProvider.class);
         when(userAccountService.save(any(UserAccount.class))).thenReturn(true);
-        AuthService authService = new AuthService(userAccountService, studentProfileService, jwtTokenProvider);
+        AuthService authService = new AuthService(userAccountService, studentProfileService, jwtTokenProvider, mock(LoginAttemptService.class));
 
         RegisterRequest request = new RegisterRequest();
         request.setUsername("blank-contact-user");
@@ -54,7 +54,7 @@ class AuthServiceTest {
             account.setId(88L);
             return true;
         });
-        AuthService authService = new AuthService(userAccountService, studentProfileService, jwtTokenProvider);
+        AuthService authService = new AuthService(userAccountService, studentProfileService, jwtTokenProvider, mock(LoginAttemptService.class));
 
         RegisterRequest request = new RegisterRequest();
         request.setUsername("student-contact-user");
@@ -78,7 +78,7 @@ class AuthServiceTest {
         UserAccountService userAccountService = mock(UserAccountService.class);
         StudentProfileService studentProfileService = mock(StudentProfileService.class);
         JwtTokenProvider jwtTokenProvider = mock(JwtTokenProvider.class);
-        AuthService authService = new AuthService(userAccountService, studentProfileService, jwtTokenProvider);
+        AuthService authService = new AuthService(userAccountService, studentProfileService, jwtTokenProvider, mock(LoginAttemptService.class));
 
         RegisterRequest request = new RegisterRequest();
         request.setUsername("admin-user");
@@ -99,7 +99,7 @@ class AuthServiceTest {
         UserAccountService userAccountService = mock(UserAccountService.class);
         StudentProfileService studentProfileService = mock(StudentProfileService.class);
         JwtTokenProvider jwtTokenProvider = mock(JwtTokenProvider.class);
-        AuthService authService = new AuthService(userAccountService, studentProfileService, jwtTokenProvider);
+        AuthService authService = new AuthService(userAccountService, studentProfileService, jwtTokenProvider, mock(LoginAttemptService.class));
 
         RegisterRequest request = new RegisterRequest();
         request.setUsername("hacker");

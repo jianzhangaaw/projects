@@ -53,6 +53,22 @@ public class CompanyController extends BaseCrudController<Company> {
         return entity.getUserId() != null && entity.getUserId().equals(user.getUserId());
     }
 
+    /**
+     * 建企业资料。原来走 BaseCrud 的 create，userId 与 reviewStatus 都来自请求体，
+     * 企业可以直接把自己建到别人名下、或者自封 APPROVED。这里强制用当前用户、强制待审。
+     */
+    @Override
+    @org.springframework.web.bind.annotation.PostMapping
+    public Result<Company> create(@org.springframework.web.bind.annotation.RequestBody Company body) {
+        Long userId = CurrentUserContext.userId();
+        body.setId(null);
+        body.setUserId(userId);
+        body.setReviewStatus("PENDING");
+        body.setReviewReason(null);
+        service.save(body);
+        return Result.success(body);
+    }
+
     @GetMapping("/mine")
     public Result<Company> mine(@RequestParam(required = false) Long userId) {
         Long currentUserId = resolveUserId(userId);
@@ -104,8 +120,15 @@ public class CompanyController extends BaseCrudController<Company> {
             draft.setDescription(body.getDescription());
             draft.setLogoFileId(body.getLogoFileId());
             draft.setReviewStatus("PENDING");
-            draft.setReviewReason(null);
-            draftService.saveOrUpdate(draft);
+            if (draft.getId() == null) {
+                draftService.save(draft);
+            } else {
+                // 重新提交时清空上一次的驳回原因；saveOrUpdate 走 updateById 会跳过 null
+                draftService.update(new LambdaUpdateWrapper<CompanyDraft>()
+                        .eq(CompanyDraft::getId, draft.getId())
+                        .set(CompanyDraft::getReviewStatus, "PENDING")
+                        .set(CompanyDraft::getReviewReason, null));
+            }
             return Result.success(service.getById(existing.getId()));
         }
 
