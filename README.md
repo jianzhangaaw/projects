@@ -111,7 +111,7 @@ Apriori / DHP / FP-Growth 全部用标准库从零实现，用暴力枚举校验
 
 `HTML` `CSS` `Tailwind` `原生 JS`
 
-[代码与说明 →](projects/08-guizhou-tourism-web/)
+[代码与说明 →](projects/08-guizhou-tourism-web/) · **在线预览：https://jianzhangaaw.github.io/projects/**
 
 ---
 
