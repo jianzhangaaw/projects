@@ -11,7 +11,15 @@ Spring Boot 3 + Vue 3 的校园招聘系统，学生 / 企业 / 管理员三种�
 </tr>
 <tr>
 <td align="center">登录</td>
-<td align="center">学生端个人资料</td>
+<td align="center">学生端 · 个人资料</td>
+</tr>
+<tr>
+<td><img src="docs/ui-company-dashboard.png" width="420"></td>
+<td><img src="docs/ui-admin-users.png" width="420"></td>
+</tr>
+<tr>
+<td align="center">企业端 · 工作台</td>
+<td align="center">管理端 · 用户管理</td>
 </tr>
 </table>
 

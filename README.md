@@ -72,9 +72,22 @@ Apriori / DHP / FP-Growth 全部用标准库从零实现，用暴力枚举校验
 
 基于艾宾浩斯遗忘曲线的背单词小程序：8 个页面、188 个 CET-4 词条、闪卡 / 拼写 / 听音三种学习模式，带复习调度与学习统计。记忆算法抽成纯函数模块，可在 Node 里单测。
 
+<table>
+<tr>
+<td><img src="projects/06-word-memo-miniprogram/docs/mp-home.png" width="180"></td>
+<td><img src="projects/06-word-memo-miniprogram/docs/mp-study.png" width="180"></td>
+<td><img src="projects/06-word-memo-miniprogram/docs/mp-stats.png" width="180"></td>
+</tr>
+<tr>
+<td align="center">首页 · 今日进度</td>
+<td align="center">闪卡学习</td>
+<td align="center">学习统计</td>
+</tr>
+</table>
+
 `微信小程序` `WXML/WXSS` `JavaScript`
 
-[代码与说明 →](projects/06-word-memo-miniprogram/) · 静态校验 49 项全通过
+[代码与说明 →](projects/06-word-memo-miniprogram/) · 开发者工具实跑 + 静态校验 49 项全通过
 
 ---
 
