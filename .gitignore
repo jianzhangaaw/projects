@@ -3,7 +3,8 @@ node_modules/
 target/
 dist/
 build/
-out/
+# 注意：不要忽略 out/ —— P3 (Titanic) 与 P4 (Spaceship) 把图与指标放在 out/ 里，
+# 那是结果产物不是构建垃圾，README 直接引用它们。曾因为这一行导致两张卡片图在 GitHub 上 404。
 *.class
 *.jar
 *.war

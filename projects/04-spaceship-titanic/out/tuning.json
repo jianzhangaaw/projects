@@ -1,0 +1,681 @@
+{
+  "logreg": {
+    "label": "逻辑回归 (L2)",
+    "grid": {
+      "clf__C": [
+        0.03,
+        0.1,
+        0.3,
+        1.0,
+        3.0,
+        10.0
+      ]
+    },
+    "n_candidates": 6,
+    "inner_folds": 3,
+    "seed": 42,
+    "seconds": 2.5,
+    "best_params": {
+      "C": 0.3
+    },
+    "best_mean_cv_acc": 0.79478,
+    "best_std_cv_acc": 0.0048,
+    "all_results": [
+      {
+        "params": {
+          "C": 0.3
+        },
+        "mean_cv_acc": 0.79478,
+        "std_cv_acc": 0.0048
+      },
+      {
+        "params": {
+          "C": 10.0
+        },
+        "mean_cv_acc": 0.79478,
+        "std_cv_acc": 0.00497
+      },
+      {
+        "params": {
+          "C": 3.0
+        },
+        "mean_cv_acc": 0.79466,
+        "std_cv_acc": 0.00499
+      },
+      {
+        "params": {
+          "C": 1.0
+        },
+        "mean_cv_acc": 0.79466,
+        "std_cv_acc": 0.00489
+      },
+      {
+        "params": {
+          "C": 0.1
+        },
+        "mean_cv_acc": 0.7934,
+        "std_cv_acc": 0.00542
+      },
+      {
+        "params": {
+          "C": 0.03
+        },
+        "mean_cv_acc": 0.79133,
+        "std_cv_acc": 0.00542
+      }
+    ]
+  },
+  "knn": {
+    "label": "k 近邻 (kNN)",
+    "grid": {
+      "clf__n_neighbors": [
+        5,
+        15,
+        25,
+        45,
+        75
+      ],
+      "clf__weights": [
+        "uniform",
+        "distance"
+      ]
+    },
+    "n_candidates": 10,
+    "inner_folds": 3,
+    "seed": 42,
+    "seconds": 5.8,
+    "best_params": {
+      "n_neighbors": 45,
+      "weights": "uniform"
+    },
+    "best_mean_cv_acc": 0.77833,
+    "best_std_cv_acc": 0.00373,
+    "all_results": [
+      {
+        "params": {
+          "n_neighbors": 45,
+          "weights": "uniform"
+        },
+        "mean_cv_acc": 0.77833,
+        "std_cv_acc": 0.00373
+      },
+      {
+        "params": {
+          "n_neighbors": 15,
+          "weights": "uniform"
+        },
+        "mean_cv_acc": 0.77798,
+        "std_cv_acc": 0.00283
+      },
+      {
+        "params": {
+          "n_neighbors": 25,
+          "weights": "distance"
+        },
+        "mean_cv_acc": 0.77798,
+        "std_cv_acc": 0.00195
+      },
+      {
+        "params": {
+          "n_neighbors": 25,
+          "weights": "uniform"
+        },
+        "mean_cv_acc": 0.77741,
+        "std_cv_acc": 0.00178
+      },
+      {
+        "params": {
+          "n_neighbors": 15,
+          "weights": "distance"
+        },
+        "mean_cv_acc": 0.77672,
+        "std_cv_acc": 0.00222
+      },
+      {
+        "params": {
+          "n_neighbors": 45,
+          "weights": "distance"
+        },
+        "mean_cv_acc": 0.77637,
+        "std_cv_acc": 0.00363
+      },
+      {
+        "params": {
+          "n_neighbors": 75,
+          "weights": "distance"
+        },
+        "mean_cv_acc": 0.77465,
+        "std_cv_acc": 0.00247
+      },
+      {
+        "params": {
+          "n_neighbors": 75,
+          "weights": "uniform"
+        },
+        "mean_cv_acc": 0.77073,
+        "std_cv_acc": 0.00642
+      },
+      {
+        "params": {
+          "n_neighbors": 5,
+          "weights": "uniform"
+        },
+        "mean_cv_acc": 0.76165,
+        "std_cv_acc": 0.00652
+      },
+      {
+        "params": {
+          "n_neighbors": 5,
+          "weights": "distance"
+        },
+        "mean_cv_acc": 0.76061,
+        "std_cv_acc": 0.00462
+      }
+    ]
+  },
+  "lightgbm": {
+    "label": "LightGBM 梯度提升树",
+    "grid": {
+      "clf__n_estimators": [
+        300,
+        600
+      ],
+      "clf__learning_rate": [
+        0.03,
+        0.05
+      ],
+      "clf__num_leaves": [
+        15,
+        31,
+        63
+      ],
+      "clf__min_child_samples": [
+        20,
+        50
+      ]
+    },
+    "n_candidates": 24,
+    "inner_folds": 3,
+    "seed": 42,
+    "seconds": 251.0,
+    "best_params": {
+      "learning_rate": 0.03,
+      "min_child_samples": 20,
+      "n_estimators": 300,
+      "num_leaves": 15
+    },
+    "best_mean_cv_acc": 0.81169,
+    "best_std_cv_acc": 0.00312,
+    "all_results": [
+      {
+        "params": {
+          "learning_rate": 0.03,
+          "min_child_samples": 20,
+          "n_estimators": 300,
+          "num_leaves": 15
+        },
+        "mean_cv_acc": 0.81169,
+        "std_cv_acc": 0.00312
+      },
+      {
+        "params": {
+          "learning_rate": 0.05,
+          "min_child_samples": 20,
+          "n_estimators": 300,
+          "num_leaves": 15
+        },
+        "mean_cv_acc": 0.81077,
+        "std_cv_acc": 0.00243
+      },
+      {
+        "params": {
+          "learning_rate": 0.03,
+          "min_child_samples": 20,
+          "n_estimators": 300,
+          "num_leaves": 31
+        },
+        "mean_cv_acc": 0.81031,
+        "std_cv_acc": 0.00399
+      },
+      {
+        "params": {
+          "learning_rate": 0.03,
+          "min_child_samples": 20,
+          "n_estimators": 600,
+          "num_leaves": 15
+        },
+        "mean_cv_acc": 0.81031,
+        "std_cv_acc": 0.00338
+      },
+      {
+        "params": {
+          "learning_rate": 0.05,
+          "min_child_samples": 20,
+          "n_estimators": 600,
+          "num_leaves": 15
+        },
+        "mean_cv_acc": 0.81019,
+        "std_cv_acc": 0.00544
+      },
+      {
+        "params": {
+          "learning_rate": 0.05,
+          "min_child_samples": 20,
+          "n_estimators": 300,
+          "num_leaves": 31
+        },
+        "mean_cv_acc": 0.80985,
+        "std_cv_acc": 0.00326
+      },
+      {
+        "params": {
+          "learning_rate": 0.03,
+          "min_child_samples": 50,
+          "n_estimators": 300,
+          "num_leaves": 15
+        },
+        "mean_cv_acc": 0.80973,
+        "std_cv_acc": 0.00332
+      },
+      {
+        "params": {
+          "learning_rate": 0.05,
+          "min_child_samples": 50,
+          "n_estimators": 300,
+          "num_leaves": 15
+        },
+        "mean_cv_acc": 0.80893,
+        "std_cv_acc": 0.00295
+      },
+      {
+        "params": {
+          "learning_rate": 0.03,
+          "min_child_samples": 50,
+          "n_estimators": 600,
+          "num_leaves": 15
+        },
+        "mean_cv_acc": 0.80835,
+        "std_cv_acc": 0.00486
+      },
+      {
+        "params": {
+          "learning_rate": 0.03,
+          "min_child_samples": 50,
+          "n_estimators": 300,
+          "num_leaves": 63
+        },
+        "mean_cv_acc": 0.80812,
+        "std_cv_acc": 0.00496
+      },
+      {
+        "params": {
+          "learning_rate": 0.03,
+          "min_child_samples": 50,
+          "n_estimators": 300,
+          "num_leaves": 31
+        },
+        "mean_cv_acc": 0.80789,
+        "std_cv_acc": 0.00434
+      },
+      {
+        "params": {
+          "learning_rate": 0.03,
+          "min_child_samples": 20,
+          "n_estimators": 300,
+          "num_leaves": 63
+        },
+        "mean_cv_acc": 0.80778,
+        "std_cv_acc": 0.00568
+      },
+      {
+        "params": {
+          "learning_rate": 0.05,
+          "min_child_samples": 50,
+          "n_estimators": 300,
+          "num_leaves": 63
+        },
+        "mean_cv_acc": 0.80709,
+        "std_cv_acc": 0.00767
+      },
+      {
+        "params": {
+          "learning_rate": 0.03,
+          "min_child_samples": 20,
+          "n_estimators": 600,
+          "num_leaves": 31
+        },
+        "mean_cv_acc": 0.80697,
+        "std_cv_acc": 0.00624
+      },
+      {
+        "params": {
+          "learning_rate": 0.05,
+          "min_child_samples": 50,
+          "n_estimators": 600,
+          "num_leaves": 15
+        },
+        "mean_cv_acc": 0.80663,
+        "std_cv_acc": 0.00597
+      },
+      {
+        "params": {
+          "learning_rate": 0.03,
+          "min_child_samples": 50,
+          "n_estimators": 600,
+          "num_leaves": 63
+        },
+        "mean_cv_acc": 0.80548,
+        "std_cv_acc": 0.00689
+      },
+      {
+        "params": {
+          "learning_rate": 0.03,
+          "min_child_samples": 20,
+          "n_estimators": 600,
+          "num_leaves": 63
+        },
+        "mean_cv_acc": 0.80513,
+        "std_cv_acc": 0.00619
+      },
+      {
+        "params": {
+          "learning_rate": 0.05,
+          "min_child_samples": 20,
+          "n_estimators": 600,
+          "num_leaves": 31
+        },
+        "mean_cv_acc": 0.8049,
+        "std_cv_acc": 0.00508
+      },
+      {
+        "params": {
+          "learning_rate": 0.05,
+          "min_child_samples": 50,
+          "n_estimators": 600,
+          "num_leaves": 31
+        },
+        "mean_cv_acc": 0.80421,
+        "std_cv_acc": 0.01158
+      },
+      {
+        "params": {
+          "learning_rate": 0.05,
+          "min_child_samples": 50,
+          "n_estimators": 300,
+          "num_leaves": 31
+        },
+        "mean_cv_acc": 0.80421,
+        "std_cv_acc": 0.00765
+      },
+      {
+        "params": {
+          "learning_rate": 0.03,
+          "min_child_samples": 50,
+          "n_estimators": 600,
+          "num_leaves": 31
+        },
+        "mean_cv_acc": 0.80364,
+        "std_cv_acc": 0.00409
+      },
+      {
+        "params": {
+          "learning_rate": 0.05,
+          "min_child_samples": 20,
+          "n_estimators": 300,
+          "num_leaves": 63
+        },
+        "mean_cv_acc": 0.80364,
+        "std_cv_acc": 0.0055
+      },
+      {
+        "params": {
+          "learning_rate": 0.05,
+          "min_child_samples": 20,
+          "n_estimators": 600,
+          "num_leaves": 63
+        },
+        "mean_cv_acc": 0.80306,
+        "std_cv_acc": 0.0075
+      },
+      {
+        "params": {
+          "learning_rate": 0.05,
+          "min_child_samples": 50,
+          "n_estimators": 600,
+          "num_leaves": 63
+        },
+        "mean_cv_acc": 0.8003,
+        "std_cv_acc": 0.00723
+      }
+    ]
+  },
+  "mlp": {
+    "label": "多层感知机 (PyTorch MLP)",
+    "grid": {
+      "clf__hidden": [
+        [
+          64,
+          32
+        ],
+        [
+          128,
+          64
+        ],
+        [
+          256,
+          128,
+          64
+        ]
+      ],
+      "clf__dropout": [
+        0.1,
+        0.3
+      ],
+      "clf__lr": [
+        0.001,
+        0.003
+      ]
+    },
+    "n_candidates": 12,
+    "inner_folds": 3,
+    "seed": 42,
+    "seconds": 136.2,
+    "best_params": {
+      "dropout": 0.3,
+      "hidden": [
+        64,
+        32
+      ],
+      "lr": 0.001
+    },
+    "best_mean_cv_acc": 0.80363,
+    "best_std_cv_acc": 0.00467,
+    "all_results": [
+      {
+        "params": {
+          "dropout": 0.3,
+          "hidden": [
+            64,
+            32
+          ],
+          "lr": 0.001
+        },
+        "mean_cv_acc": 0.80363,
+        "std_cv_acc": 0.00467
+      },
+      {
+        "params": {
+          "dropout": 0.3,
+          "hidden": [
+            128,
+            64
+          ],
+          "lr": 0.003
+        },
+        "mean_cv_acc": 0.80133,
+        "std_cv_acc": 0.00509
+      },
+      {
+        "params": {
+          "dropout": 0.1,
+          "hidden": [
+            64,
+            32
+          ],
+          "lr": 0.001
+        },
+        "mean_cv_acc": 0.80099,
+        "std_cv_acc": 0.00158
+      },
+      {
+        "params": {
+          "dropout": 0.3,
+          "hidden": [
+            64,
+            32
+          ],
+          "lr": 0.003
+        },
+        "mean_cv_acc": 0.80076,
+        "std_cv_acc": 0.00102
+      },
+      {
+        "params": {
+          "dropout": 0.3,
+          "hidden": [
+            256,
+            128,
+            64
+          ],
+          "lr": 0.003
+        },
+        "mean_cv_acc": 0.79995,
+        "std_cv_acc": 0.0078
+      },
+      {
+        "params": {
+          "dropout": 0.3,
+          "hidden": [
+            128,
+            64
+          ],
+          "lr": 0.001
+        },
+        "mean_cv_acc": 0.79949,
+        "std_cv_acc": 0.00244
+      },
+      {
+        "params": {
+          "dropout": 0.3,
+          "hidden": [
+            256,
+            128,
+            64
+          ],
+          "lr": 0.001
+        },
+        "mean_cv_acc": 0.7988,
+        "std_cv_acc": 0.00321
+      },
+      {
+        "params": {
+          "dropout": 0.1,
+          "hidden": [
+            256,
+            128,
+            64
+          ],
+          "lr": 0.003
+        },
+        "mean_cv_acc": 0.79765,
+        "std_cv_acc": 0.00183
+      },
+      {
+        "params": {
+          "dropout": 0.1,
+          "hidden": [
+            256,
+            128,
+            64
+          ],
+          "lr": 0.001
+        },
+        "mean_cv_acc": 0.79501,
+        "std_cv_acc": 0.00453
+      },
+      {
+        "params": {
+          "dropout": 0.1,
+          "hidden": [
+            128,
+            64
+          ],
+          "lr": 0.001
+        },
+        "mean_cv_acc": 0.7934,
+        "std_cv_acc": 0.00092
+      },
+      {
+        "params": {
+          "dropout": 0.1,
+          "hidden": [
+            64,
+            32
+          ],
+          "lr": 0.003
+        },
+        "mean_cv_acc": 0.79236,
+        "std_cv_acc": 0.00645
+      },
+      {
+        "params": {
+          "dropout": 0.1,
+          "hidden": [
+            128,
+            64
+          ],
+          "lr": 0.003
+        },
+        "mean_cv_acc": 0.79236,
+        "std_cv_acc": 0.00859
+      }
+    ]
+  },
+  "tabpfn": {
+    "label": "TabPFN v2（表格基础模型）",
+    "grid": {
+      "clf__n_estimators": [
+        4,
+        8
+      ]
+    },
+    "n_candidates": 2,
+    "inner_folds": 0,
+    "seed": 42,
+    "seconds": 0,
+    "best_params": {
+      "n_estimators": 4
+    },
+    "best_mean_cv_acc": null,
+    "best_std_cv_acc": null,
+    "all_results": [
+      {
+        "params": {
+          "n_estimators": 4
+        },
+        "mean_cv_acc": null,
+        "std_cv_acc": null,
+        "note": "采用此配置：集成规模 4（论文默认 8），原因是 CPU 上 n_estimators=8 时单折超过 26 分钟"
+      },
+      {
+        "params": {
+          "n_estimators": 8
+        },
+        "mean_cv_acc": null,
+        "std_cv_acc": null,
+        "note": "论文默认配置，本机实测全量 5 折需 2 小时以上，超出实验时间预算"
+      }
+    ],
+    "note": "TabPFN 不进行梯度训练，没有学习率/树深/迭代轮数这类超参数；n_estimators 是唯一的算力-精度旋钮，此处未做网格搜索，而是按算力约束直接指定。"
+  }
+}
