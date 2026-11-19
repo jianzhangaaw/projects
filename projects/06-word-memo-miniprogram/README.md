@@ -69,9 +69,10 @@ const REVIEW_INTERVALS = [1, 2, 4, 7, 15, 30, 60];   // 天
 
 **环境问题（不是代码）**
 
-- `SystemError: appid missing`（41002）和 `timeout`：底层 SDK 的 `webapi_getwxaaacyncsecinfo` 要拿账号安全信息，`touristappid` 没有 appid 所以必然失败。把 `project.config.json` 的 appid 换成真实的之后重新编译，**这两个错误消失，控制台 0 错误**。
+- `SystemError: appid missing`（41002）：底层 SDK 的 `webapi_getwxaaacyncsecinfo` 要拿账号安全信息，`touristappid` 没有 appid 所以必然失败。换成真实 appid 即消失。
+- `Error: timeout`：**基础库 3.16.1 的问题，与代码无关**。同一份代码在 3.16.1 下每次编译都会在启动后 5–15 秒内报一次，栈全在 `WAServiceMainContext` 里、没有业务代码；把调试基础库切成 **3.15.0** 后等 20 秒也不再出现，页面功能一切正常。社区里 3.15.1 / 3.15.2 也有同类报告。仓库的 `project.private.config.json` 已经把 `libVersion` 固定成 3.15.0，避免导入后又踩到。
 
-所以仓库里保留的是原开发的 appid，导入时替换成你自己的即可；如果用「测试号」打开，会看到这两条报错，属于已知限制。
+所以仓库里保留的是原开发的 appid，导入时替换成你自己的即可。如果自己把基础库切回 3.16.x，那条 `timeout` 会回来——它不是这个项目的代码引起的。
 
 另外有一份不依赖开发者工具的静态校验，可以在 CI 或没有 IDE 的机器上跑：
 
@@ -107,4 +108,4 @@ node tools/check-miniprogram.js .
 
 - 登录是本地模拟的：头像用 `<button open-type="chooseAvatar">` 拿到的临时文件，昵称用输入框，不接真实账号体系。
 - 发音直接拼有道词典的 TTS 地址（`https://dict.youdao.com/dictvoice?audio=<word>`），**依赖第三方服务**，且真机需要在「downloadFile 合法域名」里加 `dict.youdao.com`。播放失败时 `onError` 会降级为震动 + Toast 显示单词，不会卡住流程。
-- 用「测试号」打开会看到 `appid missing` 与 `timeout` 两条报错，换成真实 appid 即消失（见上节）。
+- 用「测试号」打开会看到 `appid missing`；调试基础库若留在 3.16.x 还会有一条 `timeout`。两者都与代码无关，换真实 appid + 3.15.0 基础库即可（见上节）。
