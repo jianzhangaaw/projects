@@ -1,5 +1,7 @@
 # 多彩贵州 · 旅游站点
 
+> 在线预览：https://jianzhangaaw.github.io/projects/
+
 纯静态的贵州旅游介绍站，两个页面、26 张实景图，双击 `index.html` 就能看。
 
 ![首页](docs/web-home.png)
