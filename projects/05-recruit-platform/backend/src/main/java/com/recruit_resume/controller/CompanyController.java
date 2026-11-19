@@ -4,8 +4,11 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.recruit_resume.common.BusinessException;
 import com.recruit_resume.common.Result;
+import com.recruit_resume.common.ResultCode;
 import com.recruit_resume.entity.Company;
 import com.recruit_resume.entity.CompanyDraft;
+import com.recruit_resume.security.CurrentUser;
+import com.recruit_resume.security.CurrentUserContext;
 import com.recruit_resume.service.CompanyDraftService;
 import com.recruit_resume.service.CompanyService;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -31,18 +34,39 @@ public class CompanyController extends BaseCrudController<Company> {
         this.draftService = draftService;
     }
 
+    /**
+     * 历史接口都收 {@code userId} 参数，早期直接拿它查库（改个参数就能读别人）。
+     * 现在参数只为兼容旧前端保留：传了就必须等于当前登录用户，不传就用当前用户。
+     * 下一阶段会把参数彻底删掉。
+     */
+    private Long resolveUserId(Long requestedUserId) {
+        Long currentUserId = CurrentUserContext.userId();
+        if (requestedUserId != null && !requestedUserId.equals(currentUserId)) {
+            log.warn("企业信息接口越权尝试: currentUserId={}, requestedUserId={}", currentUserId, requestedUserId);
+            throw new BusinessException(ResultCode.FORBIDDEN);
+        }
+        return currentUserId;
+    }
+
+    @Override
+    protected boolean isOwnedBy(Company entity, CurrentUser user) {
+        return entity.getUserId() != null && entity.getUserId().equals(user.getUserId());
+    }
+
     @GetMapping("/mine")
-    public Result<Company> mine(@RequestParam Long userId) {
+    public Result<Company> mine(@RequestParam(required = false) Long userId) {
+        Long currentUserId = resolveUserId(userId);
         Company company = service.getOne(new LambdaQueryWrapper<Company>()
-                .eq(Company::getUserId, userId)
+                .eq(Company::getUserId, currentUserId)
                 .last("limit 1"));
         return Result.success(company);
     }
 
     @GetMapping("/mine/draft")
-    public Result<CompanyDraft> mineDraft(@RequestParam Long userId) {
+    public Result<CompanyDraft> mineDraft(@RequestParam(required = false) Long userId) {
+        Long currentUserId = resolveUserId(userId);
         Company company = service.getOne(new LambdaQueryWrapper<Company>()
-                .eq(Company::getUserId, userId)
+                .eq(Company::getUserId, currentUserId)
                 .last("limit 1"));
         if (company == null) return Result.success(null);
         CompanyDraft draft = draftService.getOne(new LambdaQueryWrapper<CompanyDraft>()
@@ -52,11 +76,13 @@ public class CompanyController extends BaseCrudController<Company> {
     }
 
     @PostMapping("/mine")
-    public Result<Company> saveMine(@RequestParam Long userId, @RequestBody Company body) {
+    public Result<Company> saveMine(@RequestParam(required = false) Long userId, @RequestBody Company body) {
+        Long currentUserId = resolveUserId(userId);
         Company existing = service.getOne(new LambdaQueryWrapper<Company>()
-                .eq(Company::getUserId, userId)
+                .eq(Company::getUserId, currentUserId)
                 .last("limit 1"));
-        body.setUserId(userId);
+        body.setUserId(currentUserId);
+        body.setId(existing == null ? null : existing.getId());
 
         // 新企业
         if (existing == null) {
@@ -99,9 +125,13 @@ public class CompanyController extends BaseCrudController<Company> {
     }
 
     @PatchMapping("/mine/logo")
-    public Result<Company> updateLogo(@RequestParam Long userId, @RequestParam Long logoFileId) {
+    public Result<Company> updateLogo(
+            @RequestParam(required = false) Long userId,
+            @RequestParam Long logoFileId
+    ) {
+        Long currentUserId = resolveUserId(userId);
         Company existing = service.getOne(new LambdaQueryWrapper<Company>()
-                .eq(Company::getUserId, userId).last("limit 1"));
+                .eq(Company::getUserId, currentUserId).last("limit 1"));
         if (existing == null) throw new BusinessException("请先保存企业基本信息");
         if ("APPROVED".equals(existing.getReviewStatus())) {
             CompanyDraft draft = draftService.getOne(new LambdaQueryWrapper<CompanyDraft>()

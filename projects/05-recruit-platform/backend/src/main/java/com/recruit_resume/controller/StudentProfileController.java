@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.recruit_resume.common.Result;
 import com.recruit_resume.entity.StudentProfile;
 import com.recruit_resume.entity.UserAccount;
+import com.recruit_resume.security.CurrentUser;
 import com.recruit_resume.security.CurrentUserContext;
 import com.recruit_resume.service.StudentProfileService;
 import com.recruit_resume.service.UserAccountService;
@@ -27,6 +28,11 @@ public class StudentProfileController extends BaseCrudController<StudentProfile>
         super(service);
         this.service = service;
         this.userAccountService = userAccountService;
+    }
+
+    @Override
+    protected boolean isOwnedBy(StudentProfile entity, CurrentUser user) {
+        return entity.getUserId() != null && entity.getUserId().equals(user.getUserId());
     }
 
     @GetMapping("/me")

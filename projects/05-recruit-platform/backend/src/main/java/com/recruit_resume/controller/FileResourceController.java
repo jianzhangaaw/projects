@@ -1,14 +1,21 @@
 package com.recruit_resume.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.recruit_resume.common.BusinessException;
 import com.recruit_resume.common.Result;
 import com.recruit_resume.common.ResultCode;
 import com.recruit_resume.dto.FileUploadResponse;
+import com.recruit_resume.entity.Company;
 import com.recruit_resume.entity.FileResource;
+import com.recruit_resume.entity.JobApplication;
+import com.recruit_resume.entity.Resume;
 import com.recruit_resume.security.CurrentUserContext;
+import com.recruit_resume.service.CompanyService;
 import com.recruit_resume.service.FilePreviewService;
 import com.recruit_resume.service.FileResourceService;
+import com.recruit_resume.service.JobApplicationService;
 import com.recruit_resume.service.OssStorageService;
+import com.recruit_resume.service.ResumeService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
@@ -21,6 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
@@ -34,15 +42,24 @@ public class FileResourceController {
     private final FileResourceService fileResourceService;
     private final OssStorageService ossStorageService;
     private final FilePreviewService filePreviewService;
+    private final ResumeService resumeService;
+    private final JobApplicationService jobApplicationService;
+    private final CompanyService companyService;
 
     public FileResourceController(
             FileResourceService fileResourceService,
             OssStorageService ossStorageService,
-            FilePreviewService filePreviewService
+            FilePreviewService filePreviewService,
+            ResumeService resumeService,
+            JobApplicationService jobApplicationService,
+            CompanyService companyService
     ) {
         this.fileResourceService = fileResourceService;
         this.ossStorageService = ossStorageService;
         this.filePreviewService = filePreviewService;
+        this.resumeService = resumeService;
+        this.jobApplicationService = jobApplicationService;
+        this.companyService = companyService;
     }
 
     @PostMapping("/upload")
@@ -71,8 +88,7 @@ public class FileResourceController {
 
     @GetMapping("/{id}")
     public Result<FileResource> get(@PathVariable Long id) {
-        FileResource resource = getAccessibleFile(id);
-        return Result.success(resource);
+        return Result.success(getAccessibleFile(id));
     }
 
     @GetMapping("/{id}/preview")
@@ -117,14 +133,40 @@ public class FileResourceController {
         if (resource == null) {
             throw new BusinessException(ResultCode.NOT_FOUND);
         }
-        // 管理员和上传者始终有权限，企业用户可查看简历文件
+        // 管理员和上传者始终有权限
         if (CurrentUserContext.isAdmin() || CurrentUserContext.userId().equals(resource.getUploaderId())) {
             return resource;
         }
-        if ("COMPANY".equals(CurrentUserContext.role()) && "RESUME".equals(resource.getBusinessType())) {
+        // 企业只能看「投递到自己这里的」简历，不能凭 id 遍历全平台简历
+        if ("COMPANY".equals(CurrentUserContext.role())
+                && "RESUME".equals(resource.getBusinessType())
+                && isResumeAppliedToCurrentCompany(resource)) {
             return resource;
         }
         throw new BusinessException(ResultCode.FORBIDDEN);
+    }
+
+    /**
+     * 该文件是不是一份「投给了当前企业」的简历。
+     * 链路：file_resource.id → resume.file_id → job_application.resume_id + company_id。
+     */
+    private boolean isResumeAppliedToCurrentCompany(FileResource resource) {
+        Company company = companyService.getOne(new LambdaQueryWrapper<Company>()
+                .eq(Company::getUserId, CurrentUserContext.userId())
+                .last("limit 1"));
+        if (company == null) {
+            return false;
+        }
+        List<Resume> resumes = resumeService.list(new LambdaQueryWrapper<Resume>()
+                .eq(Resume::getFileId, resource.getId()));
+        if (resumes.isEmpty()) {
+            return false;
+        }
+        List<Long> resumeIds = resumes.stream().map(Resume::getId).toList();
+        long applied = jobApplicationService.count(new LambdaQueryWrapper<JobApplication>()
+                .eq(JobApplication::getCompanyId, company.getId())
+                .in(JobApplication::getResumeId, resumeIds));
+        return applied > 0;
     }
 
     private void redirectToFile(Long id, HttpServletResponse response) throws IOException {

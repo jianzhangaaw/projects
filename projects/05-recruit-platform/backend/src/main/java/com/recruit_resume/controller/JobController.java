@@ -7,6 +7,7 @@ import com.recruit_resume.common.Result;
 import com.recruit_resume.common.PageQuery;
 import com.recruit_resume.entity.Company;
 import com.recruit_resume.entity.Job;
+import com.recruit_resume.security.CurrentUser;
 import com.recruit_resume.service.CompanyService;
 import com.recruit_resume.service.JobService;
 import org.springframework.util.StringUtils;
@@ -33,6 +34,15 @@ public class JobController extends BaseCrudController<Job> {
         super(service);
         this.service = service;
         this.companyService = companyService;
+    }
+
+    @Override
+    protected boolean isOwnedBy(Job entity, CurrentUser user) {
+        if (entity.getCompanyId() == null) {
+            return false;
+        }
+        Company company = companyService.getById(entity.getCompanyId());
+        return company != null && user.getUserId().equals(company.getUserId());
     }
 
     @GetMapping("/published")
@@ -85,6 +95,13 @@ public class JobController extends BaseCrudController<Job> {
 
     @PatchMapping("/{id}/status")
     public Result<Void> updateStatus(@PathVariable Long id, @RequestParam String status) {
+        Job existing = requireOwned(id);
+        if (!"DRAFT".equals(status) && !"PENDING".equals(status) && !"OFFLINE".equals(status)) {
+            throw new com.recruit_resume.common.BusinessException("企业只能把岗位置为 DRAFT、PENDING 或 OFFLINE");
+        }
+        if ("PUBLISHED".equals(existing.getStatus()) && "PENDING".equals(status)) {
+            throw new com.recruit_resume.common.BusinessException("已发布岗位不能重新提交审核");
+        }
         Job job = new Job();
         job.setId(id);
         job.setStatus(status);

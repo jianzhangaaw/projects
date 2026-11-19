@@ -38,6 +38,10 @@ jwt:
   secret: ${JWT_SECRET:local-dev-secret-please-change-in-production-32bytes}
   expire-seconds: ${JWT_EXPIRE_SECONDS:7200}
 
+# 只允许来自这些来源的跨域请求；部署时用环境变量覆盖成真实前端域名
+cors:
+  allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:5173,http://127.0.0.1:5173}
+
 file:
   preview:
     libre-office-path: ${FILE_PREVIEW_LIBRE_OFFICE_PATH:C:/Program Files/LibreOffice/program/soffice.com}

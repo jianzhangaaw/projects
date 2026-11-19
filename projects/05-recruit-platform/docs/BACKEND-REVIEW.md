@@ -14,11 +14,14 @@
 
 现在这套代码如果部署到公网，任何一个注册用户都能删掉别人的简历。
 
+> **状态（2026-11-19）**：下面 P0 的 7 项已经修复并跑过越权用例（`scripts/check-authz.py`，18 项全通过）；
+> P1–P4 未动，留作下一阶段。逐项改动见文末「修复记录」。
+
 ---
 
 ## P0 安全
 
-### 1. 企业资料接口信任客户端传来的 userId
+### 1. 企业资料接口信任客户端传来的 userId　`已修复`
 
 `CompanyController.java:35 / 43 / 55 / 102`
 
@@ -44,7 +47,7 @@ PATCH /api/company/companies/mine/logo?userId=2&logoFileId=9   # 换别人的 lo
 
 **改法**：删掉 `userId` 参数，从 `CurrentUserContext.userId()` 取。四个接口改完不到 20 行。
 
-### 2. BaseCrudController 是裸 CRUD，没有归属校验
+### 2. BaseCrudController 是裸 CRUD，没有归属校验　`已修复`
 
 `BaseCrudController.java:31-62`
 
@@ -70,7 +73,7 @@ PUT    /api/company/companies/{别家企业id}      # 企业账号同理
 - 简单：在 6 个子类里 `@Override` update/delete，先查记录再比对 `userId`；
 - 彻底：删掉 `BaseCrudController` 的写操作，只保留分页查询，写操作全部走带归属校验的自定义方法。
 
-### 3. 企业能看任意学生的简历文件
+### 3. 企业能看任意学生的简历文件　`已修复`
 
 `FileResourceController.java:124`
 
@@ -84,23 +87,23 @@ if ("COMPANY".equals(CurrentUserContext.role()) && "RESUME".equals(resource.getB
 
 **改法**：校验存在一条 `job_application`，同时满足 `resume_id = 该文件所属简历` 且 `company_id = 当前企业`。
 
-### 4. 登录错误信息可枚举用户名
+### 4. 登录错误信息可枚举用户名　`已修复`
 
 `AuthService.java:99-100`
 
 账号不存在 → `"账号不存在或已被禁用"`；密码错 → `"用户名或密码错误"`。两条不同的返回让攻击者能批量判断哪些用户名是有效的。**改法**：两种情况统一返回 `"用户名或密码错误"`，只在日志里区分。
 
-### 5. 密码没有强度校验
+### 5. 密码没有强度校验　`已修复`
 
 `RegisterRequest.java` 只标了 `@NotBlank`。`{"password":"1"}` 能注册成功。
 
 **改法**：`@Size(min=8, max=64)` + 至少两类字符的正则，或者直接用 `@Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d).{8,}$")`。
 
-### 6. 登录没有防爆破
+### 6. 登录没有防爆破　`已修复`
 
 没有失败计数、没有临时锁定、没有验证码。挂着字典跑一晚上就能撞开弱密码。**改法**：按 `username + IP` 计数，5 次失败锁 15 分钟（在校人数有限，内存 `ConcurrentHashMap` 就够，不用上 Redis）。
 
-### 7. CORS 是危险组合
+### 7. CORS 是危险组合　`已修复`
 
 `WebMvcConfig.java`：
 
@@ -293,3 +296,32 @@ public class StudentProfileServiceImpl extends ServiceImpl<StudentProfileMapper,
 | 08 静态旅游站 | 纯静态 | 同上 |
 
 如果目标是"作品集里体现后端能力"，智聘通这一个够了，把阶段一做扎实，比再起三个小服务更有说服力。
+
+---
+
+## 修复记录（阶段一）
+
+对应 `scripts/check-authz.py` 里的 18 条断言，全部通过。
+
+| # | 问题 | 改法 | 文件 |
+| --- | --- | --- | --- |
+| 1 | 企业资料接口信任客户端 `userId` | 参数改为 `required=false`，传了就必须等于 `CurrentUserContext.userId()`，否则 403；不传直接用当前用户。同时 `saveMine` 里强制 `body.setId(existing.getId())`，防止客户端带 id 覆盖别的记录 | `CompanyController.java` |
+| 2 | 泛型裸 CRUD 无归属校验 | `BaseCrudController` 增加抽象方法 `isOwnedBy(T, CurrentUser)`，`get/update/delete` 先 `requireOwned(id)`：不存在 404、不属于自己 403。抽象方法没有默认实现，漏实现会编译失败而不是静默放行。6 个子类各自实现（Company/Profile 比 `userId`，Skill/Experience/Resume 比 `studentId`，Job 经 `company.userId` 比对） | `BaseCrudController.java` + 6 个 Controller |
+| 3 | 企业能看任意学生简历 | 校验链路 `file_resource.id → resume.file_id → job_application.resume_id + company_id`，只有存在一条"投给当前企业"的投递才放行 | `FileResourceController.java` |
+| 4 | 登录信息可枚举用户名 | 账号不存在、密码错误统一返回「用户名或密码错误」，日志里仍分开记 | `AuthService.java` |
+| 5 | 密码无强度 | `@Size(8,64)` + `^(?=.*[A-Za-z])(?=.*\d).+$`；用户名也加了 3–32 位和字符集限制。前端 `RegisterView` 同步加了两条规则，避免前后端口径不一致 | `RegisterRequest.java`、`RegisterView.vue` |
+| 6 | 无防爆破 | 新增 `LoginAttemptService`：按用户名计失败次数，5 次锁 15 分钟；锁定期内直接拒，不再做一次 BCrypt 校验（省 CPU）。用 `ConcurrentHashMap`，每 100 次操作清理一次过期项 | `LoginAttemptService.java`、`AuthService.java` |
+| 7 | CORS 过宽 | `allowedOriginPatterns("*")` 改为 `allowedOrigins` 白名单，默认只允许 `localhost:5173` / `127.0.0.1:5173`，部署时用 `CORS_ALLOWED_ORIGINS` 覆盖 | `WebMvcConfig.java`、`application.yml` |
+
+顺带修的两处：
+
+- `JobController.updateStatus` 原来没有任何归属校验，企业能改任意岗位的状态。现在先 `requireOwned(id)`，并限制成只能置为 `DRAFT / PENDING / OFFLINE`，已发布的岗位不能退回待审。
+- `CompanyController.saveMine` 里 `body.setId(...)` 的补丁（见上表第 1 行），不然后果是客户端能通过请求体指定 id 覆盖任意企业。
+
+### 为什么用「兼容校验」而不是直接删参数
+
+`mine?userId=` 这套参数前端有 9 处调用。直接删参数要同时改 5 个 `.vue`，改漏一个就是 400。这一轮的目标是止血，所以选「参数保留、值必须等于当前用户」——前端零改动，越权立刻失效。下一阶段（配合 Service 下沉）再把参数彻底去掉。
+
+### 还没做的
+
+P1–P4 原样保留：投递/审核仍无事务、重复投递仍靠 count 兜底、列表仍有 N+1、11 个 ServiceImpl 仍是空壳、日志仍是 DEBUG 全量打 SQL。这些在阶段二、三处理。

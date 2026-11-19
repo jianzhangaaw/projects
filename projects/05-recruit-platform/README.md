@@ -64,6 +64,26 @@ npm run dev
 
 本机已有 MySQL 8 的话，手动执行 `backend/src/main/resources/db/schema.sql` 和 `02-seed.sql`，再把 `DB_URL` / `DB_USERNAME` / `DB_PASSWORD` 环境变量指过去即可。
 
+## 安全
+
+初版有三处水平越权：企业改别家资料（改个 query 参数）、学生删别人简历（改个 path 参数）、企业遍历自增 id 下载全平台简历。2026-11 做了一轮止血：
+
+- 企业资料接口不再信任客户端传来的 `userId`
+- 泛型 CRUD 的 `get/update/delete` 加了归属校验，不属于自己返回 403
+- 企业只能看「投递给自己」的简历
+- 登录错误信息不再区分「账号不存在」与「密码错误」
+- 密码要求 8–64 位且同时含字母和数字
+- 连续 5 次登录失败锁定 15 分钟
+- CORS 从 `*` 收紧到白名单（`CORS_ALLOWED_ORIGINS` 覆盖）
+
+验证脚本（需要后端在跑）：
+
+```bash
+python scripts/check-authz.py          # 18 项断言，退出码 0 表示全过
+```
+
+完整的问题清单、文件行号与四阶段优化方案见 [docs/BACKEND-REVIEW.md](docs/BACKEND-REVIEW.md)。
+
 ## 架构
 
 ```

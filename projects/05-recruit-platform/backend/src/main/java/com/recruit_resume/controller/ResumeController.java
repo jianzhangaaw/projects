@@ -11,6 +11,7 @@ import com.recruit_resume.entity.FileResource;
 import com.recruit_resume.entity.Resume;
 import com.recruit_resume.entity.ResumeSnapshot;
 import com.recruit_resume.entity.ResumeTemplate;
+import com.recruit_resume.security.CurrentUser;
 import com.recruit_resume.security.CurrentUserContext;
 import com.recruit_resume.service.FileResourceService;
 import com.recruit_resume.service.ResumeGenerationService;
@@ -57,6 +58,14 @@ public class ResumeController extends BaseCrudController<Resume> {
         this.resumeGenerationService = resumeGenerationService;
         this.resumeTemplateService = resumeTemplateService;
         this.resumeSnapshotService = resumeSnapshotService;
+    }
+
+    @Override
+    protected boolean isOwnedBy(Resume entity, CurrentUser user) {
+        if (entity.getStudentId() == null) {
+            return false;
+        }
+        return entity.getStudentId().equals(studentProfileResolver.getOrCreateCurrentStudentProfile().getId());
     }
 
     @PostMapping

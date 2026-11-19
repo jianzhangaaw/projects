@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.recruit_resume.common.Result;
 import com.recruit_resume.entity.FileResource;
 import com.recruit_resume.entity.StudentSkill;
+import com.recruit_resume.security.CurrentUser;
 import com.recruit_resume.security.CurrentUserContext;
 import com.recruit_resume.service.FileResourceService;
 import com.recruit_resume.service.StudentProfileResolver;
@@ -34,6 +35,14 @@ public class StudentSkillController extends BaseCrudController<StudentSkill> {
         this.service = service;
         this.fileResourceService = fileResourceService;
         this.studentProfileResolver = studentProfileResolver;
+    }
+
+    @Override
+    protected boolean isOwnedBy(StudentSkill entity, CurrentUser user) {
+        if (entity.getStudentId() == null) {
+            return false;
+        }
+        return entity.getStudentId().equals(studentProfileResolver.getOrCreateCurrentStudentProfile().getId());
     }
 
     @PostMapping

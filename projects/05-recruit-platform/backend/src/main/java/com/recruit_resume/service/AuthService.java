@@ -28,16 +28,19 @@ public class AuthService {
     private final UserAccountService userAccountService;
     private final StudentProfileService studentProfileService;
     private final JwtTokenProvider jwtTokenProvider;
+    private final LoginAttemptService loginAttemptService;
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public AuthService(
             UserAccountService userAccountService,
             StudentProfileService studentProfileService,
-            JwtTokenProvider jwtTokenProvider
+            JwtTokenProvider jwtTokenProvider,
+            LoginAttemptService loginAttemptService
     ) {
         this.userAccountService = userAccountService;
         this.studentProfileService = studentProfileService;
         this.jwtTokenProvider = jwtTokenProvider;
+        this.loginAttemptService = loginAttemptService;
     }
 
     public UserAccount register(RegisterRequest request) {
@@ -92,17 +95,26 @@ public class AuthService {
     }
 
     public LoginResponse login(LoginRequest request) {
+        String username = request.getUsername();
+        // 先看是否在锁定期内，避免锁定后还去做一次 BCrypt 校验（那是 CPU 成本）
+        loginAttemptService.assertNotLocked(username);
+
         UserAccount account = userAccountService.getOne(new LambdaQueryWrapper<UserAccount>()
-                .eq(UserAccount::getUsername, request.getUsername())
+                .eq(UserAccount::getUsername, username)
                 .last("limit 1"));
         if (account == null || !"ENABLED".equals(account.getStatus())) {
-            log.warn("登录失败: 账号不存在或已被禁用 username={}", request.getUsername());
-            throw new BusinessException("账号不存在或已被禁用");
-        }
-        if (!StringUtils.hasText(account.getPassword()) || !passwordEncoder.matches(request.getPassword(), account.getPassword())) {
-            log.warn("登录失败: 密码错误 username={}", request.getUsername());
+            loginAttemptService.recordFailure(username);
+            log.warn("登录失败: 账号不存在或已被禁用 username={}", username);
+            // 对外与「密码错误」使用同一句提示，避免用户名可枚举
             throw new BusinessException("用户名或密码错误");
         }
+        if (!StringUtils.hasText(account.getPassword()) || !passwordEncoder.matches(request.getPassword(), account.getPassword())) {
+            loginAttemptService.recordFailure(username);
+            log.warn("登录失败: 密码错误 username={}", username);
+            throw new BusinessException("用户名或密码错误");
+        }
+        loginAttemptService.reset(username);
+
         String token = jwtTokenProvider.createToken(account.getId(), account.getUsername(), account.getRole());
         log.info("登录成功: userId={}, username={}, role={}", account.getId(), account.getUsername(), account.getRole());
         return new LoginResponse(account.getId(), account.getUsername(), account.getRole(), token);
