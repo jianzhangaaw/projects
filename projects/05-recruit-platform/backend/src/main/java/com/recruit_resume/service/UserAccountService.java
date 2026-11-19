@@ -1,0 +1,7 @@
+package com.recruit_resume.service;
+
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.recruit_resume.entity.UserAccount;
+
+public interface UserAccountService extends IService<UserAccount> {
+}

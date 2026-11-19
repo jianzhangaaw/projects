@@ -1,0 +1,6 @@
+# 关联分析实验的第三方依赖
+# 算法的核心实现只用 Python 标准库（collections / itertools / csv / time / json），
+# 下面的库仅用于绘图与数据统计。
+numpy>=2.0
+matplotlib>=3.11
+pandas>=3.0

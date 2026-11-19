@@ -1,0 +1,235 @@
+/**pages/wordlist/wordlist.wxss**/
+page {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(180deg, #F5F7FA 0%, #E4E8EC 100%);
+}
+.scrollarea {
+  flex: 1;
+  overflow-y: hidden;
+}
+
+.container {
+  padding: 24rpx 32rpx;
+}
+
+/* 搜索框 */
+.search-bar {
+  background: #fff;
+  border-radius: 56rpx;
+  padding: 24rpx 32rpx;
+  margin-bottom: 28rpx;
+  box-shadow: 0 8rpx 28rpx rgba(0, 0, 0, 0.06);
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+}
+.search-icon {
+  font-size: 32rpx;
+}
+.search-input {
+  font-size: 30rpx;
+  flex: 1;
+}
+.clear-btn {
+  width: 48rpx;
+  height: 48rpx;
+  background: #F0F0F0;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.clear-btn text {
+  font-size: 32rpx;
+  color: #999;
+}
+
+/* 筛选标签 */
+.filter-tabs {
+  display: flex;
+  gap: 20rpx;
+  margin-bottom: 32rpx;
+  flex-wrap: wrap;
+}
+.filter-tab {
+  padding: 16rpx 28rpx;
+  background: #fff;
+  border-radius: 36rpx;
+  font-size: 28rpx;
+  color: #666;
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.04);
+  transition: all 0.2s ease;
+}
+.filter-tab:active {
+  transform: scale(0.98);
+}
+.filter-tab.active {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  box-shadow: 0 8rpx 28rpx rgba(102, 126, 234, 0.3);
+}
+.tab-count {
+  font-size: 24rpx;
+  opacity: 0.8;
+}
+
+/* 筛选结果数量 */
+.filter-result {
+  text-align: center;
+  font-size: 26rpx;
+  color: #999;
+  margin-bottom: 24rpx;
+}
+
+/* 单词列表 */
+.word-list {
+  margin-bottom: 140rpx;
+}
+.word-item {
+  background: #fff;
+  border-radius: 24rpx;
+  padding: 32rpx;
+  margin-bottom: 24rpx;
+  box-shadow: 0 8rpx 28rpx rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease;
+}
+.word-item:active {
+  transform: scale(0.99);
+}
+.word-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.word-main {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+}
+.word-text {
+  font-size: 38rpx;
+  font-weight: 700;
+  color: #1a1a2e;
+}
+.word-phonetic {
+  font-size: 28rpx;
+  color: #999;
+  font-family: 'Courier New', monospace;
+}
+.word-status {
+  font-size: 24rpx;
+  padding: 8rpx 20rpx;
+  border-radius: 24rpx;
+  font-weight: 500;
+}
+.status-new {
+  background: #FFF3E0;
+  color: #FF9800;
+}
+.status-learning {
+  background: #E3F2FD;
+  color: #2196F3;
+}
+.status-mastered {
+  background: #E8F5E9;
+  color: #4CAF50;
+}
+.word-meaning {
+  font-size: 30rpx;
+  color: #666;
+  margin-top: 16rpx;
+  display: block;
+  line-height: 1.5;
+}
+.word-detail {
+  margin-top: 28rpx;
+  padding-top: 28rpx;
+  border-top: 2rpx solid #F0F0F0;
+}
+.example-section {
+  margin-bottom: 24rpx;
+}
+.example-label {
+  font-size: 24rpx;
+  color: #999;
+  display: block;
+  margin-bottom: 12rpx;
+}
+.example-en {
+  font-size: 30rpx;
+  color: #333;
+  font-style: italic;
+  display: block;
+  line-height: 1.6;
+}
+.example-cn {
+  font-size: 28rpx;
+  color: #999;
+  display: block;
+  margin-top: 12rpx;
+}
+.word-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+.delete-btn {
+  font-size: 28rpx;
+  color: #FF5252;
+  padding: 12rpx 24rpx;
+  background: #FFF5F5;
+  border-radius: 24rpx;
+}
+
+/* 空状态 */
+.empty-tip {
+  text-align: center;
+  padding: 120rpx 0;
+}
+.empty-icon {
+  font-size: 80rpx;
+  display: block;
+  margin-bottom: 24rpx;
+}
+.empty-text {
+  font-size: 30rpx;
+  color: #999;
+}
+
+/* 添加按钮 */
+.add-btn {
+  position: fixed;
+  bottom: 160rpx;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 56rpx;
+  padding: 28rpx 48rpx;
+  box-shadow: 0 12rpx 40rpx rgba(102, 126, 234, 0.4);
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  transition: all 0.2s ease;
+}
+.add-btn:active {
+  transform: translateX(-50%) scale(0.98);
+}
+.add-icon {
+  font-size: 40rpx;
+  font-weight: 300;
+  color: #fff;
+}
+.add-btn-text {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #fff;
+}
+
+/* 底部留白 */
+.bottom-space {
+  height: 140rpx;
+}

@@ -1,0 +1,20 @@
+﻿antecedent,consequent,support,confidence,lift,count
+safety=low,class=unacc,0.3333,1.0000,1.4281,576
+persons=2,class=unacc,0.3333,1.0000,1.4281,576
+persons=2 & safety=low,class=unacc,0.1111,1.0000,1.4281,192
+persons=more & safety=low,class=unacc,0.1111,1.0000,1.4281,192
+lug_boot=med & persons=2,class=unacc,0.1111,1.0000,1.4281,192
+lug_boot=med & safety=low,class=unacc,0.1111,1.0000,1.4281,192
+persons=4 & safety=low,class=unacc,0.1111,1.0000,1.4281,192
+lug_boot=small & persons=2,class=unacc,0.1111,1.0000,1.4281,192
+lug_boot=big & persons=2,class=unacc,0.1111,1.0000,1.4281,192
+persons=2 & safety=high,class=unacc,0.1111,1.0000,1.4281,192
+persons=2 & safety=med,class=unacc,0.1111,1.0000,1.4281,192
+lug_boot=small & safety=low,class=unacc,0.1111,1.0000,1.4281,192
+lug_boot=big & safety=low,class=unacc,0.1111,1.0000,1.4281,192
+buying=vhigh,class=unacc,0.2083,0.8333,1.1901,360
+maint=vhigh,class=unacc,0.2083,0.8333,1.1901,360
+lug_boot=small,class=unacc,0.2604,0.7812,1.1157,450
+doors=2,class=unacc,0.1887,0.7546,1.0777,326
+buying=high,class=unacc,0.1875,0.7500,1.0711,324
+maint=high,class=unacc,0.1817,0.7269,1.0380,314

@@ -1,0 +1,202 @@
+<!--pages/study/study.wxml-->
+<navigation-bar title="{{mode === 'add' ? '添加单词' : '学习'}}" back="{{true}}" color="black" background="#FFF"></navigation-bar>
+<scroll-view class="scrollarea" scroll-y type="list">
+  <view class="container">
+    <!-- 学习模式 -->
+    <block wx:if="{{mode === 'flashcard'}}">
+      <view class="progress-section">
+        <view class="progress-bar-wrap">
+          <view class="progress-bar-fill" style="width: {{progressPercent}}%"></view>
+        </view>
+        <text class="progress-text">{{currentIndex + 1}} / {{studyWords.length}}</text>
+      </view>
+
+      <view class="flashcard" wx:if="{{currentWord}}">
+        <view class="card-inner" wx:if="{{!showAnswer}}">
+          <view class="card-content">
+            <text class="word">{{currentWord.word}}</text>
+            <text class="phonetic">{{currentWord.phonetic}}</text>
+          </view>
+          <view class="card-action">
+            <view class="play-btn" bindtap="playAudio">
+              <text class="play-icon">🔊</text>
+              <text class="play-text">发音</text>
+            </view>
+          </view>
+          <view class="card-hint">
+            <text>点击下方按钮查看答案</text>
+          </view>
+        </view>
+
+        <view class="card-inner answer" wx:if="{{showAnswer}}">
+          <view class="card-header">
+            <text class="word">{{currentWord.word}}</text>
+            <view class="play-btn-small" bindtap="playAudio">
+              <text>🔊</text>
+            </view>
+          </view>
+          <text class="phonetic">{{currentWord.phonetic}}</text>
+          <text class="meaning">{{currentWord.meaning}}</text>
+          <view class="example">
+            <text class="example-en">{{currentWord.example}}</text>
+            <text class="example-cn">{{currentWord.exampleCn}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="action-btns" wx:if="{{currentWord}}">
+        <block wx:if="{{!showAnswer}}">
+          <view class="action-btn primary" bindtap="onShowAnswer">
+            <text>显示答案</text>
+          </view>
+        </block>
+        <block wx:else>
+          <view class="action-btn wrong" bindtap="onUnknown">
+            <text class="btn-icon">✗</text>
+            <text>不认识</text>
+          </view>
+          <view class="action-btn correct" bindtap="onKnow">
+            <text class="btn-icon">✓</text>
+            <text>认识</text>
+          </view>
+        </block>
+      </view>
+    </block>
+
+    <!-- 拼写模式 -->
+    <block wx:if="{{mode === 'spelling'}}">
+      <view class="progress-section">
+        <view class="progress-bar-wrap">
+          <view class="progress-bar-fill" style="width: {{progressPercent}}%"></view>
+        </view>
+        <text class="progress-text">{{currentIndex + 1}} / {{studyWords.length}}</text>
+      </view>
+
+      <view class="spelling-card" wx:if="{{currentWord}}">
+        <text class="spelling-hint">请根据释义拼写单词</text>
+        <text class="spelling-meaning">{{currentWord.meaning}}</text>
+        
+        <view class="spelling-result correct" wx:if="{{spellingResult === 'correct'}}">
+          <text class="result-icon">🎉</text>
+          <text class="result-text">回答正确!</text>
+        </view>
+        <view class="spelling-result wrong" wx:if="{{spellingResult === 'wrong'}}">
+          <text class="result-icon">😅</text>
+          <text class="result-text">正确答案是</text>
+          <text class="result-word">{{currentWord.word}}</text>
+          <text class="result-phonetic">{{currentWord.phonetic}}</text>
+        </view>
+      </view>
+
+      <view class="spelling-input-wrap" wx:if="{{!spellingResult}}">
+        <input class="spelling-input" bindinput="onSpellingInput" placeholder="输入单词拼写" />
+        <view class="action-btn primary" bindtap="checkSpelling">
+          <text>确认</text>
+        </view>
+      </view>
+
+      <view class="action-btns" wx:if="{{spellingResult === 'wrong'}}">
+        <view class="action-btn primary" bindtap="onSpellingContinue">
+          <text>继续下一个</text>
+        </view>
+      </view>
+    </block>
+
+    <!-- 听音模式 -->
+    <block wx:if="{{mode === 'listening'}}">
+      <view class="progress-section">
+        <view class="progress-bar-wrap">
+          <view class="progress-bar-fill" style="width: {{progressPercent}}%"></view>
+        </view>
+        <text class="progress-text">{{currentIndex + 1}} / {{studyWords.length}}</text>
+      </view>
+
+      <view class="listening-card" wx:if="{{currentWord}}">
+        <view class="audio-btn {{isPlaying ? 'playing' : ''}}" bindtap="playAudio">
+          <text class="audio-icon">🔊</text>
+          <text class="audio-text">{{isPlaying ? '正在播放...' : '点击播放发音'}}</text>
+        </view>
+        <text class="listening-hint">听音识词，判断是否认识</text>
+        
+        <view class="listening-answer" wx:if="{{showAnswer}}">
+          <text class="listening-word">{{currentWord.word}}</text>
+          <text class="listening-phonetic">{{currentWord.phonetic}}</text>
+          <text class="listening-meaning">{{currentWord.meaning}}</text>
+        </view>
+        
+        <view class="spelling-result correct" wx:if="{{spellingResult === 'correct'}}">
+          <text class="result-icon">🎉</text>
+          <text class="result-text">回答正确!</text>
+        </view>
+        <view class="spelling-result wrong" wx:if="{{spellingResult === 'wrong'}}">
+          <text class="result-icon">😅</text>
+          <text class="result-text">不认识，正确答案是</text>
+          <text class="result-word">{{currentWord.word}}</text>
+        </view>
+      </view>
+
+      <view class="action-btns" wx:if="{{!spellingResult && !showAnswer}}">
+        <view class="action-btn primary" bindtap="onListeningShowAnswer">
+          <text>显示答案</text>
+        </view>
+      </view>
+      
+      <view class="action-btns" wx:if="{{showAnswer && !spellingResult}}">
+        <view class="action-btn wrong" bindtap="onListeningWrong">
+          <text class="btn-icon">✗</text>
+          <text>不认识</text>
+        </view>
+        <view class="action-btn correct" bindtap="onListeningCorrect">
+          <text class="btn-icon">✓</text>
+          <text>认识</text>
+        </view>
+      </view>
+
+      <view class="action-btns" wx:if="{{spellingResult === 'wrong'}}">
+        <view class="action-btn primary" bindtap="onListeningContinue">
+          <text>继续下一个</text>
+        </view>
+      </view>
+    </block>
+
+    <!-- 添加单词模式 -->
+    <block wx:if="{{mode === 'add'}}">
+      <view class="add-form">
+        <view class="form-item required">
+          <text class="form-label">单词</text>
+          <input class="form-input" bindinput="onNewWordInput" data-field="word" value="{{newWord.word}}" placeholder="请输入单词" />
+        </view>
+        <view class="form-item">
+          <text class="form-label">音标</text>
+          <input class="form-input" bindinput="onNewWordInput" data-field="phonetic" value="{{newWord.phonetic}}" placeholder="如: [ə'bændən]" />
+        </view>
+        <view class="form-item required">
+          <text class="form-label">释义</text>
+          <input class="form-input" bindinput="onNewWordInput" data-field="meaning" value="{{newWord.meaning}}" placeholder="请输入中文释义" />
+        </view>
+        <view class="form-item">
+          <text class="form-label">例句</text>
+          <input class="form-input" bindinput="onNewWordInput" data-field="example" value="{{newWord.example}}" placeholder="请输入英文例句" />
+        </view>
+        <view class="form-item">
+          <text class="form-label">例句翻译</text>
+          <input class="form-input" bindinput="onNewWordInput" data-field="exampleCn" value="{{newWord.exampleCn}}" placeholder="请输入例句翻译" />
+        </view>
+
+        <view class="form-btns">
+          <view class="form-btn cancel" bindtap="onCancelAdd">
+            <text>取消</text>
+          </view>
+          <view class="form-btn submit" bindtap="onAddWord">
+            <text>添加</text>
+          </view>
+        </view>
+      </view>
+    </block>
+
+    <!-- 返回按钮 -->
+    <view class="back-btn" bindtap="goBack" wx:if="{{mode !== 'add'}}">
+      <text>返回首页</text>
+    </view>
+  </view>
+</scroll-view>

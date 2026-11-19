@@ -1,0 +1,39 @@
+# 依赖与构建产物
+node_modules/
+target/
+dist/
+build/
+out/
+*.class
+*.jar
+*.war
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+
+# IDE
+.idea/
+*.iml
+.vscode/
+*.swp
+
+# 数据库数据卷（docker compose 生成）
+mysql-data/
+*.pid
+*.log
+
+# 系统
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# 本地临时产物
+_*/
+_tools/
+_api/
+*.tmp

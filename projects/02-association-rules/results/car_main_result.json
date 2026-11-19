@@ -1,0 +1,238 @@
+{
+  "dataset": "car.data",
+  "n_transactions": 1728,
+  "n_items": 25,
+  "min_support": 0.2,
+  "min_count": 346,
+  "n_frequent": 31,
+  "itemset_by_len": {
+    "1": 23,
+    "2": 8
+  },
+  "n_rules": 5,
+  "min_confidence": 0.7,
+  "time_s": 0.0022915999998076586,
+  "layers": [
+    {
+      "k": 1,
+      "candidates": 25,
+      "frequent": 23,
+      "time": 0.000995500000044558
+    },
+    {
+      "k": 2,
+      "candidates": 253,
+      "frequent": 8,
+      "time": 0.001263199999812059
+    }
+  ],
+  "top_rules_unacc": [
+    {
+      "antecedent": "safety=low",
+      "support": 0.3333333333333333,
+      "confidence": 1.0,
+      "lift": 1.428099173553719
+    },
+    {
+      "antecedent": "persons=2",
+      "support": 0.3333333333333333,
+      "confidence": 1.0,
+      "lift": 1.428099173553719
+    },
+    {
+      "antecedent": "buying=vhigh",
+      "support": 0.20833333333333334,
+      "confidence": 0.8333333333333334,
+      "lift": 1.1900826446280992
+    },
+    {
+      "antecedent": "maint=vhigh",
+      "support": 0.20833333333333334,
+      "confidence": 0.8333333333333334,
+      "lift": 1.1900826446280992
+    },
+    {
+      "antecedent": "lug_boot=small",
+      "support": 0.2604166666666667,
+      "confidence": 0.78125,
+      "lift": 1.115702479338843
+    }
+  ],
+  "all_rules": [
+    {
+      "antecedent": "safety=low",
+      "consequent": "class=unacc",
+      "support": 0.3333333333333333,
+      "confidence": 1.0,
+      "lift": 1.428099173553719
+    },
+    {
+      "antecedent": "persons=2",
+      "consequent": "class=unacc",
+      "support": 0.3333333333333333,
+      "confidence": 1.0,
+      "lift": 1.428099173553719
+    },
+    {
+      "antecedent": "buying=vhigh",
+      "consequent": "class=unacc",
+      "support": 0.20833333333333334,
+      "confidence": 0.8333333333333334,
+      "lift": 1.1900826446280992
+    },
+    {
+      "antecedent": "maint=vhigh",
+      "consequent": "class=unacc",
+      "support": 0.20833333333333334,
+      "confidence": 0.8333333333333334,
+      "lift": 1.1900826446280992
+    },
+    {
+      "antecedent": "lug_boot=small",
+      "consequent": "class=unacc",
+      "support": 0.2604166666666667,
+      "confidence": 0.78125,
+      "lift": 1.115702479338843
+    }
+  ],
+  "low_support": {
+    "min_support": 0.1,
+    "n_frequent": 86,
+    "itemset_by_len": {
+      "1": 23,
+      "2": 52,
+      "3": 11
+    },
+    "n_rules": 19,
+    "time_s": 0.002922099999977945,
+    "long_itemsets": [
+      {
+        "itemset": "class=unacc & persons=2 & safety=low",
+        "count": 192,
+        "support": 0.1111111111111111
+      },
+      {
+        "itemset": "class=unacc & persons=more & safety=low",
+        "count": 192,
+        "support": 0.1111111111111111
+      },
+      {
+        "itemset": "class=unacc & lug_boot=med & persons=2",
+        "count": 192,
+        "support": 0.1111111111111111
+      },
+      {
+        "itemset": "class=unacc & lug_boot=med & safety=low",
+        "count": 192,
+        "support": 0.1111111111111111
+      },
+      {
+        "itemset": "class=unacc & persons=4 & safety=low",
+        "count": 192,
+        "support": 0.1111111111111111
+      },
+      {
+        "itemset": "class=unacc & lug_boot=small & persons=2",
+        "count": 192,
+        "support": 0.1111111111111111
+      },
+      {
+        "itemset": "class=unacc & lug_boot=big & persons=2",
+        "count": 192,
+        "support": 0.1111111111111111
+      },
+      {
+        "itemset": "class=unacc & persons=2 & safety=high",
+        "count": 192,
+        "support": 0.1111111111111111
+      },
+      {
+        "itemset": "class=unacc & persons=2 & safety=med",
+        "count": 192,
+        "support": 0.1111111111111111
+      },
+      {
+        "itemset": "class=unacc & lug_boot=small & safety=low",
+        "count": 192,
+        "support": 0.1111111111111111
+      },
+      {
+        "itemset": "class=unacc & lug_boot=big & safety=low",
+        "count": 192,
+        "support": 0.1111111111111111
+      }
+    ],
+    "top_rules_by_lift": [
+      {
+        "antecedent": "safety=low",
+        "consequent": "class=unacc",
+        "support": 0.3333333333333333,
+        "confidence": 1.0,
+        "lift": 1.428099173553719
+      },
+      {
+        "antecedent": "persons=2",
+        "consequent": "class=unacc",
+        "support": 0.3333333333333333,
+        "confidence": 1.0,
+        "lift": 1.428099173553719
+      },
+      {
+        "antecedent": "persons=2 & safety=low",
+        "consequent": "class=unacc",
+        "support": 0.1111111111111111,
+        "confidence": 1.0,
+        "lift": 1.428099173553719
+      },
+      {
+        "antecedent": "persons=more & safety=low",
+        "consequent": "class=unacc",
+        "support": 0.1111111111111111,
+        "confidence": 1.0,
+        "lift": 1.428099173553719
+      },
+      {
+        "antecedent": "lug_boot=med & persons=2",
+        "consequent": "class=unacc",
+        "support": 0.1111111111111111,
+        "confidence": 1.0,
+        "lift": 1.428099173553719
+      },
+      {
+        "antecedent": "lug_boot=med & safety=low",
+        "consequent": "class=unacc",
+        "support": 0.1111111111111111,
+        "confidence": 1.0,
+        "lift": 1.428099173553719
+      },
+      {
+        "antecedent": "persons=4 & safety=low",
+        "consequent": "class=unacc",
+        "support": 0.1111111111111111,
+        "confidence": 1.0,
+        "lift": 1.428099173553719
+      },
+      {
+        "antecedent": "lug_boot=small & persons=2",
+        "consequent": "class=unacc",
+        "support": 0.1111111111111111,
+        "confidence": 1.0,
+        "lift": 1.428099173553719
+      },
+      {
+        "antecedent": "lug_boot=big & persons=2",
+        "consequent": "class=unacc",
+        "support": 0.1111111111111111,
+        "confidence": 1.0,
+        "lift": 1.428099173553719
+      },
+      {
+        "antecedent": "persons=2 & safety=high",
+        "consequent": "class=unacc",
+        "support": 0.1111111111111111,
+        "confidence": 1.0,
+        "lift": 1.428099173553719
+      }
+    ]
+  }
+}

@@ -1,0 +1,313 @@
+{
+  "dataset": "groceries.csv",
+  "n_transactions": 9835,
+  "n_items": 169,
+  "min_support": 0.01,
+  "min_count": 99,
+  "n_frequent": 333,
+  "itemset_by_len": {
+    "1": 88,
+    "2": 213,
+    "3": 32
+  },
+  "n_rules": 125,
+  "min_confidence": 0.3,
+  "time_s": 0.13217000000031476,
+  "hash_info": {
+    "n_buckets": 3000,
+    "full_c2": 3828,
+    "c2_after_hash": 656,
+    "hash_pruned_2": 3172,
+    "items_removed_by_pruning": 3312,
+    "transactions_after_pruning": 1842
+  },
+  "layers": [
+    {
+      "k": 1,
+      "candidates": 169,
+      "frequent": 88,
+      "time": 0.023503700000219396,
+      "hash_pruned": 0
+    },
+    {
+      "k": 2,
+      "candidates": 656,
+      "frequent": 213,
+      "time": 0.006050800000139134,
+      "hash_pruned": 3172
+    },
+    {
+      "k": 3,
+      "candidates": 519,
+      "frequent": 32,
+      "time": 0.01131600000007893,
+      "hash_pruned": 57
+    },
+    {
+      "k": 4,
+      "candidates": 0,
+      "frequent": 0,
+      "time": 0.008128099999794358,
+      "hash_pruned": 6
+    }
+  ],
+  "top_items": [
+    {
+      "item": "whole milk",
+      "count": 2513,
+      "support": 0.25551601423487547
+    },
+    {
+      "item": "other vegetables",
+      "count": 1903,
+      "support": 0.1934926283680732
+    },
+    {
+      "item": "rolls/buns",
+      "count": 1809,
+      "support": 0.18393492628368074
+    },
+    {
+      "item": "soda",
+      "count": 1715,
+      "support": 0.17437722419928825
+    },
+    {
+      "item": "yogurt",
+      "count": 1372,
+      "support": 0.13950177935943062
+    },
+    {
+      "item": "bottled water",
+      "count": 1087,
+      "support": 0.11052364006100661
+    },
+    {
+      "item": "root vegetables",
+      "count": 1072,
+      "support": 0.10899847483477376
+    },
+    {
+      "item": "tropical fruit",
+      "count": 1032,
+      "support": 0.10493136756481952
+    },
+    {
+      "item": "shopping bags",
+      "count": 969,
+      "support": 0.09852567361464158
+    },
+    {
+      "item": "sausage",
+      "count": 924,
+      "support": 0.09395017793594305
+    },
+    {
+      "item": "pastry",
+      "count": 875,
+      "support": 0.08896797153024912
+    },
+    {
+      "item": "citrus fruit",
+      "count": 814,
+      "support": 0.08276563294356888
+    },
+    {
+      "item": "bottled beer",
+      "count": 792,
+      "support": 0.08052872394509406
+    },
+    {
+      "item": "newspapers",
+      "count": 785,
+      "support": 0.07981698017285206
+    },
+    {
+      "item": "canned beer",
+      "count": 764,
+      "support": 0.07768174885612608
+    }
+  ],
+  "top_itemsets": [
+    {
+      "itemset": "other vegetables & root vegetables & whole milk",
+      "count": 228,
+      "support": 0.023182511438739197
+    },
+    {
+      "itemset": "other vegetables & whole milk & yogurt",
+      "count": 219,
+      "support": 0.02226741230299949
+    },
+    {
+      "itemset": "other vegetables & rolls/buns & whole milk",
+      "count": 176,
+      "support": 0.017895271987798677
+    },
+    {
+      "itemset": "other vegetables & tropical fruit & whole milk",
+      "count": 168,
+      "support": 0.01708185053380783
+    },
+    {
+      "itemset": "rolls/buns & whole milk & yogurt",
+      "count": 153,
+      "support": 0.015556685307574987
+    },
+    {
+      "itemset": "tropical fruit & whole milk & yogurt",
+      "count": 149,
+      "support": 0.015149974580579562
+    },
+    {
+      "itemset": "other vegetables & whipped/sour cream & whole milk",
+      "count": 144,
+      "support": 0.014641586171835282
+    },
+    {
+      "itemset": "root vegetables & whole milk & yogurt",
+      "count": 143,
+      "support": 0.014539908490086425
+    },
+    {
+      "itemset": "other vegetables & soda & whole milk",
+      "count": 137,
+      "support": 0.013929842399593289
+    },
+    {
+      "itemset": "other vegetables & pip fruit & whole milk",
+      "count": 133,
+      "support": 0.013523131672597865
+    }
+  ],
+  "top_rules": [
+    {
+      "antecedent": "citrus fruit & other vegetables",
+      "consequent": "root vegetables",
+      "support": 0.010371123538383325,
+      "confidence": 0.3591549295774648,
+      "lift": 3.295045459323103
+    },
+    {
+      "antecedent": "other vegetables & tropical fruit",
+      "consequent": "root vegetables",
+      "support": 0.012302999491611592,
+      "confidence": 0.34277620396600567,
+      "lift": 3.144779819035136
+    },
+    {
+      "antecedent": "beef",
+      "consequent": "root vegetables",
+      "support": 0.017386883579054397,
+      "confidence": 0.3313953488372093,
+      "lift": 3.0403668431100312
+    },
+    {
+      "antecedent": "citrus fruit & root vegetables",
+      "consequent": "other vegetables",
+      "support": 0.010371123538383325,
+      "confidence": 0.5862068965517241,
+      "lift": 3.0296084222733612
+    },
+    {
+      "antecedent": "root vegetables & tropical fruit",
+      "consequent": "other vegetables",
+      "support": 0.012302999491611592,
+      "confidence": 0.5845410628019324,
+      "lift": 3.020999134344196
+    },
+    {
+      "antecedent": "other vegetables & whole milk",
+      "consequent": "root vegetables",
+      "support": 0.023182511438739197,
+      "confidence": 0.30978260869565216,
+      "lift": 2.84208204899416
+    },
+    {
+      "antecedent": "curd & whole milk",
+      "consequent": "yogurt",
+      "support": 0.010066090493136757,
+      "confidence": 0.3852140077821012,
+      "lift": 2.761355514968633
+    },
+    {
+      "antecedent": "rolls/buns & root vegetables",
+      "consequent": "other vegetables",
+      "support": 0.012201321809862735,
+      "confidence": 0.502092050209205,
+      "lift": 2.5948898128258175
+    },
+    {
+      "antecedent": "root vegetables & yogurt",
+      "consequent": "other vegetables",
+      "support": 0.012913065582104729,
+      "confidence": 0.5,
+      "lift": 2.5840777719390435
+    },
+    {
+      "antecedent": "tropical fruit & whole milk",
+      "consequent": "yogurt",
+      "support": 0.015149974580579562,
+      "confidence": 0.3581730769230769,
+      "lift": 2.5675161891679745
+    }
+  ],
+  "bucket_scan": [
+    [
+      200,
+      3828,
+      3828,
+      0,
+      "0.0000",
+      0.1476981999999225
+    ],
+    [
+      500,
+      3828,
+      3720,
+      108,
+      "0.0282",
+      0.15378330000021379
+    ],
+    [
+      1000,
+      3828,
+      2489,
+      1339,
+      "0.3498",
+      0.14276420000032886
+    ],
+    [
+      2000,
+      3828,
+      1223,
+      2605,
+      "0.6805",
+      0.13820299999997587
+    ],
+    [
+      3000,
+      3828,
+      656,
+      3172,
+      "0.8286",
+      0.13345750000007683
+    ],
+    [
+      5000,
+      3828,
+      467,
+      3361,
+      "0.8780",
+      0.125155199999881
+    ],
+    [
+      10000,
+      3828,
+      349,
+      3479,
+      "0.9088",
+      0.12508690000004208
+    ]
+  ]
+}

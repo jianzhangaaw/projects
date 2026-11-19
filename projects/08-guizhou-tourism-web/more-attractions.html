@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>更多贵州景点 - 多彩贵州</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1E88E5',      // 主色调：贵州蓝
+                        secondary: '#43A047',    // 辅助色：生态绿
+                        accent: '#FFB74D',       // 强调色：温暖橙
+                        dark: '#1A237E',         // 深色：夜空蓝
+                        light: '#E3F2FD',        // 浅色：浅天蓝
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .text-shadow {
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            }
+            .hover-scale {
+                @apply hover:scale-105 transition-all duration-300;
+            }
+            .card-shadow {
+                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            }
+        }
+    </style>
+</head>
+<body class="font-sans bg-gray-50 text-gray-800 overflow-x-hidden">
+    <!-- 导航栏 -->
+    <header id="navbar" class="fixed w-full z-50 bg-primary shadow-md">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="index.html" class="flex items-center space-x-2">
+                <i class="fa fa-map-marker text-2xl text-white"></i>
+                <span class="text-xl font-bold text-white text-shadow">多彩贵州</span>
+            </a>
+            
+            <!-- 桌面导航 -->
+            <nav class="hidden md:flex space-x-8">
+                <a href="index.html#home" class="text-white hover:text-accent transition-colors duration-300">首页</a>
+                <a href="index.html#attractions" class="text-white hover:text-accent transition-colors duration-300">景点</a>
+                <a href="index.html#food" class="text-white hover:text-accent transition-colors duration-300">美食</a>
+                <a href="index.html#culture" class="text-white hover:text-accent transition-colors duration-300">文化</a>
+                <a href="index.html#travel-guide" class="text-white hover:text-accent transition-colors duration-300">攻略</a>
+                <a href="index.html#contact" class="text-white hover:text-accent transition-colors duration-300">联系我们</a>
+                <a href="more-attractions.html" class="text-accent hover:text-white transition-colors duration-300">更多景点</a>
+            </nav>
+            
+            <!-- 移动端菜单按钮 -->
+            <button id="menu-toggle" class="md:hidden text-white text-2xl">
+                <i class="fa fa-bars"></i>
+            </button>
+        </div>
+        
+        <!-- 移动端导航菜单 -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white shadow-lg absolute w-full">
+            <div class="container mx-auto px-4 py-3 flex flex-col space-y-4">
+                <a href="index.html#home" class="text-gray-800 hover:text-primary py-2 border-b border-gray-100">首页</a>
+                <a href="index.html#attractions" class="text-gray-800 hover:text-primary py-2 border-b border-gray-100">景点</a>
+                <a href="index.html#food" class="text-gray-800 hover:text-primary py-2 border-b border-gray-100">美食</a>
+                <a href="index.html#culture" class="text-gray-800 hover:text-primary py-2 border-b border-gray-100">文化</a>
+                <a href="index.html#travel-guide" class="text-gray-800 hover:text-primary py-2 border-b border-gray-100">攻略</a>
+                <a href="index.html#contact" class="text-gray-800 hover:text-primary py-2 border-b border-gray-100">联系我们</a>
+                <a href="more-attractions.html" class="text-accent hover:text-primary py-2">更多景点</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- 更多景点区域 -->
+    <section class="py-20 bg-gray-50 pt-32">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-[clamp(1.8rem,4vw,2.5rem)] font-bold text-gray-800 mb-4">更多贵州知名景点</h2>
+                <div class="w-20 h-1 bg-primary mx-auto mb-6"></div>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+                    除了热门景点，贵州还有许多同样值得一游的美丽地方
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- 景点1：马岭河峡谷 -->
+                <div class="bg-white rounded-xl overflow-hidden shadow-lg hover-scale card-shadow">
+                    <div class="relative h-64 overflow-hidden">
+                        <img src="photos/BHFHFHIABJJDI-q3oNzIHMxs.jpg"alt="马岭河峡谷景色" class="w-full h-full object-cover">
+                        <div class="absolute top-4 right-4 bg-accent text-white text-sm font-bold px-3 py-1 rounded-full">
+                            4A景区
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2 text-gray-800">马岭河峡谷</h3>
+                        <div class="flex items-center mb-4 text-sm text-gray-500">
+                            <i class="fa fa-map-marker mr-2 text-primary"></i>
+                            <span>黔西南州</span>
+                            <span class="mx-2">|</span>
+                            <i class="fa fa-star mr-2 text-accent"></i>
+                            <span>4.7分 (8,345评价)</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">
+                            马岭河峡谷被誉为“地球上最美丽的伤疤”，峡谷内瀑布成群，翠竹倒挂，溶洞相连，两岸古树名木点缀其间，景色十分秀丽。
+                        </p>
+                        <div class="mt-4">
+                            <h4 class="font-bold mb-2">游客评价</h4>
+                            <div class="flex items-center text-sm text-gray-500 mb-2">
+                                <i class="fa fa-user mr-2"></i>
+                                <span>@旅行爱好者小周</span>
+                            </div>
+                            <p class="text-gray-600 italic">"峡谷很壮观，瀑布很多，拍照特别出片，就是走下来有点累，不过很值得！"</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 景点2：万峰林 -->
+                <div class="bg-white rounded-xl overflow-hidden shadow-lg hover-scale card-shadow">
+                    <div class="relative h-64 overflow-hidden">
+                        <img src="photos/BHFHFHIAGIDAI-nNODZ5sbct.jpg" alt="万峰林景色" class="w-full h-full object-cover">
+                        <div class="absolute top-4 right-4 bg-accent text-white text-sm font-bold px-3 py-1 rounded-full">
+                            4A景区
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2 text-gray-800">万峰林</h3>
+                        <div class="flex items-center mb-4 text-sm text-gray-500">
+                            <i class="fa fa-map-marker mr-2 text-primary"></i>
+                            <span>黔西南州</span>
+                            <span class="mx-2">|</span>
+                            <i class="fa fa-star mr-2 text-accent"></i>
+                            <span>4.8分 (10,567评价)</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">
+                            万峰林由近两万座奇峰翠峦组成，峰林密集奇特，气势宏大壮阔，是中国西南三大喀斯特地貌之一，徐霞客曾赞誉“天下山峰何其多，惟有此处峰成林”。
+                        </p>
+                        <div class="mt-4">
+                            <h4 class="font-bold mb-2">游客评价</h4>
+                            <div class="flex items-center text-sm text-gray-500 mb-2">
+                                <i class="fa fa-user mr-2"></i>
+                                <span>@摄影师阿明</span>
+                            </div>
+                            <p class="text-gray-600 italic">"峰林的线条太美了，尤其是在日出和日落的时候，光影效果绝佳，很适合摄影爱好者。"</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 景点3：织金洞 -->
+                <div class="bg-white rounded-xl overflow-hidden shadow-lg hover-scale card-shadow">
+                    <div class="relative h-64 overflow-hidden">
+                        <img src="photos/BHFHFHIBBFEFJ-afZElDiwxH.jpg"alt="织金洞景色" class="w-full h-full object-cover">
+                        <div class="absolute top-4 right-4 bg-accent text-white text-sm font-bold px-3 py-1 rounded-full">
+                            4A景区
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2 text-gray-800">织金洞</h3>
+                        <div class="flex items-center mb-4 text-sm text-gray-500">
+                            <i class="fa fa-map-marker mr-2 text-primary"></i>
+                            <span>毕节市</span>
+                            <span class="mx-2">|</span>
+                            <i class="fa fa-star mr-2 text-accent"></i>
+                            <span>4.9分 (12,890评价)</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">
+                            织金洞是中国目前发现的一座规模宏伟、造型奇特的洞穴资源宝库，洞内景观琳琅满目，形态万千，色彩纷呈，被称为“岩溶博物馆”。
+                        </p>
+                        <div class="mt-4">
+                            <h4 class="font-bold mb-2">游客评价</h4>
+                            <div class="flex items-center text-sm text-gray-500 mb-2">
+                                <i class="fa fa-user mr-2"></i>
+                                <span>@洞穴探险者</span>
+                            </div>
+                            <p class="text-gray-600 italic">"太震撼了，里面的钟乳石形状各异，灯光打得也很好，仿佛进入了一个奇幻世界，值得一去。"</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 景点4：青岩古镇 -->
+                <div class="bg-white rounded-xl overflow-hidden shadow-lg hover-scale card-shadow">
+                    <div class="relative h-64 overflow-hidden">
+                        <img src="photos/BHFHFHIBICHHJ-jDjFLFPrlF.jpg" alt="青岩古镇景色" class="w-full h-full object-cover">
+                        <div class="absolute top-4 right-4 bg-accent text-white text-sm font-bold px-3 py-1 rounded-full">
+                            5A景区
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2 text-gray-800">青岩古镇</h3>
+                        <div class="flex items-center mb-4 text-sm text-gray-500">
+                            <i class="fa fa-map-marker mr-2 text-primary"></i>
+                            <span>贵阳市</span>
+                            <span class="mx-2">|</span>
+                            <i class="fa fa-star mr-2 text-accent"></i>
+                            <span>4.6分 (9,765评价)</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">
+                            青岩古镇是贵州四大古镇之一，始建于明洪武十一年，古镇内设计精巧、工艺精湛的明清古建筑交错密布，寺庙、楼阁画栋雕梁、飞角重檐相间。
+                        </p>
+                        <div class="mt-4">
+                            <h4 class="font-bold mb-2">游客评价</h4>
+                            <div class="flex items-center text-sm text-gray-500 mb-2">
+                                <i class="fa fa-user mr-2"></i>
+                                <span>@历史迷小郑</span>
+                            </div>
+                            <p class="text-gray-600 italic">"古镇很有历史感，石板路、老房子都保存得不错，还有很多特色小吃，比如青岩猪脚，味道很棒。"</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 景点5：肇兴侗寨 -->
+                <div class="bg-white rounded-xl overflow-hidden shadow-lg hover-scale card-shadow">
+                    <div class="relative h-64 overflow-hidden">
+                        <img src="photos/BHFHFHICCCDID-nBnVTgeSfV.jpg" alt="肇兴侗寨景色" class="w-full h-full object-cover">
+                        <div class="absolute top-4 right-4 bg-accent text-white text-sm font-bold px-3 py-1 rounded-full">
+                            4A景区
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2 text-gray-800">肇兴侗寨</h3>
+                        <div class="flex items-center mb-4 text-sm text-gray-500">
+                            <i class="fa fa-map-marker mr-2 text-primary"></i>
+                            <span>黔东南州</span>
+                            <span class="mx-2">|</span>
+                            <i class="fa fa-star mr-2 text-accent"></i>
+                            <span>4.7分 (8,923评价)</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">
+                            肇兴侗寨是全国最大的侗族村寨之一，素有“侗乡第一寨”之美誉。寨中房屋为干栏式吊脚楼，鳞次栉比，错落有致，全部用杉木建造，硬山顶覆小青瓦，古朴实用。
+                        </p>
+                        <div class="mt-4">
+                            <h4 class="font-bold mb-2">游客评价</h4>
+                            <div class="flex items-center text-sm text-gray-500 mb-2">
+                                <i class="fa fa-user mr-2"></i>
+                                <span>@民族文化爱好者</span>
+                            </div>
+                            <p class="text-gray-600 italic">"很喜欢侗族的文化，鼓楼很漂亮，晚上的篝火晚会很热闹，还能听到侗族大歌，非常棒的体验。"</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 景点6：百里杜鹃 -->
+                <div class="bg-white rounded-xl overflow-hidden shadow-lg hover-scale card-shadow">
+                    <div class="relative h-64 overflow-hidden">
+                        <img src="photos/BHFHFHICHIAID-JP4xCen8To.jpg" alt="百里杜鹃景色" class="w-full h-full object-cover">
+                        <div class="absolute top-4 right-4 bg-accent text-white text-sm font-bold px-3 py-1 rounded-full">
+                            5A景区
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2 text-gray-800">百里杜鹃</h3>
+                        <div class="flex items-center mb-4 text-sm text-gray-500">
+                            <i class="fa fa-map-marker mr-2 text-primary"></i>
+                            <span>毕节市</span>
+                            <span class="mx-2">|</span>
+                            <i class="fa fa-star mr-2 text-accent"></i>
+                            <span>4.8分 (11,234评价)</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">
+                            百里杜鹃是国家级森林公园，总面积约125.8平方公里，因天然原始林带宽1-3公里，绵延50余公里而得名，是国家级5A级旅游景区。
+                        </p>
+                        <div class="mt-4">
+                            <h4 class="font-bold mb-2">游客评价</h4>
+                            <div class="flex items-center text-sm text-gray-500 mb-2">
+                                <i class="fa fa-user mr-2"></i>
+                                <span>@赏花达人</span>
+                            </div>
+                            <p class="text-gray-600 italic">"每年四月份花开的时候最美，漫山遍野的杜鹃花，红的、粉的、白的，非常壮观，值得一看！"</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 分页导航 -->
+            <div class="flex justify-center mt-12">
+                <nav class="inline-flex rounded-md shadow">
+                    <a href="#" class="py-2 px-4 border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 rounded-l-md">
+                        <i class="fa fa-chevron-left"></i>
+                    </a>
+                    <a href="#" class="py-2 px-4 border-t border-b border-gray-300 bg-primary text-sm font-medium text-white">
+                        1
+                    </a>
+                    <a href="#" class="py-2 px-4 border-t border-b border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+                        2
+                    </a>
+                    <a href="#" class="py-2 px-4 border-t border-b border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+                        3
+                    </a>
+                    <a href="#" class="py-2 px-4 border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 rounded-r-md">
+                        <i class="fa fa-chevron-right"></i>
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </section>
+
+    <!-- 订阅区域 -->
+    <section class="py-16 bg-primary text-white">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto text-center">
+                <h2 class="text-3xl font-bold mb-4">订阅贵州旅游资讯</h2>
+                <p class="text-lg mb-8 opacity-90">
+                    订阅我们的电子邮件，获取最新的贵州旅游资讯、优惠活动和旅行灵感
+                </p>
+                
+                <form id="subscribe-form" class="flex flex-col sm:flex-row gap-4 max-w-xl mx-auto">
+                    <input type="email" placeholder="请输入您的邮箱地址" class="flex-1 px-4 py-3 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-accent">
+                    <button type="submit" class="bg-accent hover:bg-accent/90 text-white font-medium py-3 px-6 rounded-lg transition-all duration-300 hover-scale whitespace-nowrap">
+                        立即订阅
+                    </button>
+                </form>
+                
+                <p class="text-sm mt-4 opacity-80">
+                    我们尊重您的隐私，不会向第三方分享您的信息
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="bg-gray-900 text-white pt-16 pb-8">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+                <div>
+                    <div class="flex items-center space-x-2 mb-6">
+                        <i class="fa fa-map-marker text-2xl text-accent"></i>
+                        <span class="text-xl font-bold">多彩贵州</span>
+                    </div>
+                    <p class="text-gray-400 mb-6">
+                        探索贵州的自然美景和民族文化，体验不一样的旅行乐趣。
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="bg-gray-800 hover:bg-primary w-10 h-10 rounded-full flex items-center justify-center transition-colors">
+                            <i class="fa fa-weixin"></i>
+                        </a>
+                        <a href="#" class="bg-gray-800 hover:bg-primary w-10 h-10 rounded-full flex items-center justify-center transition-colors">
+                            <i class="fa fa-weibo"></i>
+                        </a>
+                        <a href="#" class="bg-gray-800 hover:bg-primary w-10 h-10 rounded-full flex items-center justify-center transition-colors">
+                            <i class="fa fa-instagram"></i>
+                        </a>
+                        <a href="#" class="bg-gray-800 hover:bg-primary w-10 h-10 rounded-full flex items-center justify-center transition-colors">
+                            <i class="fa fa-youtube-play"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-bold mb-6">快速链接</h4>
+                    <ul class="space-y-3">
+                        <li><a href="index.html#home" class="text-gray-400 hover:text-accent transition-colors">首页</a></li>
+                        <li><a href="index.html#attractions" class="text-gray-400 hover:text-accent transition-colors">热门景点</a></li>
+                        <li><a href="index.html#culture" class="text-gray-400 hover:text-accent transition-colors">民族文化</a></li>
+                        <li><a href="index.html#food" class="text-gray-400 hover:text-accent transition-colors">贵州美食</a></li>
+                        <li><a href="index.html#travel-guide" class="text-gray-400 hover:text-accent transition-colors">旅游攻略</a></li>
+                        <li><a href="index.html#contact" class="text-gray-400 hover:text-accent transition-colors">联系我们</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-bold mb-6">热门目的地</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-gray-400 hover:text-accent transition-colors">贵阳</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-accent transition-colors">安顺</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-accent transition-colors">黔东南</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-accent transition-colors">黔南</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-accent transition-colors">铜仁</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-accent transition-colors">遵义</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-bold mb-6">下载我们的APP</h4>
+                    <p class="text-gray-400 mb-4">
+                        下载贵州旅游APP，获取更多精彩内容和独家优惠
+                    </p>
+                    <div class="flex flex-col space-y-3">
+                        <a href="#" class="bg-gray-800 hover:bg-gray-700 px-4 py-2 rounded-lg flex items-center transition-colors">
+                            <i class="fa fa-apple text-2xl mr-3"></i>
+                            <div>
+                                <div class="text-xs">下载</div>
+                                <div class="font-medium">App Store</div>
+                            </div>
+                        </a>
+                        <a href="#" class="bg-gray-800 hover:bg-gray-700 px-4 py-2 rounded-lg flex items-center transition-colors">
+                            <i class="fa fa-android text-2xl mr-3"></i>
+                            <div>
+                                <div class="text-xs">下载</div>
+                                <div class="font-medium">Google Play</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 pt-8">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <p class="text-gray-500 text-sm mb-4 md:mb-0">
+                        &copy; 2023 贵州旅游网 版权所有 | 黔ICP备12345678号
+                    </p>
+                    <div class="flex space-x-6">
+                        <a href="#" class="text-gray-500 hover:text-gray-300 text-sm">隐私政策</a>
+                        <a href="#" class="text-gray-500 hover:text-gray-300 text-sm">服务条款</a>
+                        <a href="#" class="text-gray-500 hover:text-gray-300 text-sm">网站地图</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 返回顶部按钮 -->
+    <button id="back-to-top" class="fixed bottom-8 right-8 bg-primary hover:bg-primary/90 text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg z-50 transition-all duration-300 opacity-0 invisible">
+        <i class="fa fa-chevron-up"></i>
+    </button>
+
+    <!-- JavaScript -->
+    <script>
+        // 移动端菜单切换
+        const menuToggle = document.getElementById('menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        menuToggle.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            const icon = menuToggle.querySelector('i');
+            if (mobileMenu.classList.contains('hidden')) {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            } else {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            }
+        });
+        
+        // 表单提交处理
+        const subscribeForm = document.getElementById('subscribe-form');
+        if (subscribeForm) {
+            subscribeForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                alert('订阅成功！您将收到我们的最新资讯。');
+                subscribeForm.reset();
+            });
+        }
+        
+        // 返回顶部按钮
+        const backToTopButton = document.getElementById('back-to-top');
+        
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                backToTopButton.classList.remove('opacity-0', 'invisible');
+                backToTopButton.classList.add('opacity-100', 'visible');
+            } else {
+                backToTopButton.classList.add('opacity-0', 'invisible');
+                backToTopButton.classList.remove('opacity-100', 'visible');
+            }
+        });
+        
+        backToTopButton.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // 关闭移动菜单（如果打开）
+                if (!mobileMenu.classList.contains('hidden')) {
+                    mobileMenu.classList.add('hidden');
+                    const icon = menuToggle.querySelector('i');
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
+                

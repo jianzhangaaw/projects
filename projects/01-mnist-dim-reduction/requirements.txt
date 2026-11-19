@@ -1,0 +1,5 @@
+# 实测环境：Python 3.14 / numpy 2.4.4 / scikit-learn 1.9.0 / matplotlib 3.11.1
+numpy>=2.0
+pandas>=2.2
+scikit-learn>=1.5
+matplotlib>=3.9

@@ -1,0 +1,99 @@
+<!--index.wxml-->
+<navigation-bar title="单词背诵助手" back="{{false}}" color="black" background="#FFF"></navigation-bar>
+<scroll-view class="scrollarea" scroll-y type="list">
+  <view class="container">
+    <!-- 欢迎区域 -->
+    <view class="greeting-section">
+      <view class="greeting-wrap">
+        <text class="greeting">{{showGreeting}}</text>
+        <view class="greeting-icon">📚</view>
+      </view>
+      <text class="subtitle">坚持每天学习，词汇量稳步提升</text>
+    </view>
+
+    <!-- 今日进度 -->
+    <view class="card progress-card">
+      <view class="card-header">
+        <text class="card-title">今日进度</text>
+        <view class="card-badge">{{todayLearned}}/{{todayGoal}} 词</view>
+      </view>
+      <view class="progress-wrapper">
+        <view class="progress-bar">
+          <view class="progress-fill" style="width: {{progressPercent}}%"></view>
+        </view>
+        <text class="progress-percent">{{progressPercent}}%</text>
+      </view>
+      <view class="progress-stats">
+        <view class="stat-item">
+          <view class="stat-icon-wrap blue">
+            <text class="stat-icon">🔥</text>
+          </view>
+          <text class="stat-value">{{consecutiveDays}}</text>
+          <text class="stat-label">连续天数</text>
+        </view>
+        <view class="stat-divider"></view>
+        <view class="stat-item">
+          <view class="stat-icon-wrap orange">
+            <text class="stat-icon">📖</text>
+          </view>
+          <text class="stat-value">{{reviewCount}}</text>
+          <text class="stat-label">待复习</text>
+        </view>
+        <view class="stat-divider"></view>
+        <view class="stat-item">
+          <view class="stat-icon-wrap green">
+            <text class="stat-icon">✨</text>
+          </view>
+          <text class="stat-value">{{newCount}}</text>
+          <text class="stat-label">新词</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 快捷操作 -->
+    <view class="section-title">学习模块</view>
+    <view class="action-grid">
+      <view class="action-card" bindtap="goNewWords">
+        <view class="action-icon-wrap new">
+          <text class="action-icon">➕</text>
+        </view>
+        <text class="action-text">学习新词</text>
+        <text class="action-desc">{{newCount}}个新词待学</text>
+      </view>
+      <view class="action-card" bindtap="goReview">
+        <view class="action-icon-wrap review">
+          <text class="action-icon">🔄</text>
+        </view>
+        <text class="action-text">复习旧词</text>
+        <text class="action-desc">{{reviewCount}}个词待复习</text>
+      </view>
+    </view>
+
+    <!-- 开始学习按钮 -->
+    <view class="start-section">
+      <view class="start-btn" bindtap="goStudy">
+        <text class="start-btn-icon">🚀</text>
+        <text class="start-btn-text">开始学习</text>
+      </view>
+      <text class="start-hint">每天坚持，收获满满</text>
+    </view>
+
+    <!-- 已掌握单词 -->
+    <view class="card stats-card">
+      <view class="stats-header">
+        <text class="stats-title">学习成果</text>
+        <text class="stats-subtitle">已掌握单词</text>
+      </view>
+      <view class="stats-content">
+        <text class="stats-value">{{totalWords}}</text>
+        <text class="stats-unit">个</text>
+      </view>
+    </view>
+
+    <!-- 底部留白 -->
+    <view class="bottom-space"></view>
+  </view>
+</scroll-view>
+
+<!-- 自定义TabBar -->
+<tab-bar selected="0"></tab-bar>

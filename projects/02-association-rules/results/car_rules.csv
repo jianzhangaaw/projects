@@ -1,0 +1,6 @@
+﻿antecedent,consequent,support,confidence,lift,count
+safety=low,class=unacc,0.3333,1.0000,1.4281,576
+persons=2,class=unacc,0.3333,1.0000,1.4281,576
+buying=vhigh,class=unacc,0.2083,0.8333,1.1901,360
+maint=vhigh,class=unacc,0.2083,0.8333,1.1901,360
+lug_boot=small,class=unacc,0.2604,0.7812,1.1157,450

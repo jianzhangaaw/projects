@@ -1,0 +1,87 @@
+﻿itemset,length,count,support
+class=unacc & lug_boot=big & persons=2,3,192,0.1111
+class=unacc & lug_boot=big & safety=low,3,192,0.1111
+class=unacc & lug_boot=med & persons=2,3,192,0.1111
+class=unacc & lug_boot=med & safety=low,3,192,0.1111
+class=unacc & lug_boot=small & persons=2,3,192,0.1111
+class=unacc & lug_boot=small & safety=low,3,192,0.1111
+class=unacc & persons=2 & safety=high,3,192,0.1111
+class=unacc & persons=2 & safety=low,3,192,0.1111
+class=unacc & persons=2 & safety=med,3,192,0.1111
+class=unacc & persons=4 & safety=low,3,192,0.1111
+class=unacc & persons=more & safety=low,3,192,0.1111
+class=unacc & persons=2,2,576,0.3333
+class=unacc & safety=low,2,576,0.3333
+class=unacc & lug_boot=small,2,450,0.2604
+class=unacc & lug_boot=med,2,392,0.2269
+class=unacc & lug_boot=big,2,368,0.2130
+buying=vhigh & class=unacc,2,360,0.2083
+class=unacc & maint=vhigh,2,360,0.2083
+class=unacc & safety=med,2,357,0.2066
+class=unacc & doors=2,2,326,0.1887
+buying=high & class=unacc,2,324,0.1875
+class=unacc & persons=more,2,322,0.1863
+class=unacc & maint=high,2,314,0.1817
+class=unacc & persons=4,2,312,0.1806
+class=unacc & doors=3,2,300,0.1736
+class=unacc & doors=4,2,292,0.1690
+class=unacc & doors=5more,2,292,0.1690
+class=unacc & safety=high,2,277,0.1603
+buying=med & class=unacc,2,268,0.1551
+class=unacc & maint=low,2,268,0.1551
+class=unacc & maint=med,2,268,0.1551
+buying=low & class=unacc,2,258,0.1493
+class=acc & safety=high,2,204,0.1181
+class=acc & persons=4,2,198,0.1146
+lug_boot=big & persons=2,2,192,0.1111
+lug_boot=big & persons=4,2,192,0.1111
+lug_boot=big & persons=more,2,192,0.1111
+lug_boot=big & safety=high,2,192,0.1111
+lug_boot=big & safety=low,2,192,0.1111
+lug_boot=big & safety=med,2,192,0.1111
+lug_boot=med & persons=2,2,192,0.1111
+lug_boot=med & persons=4,2,192,0.1111
+lug_boot=med & persons=more,2,192,0.1111
+lug_boot=med & safety=high,2,192,0.1111
+lug_boot=med & safety=low,2,192,0.1111
+lug_boot=med & safety=med,2,192,0.1111
+lug_boot=small & persons=2,2,192,0.1111
+lug_boot=small & persons=4,2,192,0.1111
+lug_boot=small & persons=more,2,192,0.1111
+lug_boot=small & safety=high,2,192,0.1111
+lug_boot=small & safety=low,2,192,0.1111
+lug_boot=small & safety=med,2,192,0.1111
+persons=2 & safety=high,2,192,0.1111
+persons=2 & safety=low,2,192,0.1111
+persons=2 & safety=med,2,192,0.1111
+persons=4 & safety=high,2,192,0.1111
+persons=4 & safety=low,2,192,0.1111
+persons=4 & safety=med,2,192,0.1111
+persons=more & safety=high,2,192,0.1111
+persons=more & safety=low,2,192,0.1111
+persons=more & safety=med,2,192,0.1111
+class=acc & persons=more,2,186,0.1076
+class=acc & safety=med,2,180,0.1042
+class=unacc,1,1210,0.7002
+lug_boot=big,1,576,0.3333
+lug_boot=med,1,576,0.3333
+lug_boot=small,1,576,0.3333
+persons=2,1,576,0.3333
+persons=4,1,576,0.3333
+persons=more,1,576,0.3333
+safety=high,1,576,0.3333
+safety=low,1,576,0.3333
+safety=med,1,576,0.3333
+buying=high,1,432,0.2500
+buying=low,1,432,0.2500
+buying=med,1,432,0.2500
+buying=vhigh,1,432,0.2500
+doors=2,1,432,0.2500
+doors=3,1,432,0.2500
+doors=4,1,432,0.2500
+doors=5more,1,432,0.2500
+maint=high,1,432,0.2500
+maint=low,1,432,0.2500
+maint=med,1,432,0.2500
+maint=vhigh,1,432,0.2500
+class=acc,1,384,0.2222

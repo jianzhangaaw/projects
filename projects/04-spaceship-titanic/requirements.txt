@@ -1,0 +1,12 @@
+# 实测环境：Python 3.14 / numpy 2.4.4 / pandas 3.0.3 / scipy 1.18.1
+#            scikit-learn 1.9.0 / matplotlib 3.11.1 / lightgbm 4.7.0 / torch 2.14.0+cpu
+numpy>=2.0
+pandas>=2.2
+scipy>=1.13
+scikit-learn>=1.5
+matplotlib>=3.9
+lightgbm>=4.0
+torch>=2.2
+
+# 可选：TabPFN v2（CPU 单折约 13 分钟，不装也能跑其余四类模型）
+# tabpfn>=2.0

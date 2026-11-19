@@ -1,0 +1,39 @@
+{
+  "mirror_sha256": {
+    "train.csv": "17336d553f49ebdf6ecb266d2b5d3746e5dd308445f7c7864141c4f28d2a88d0",
+    "test.csv": "3c02b0703423d27d51a657a111b15a37b8d03b3c1de325e3a1e6b26f6572fc88",
+    "sample_submission.csv": "c77c0a5ed1f3d2728d6add6079266a543d12755aebaf00f230ff1966b364ebed"
+  },
+  "train_rows": 8693,
+  "test_rows": 4277,
+  "transported_true": 4378,
+  "transported_false": 4315,
+  "missing_train": {
+    "HomePlanet": 201,
+    "CryoSleep": 217,
+    "Cabin": 199,
+    "Destination": 182,
+    "Age": 179,
+    "VIP": 203,
+    "RoomService": 181,
+    "FoodCourt": 183,
+    "ShoppingMall": 208,
+    "Spa": 183,
+    "VRDeck": 188,
+    "Name": 200
+  },
+  "missing_test": {
+    "HomePlanet": 87,
+    "CryoSleep": 93,
+    "Cabin": 100,
+    "Destination": 92,
+    "Age": 91,
+    "VIP": 93,
+    "RoomService": 82,
+    "FoodCourt": 106,
+    "ShoppingMall": 98,
+    "Spa": 101,
+    "VRDeck": 80,
+    "Name": 94
+  }
+}

@@ -1,0 +1,113 @@
+<!--pages/stats/stats.wxml-->
+<navigation-bar title="学习统计" back="{{false}}" color="black" background="#FFF"></navigation-bar>
+<scroll-view class="scrollarea" scroll-y type="list">
+  <view class="container">
+    <!-- 今日概况 -->
+    <view class="card today-card">
+      <view class="card-header">
+        <text class="card-title">今日学习</text>
+        <text class="card-date">{{todayDate}}</text>
+      </view>
+      <view class="today-stats">
+        <view class="stat-item">
+          <view class="stat-icon-wrap">📚</view>
+          <text class="stat-value">{{todayLearned}}</text>
+          <text class="stat-label">今日学习</text>
+        </view>
+        <view class="stat-divider"></view>
+        <view class="stat-item">
+          <view class="stat-icon-wrap">🔥</view>
+          <text class="stat-value">{{consecutiveDays}}</text>
+          <text class="stat-label">连续天数</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 总览 -->
+    <view class="card overview-card">
+      <view class="card-title">学习总览</view>
+      <view class="overview-stats">
+        <view class="stat-item">
+          <text class="stat-value">{{totalLearned}}</text>
+          <text class="stat-label">已学单词</text>
+        </view>
+        <view class="stat-item">
+          <text class="stat-value">{{totalMastered}}</text>
+          <text class="stat-label">已掌握</text>
+        </view>
+        <view class="stat-item">
+          <text class="stat-value">{{totalStudyTime}}</text>
+          <text class="stat-label">学习时长</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 近7天学习趋势 -->
+    <view class="card chart-card">
+      <view class="card-title">近7天学习趋势</view>
+      <view class="week-chart">
+        <view class="chart-bars">
+          <view class="bar-item" wx:for="{{weekData}}" wx:key="date">
+            <view class="bar-wrap">
+              <view class="bar {{item.isToday ? 'bar-today' : ''}}" style="height: {{item.learned > 0 ? (item.learned / maxDayLearned * 100) : 0}}%"></view>
+            </view>
+            <text class="bar-value">{{item.learned}}</text>
+            <text class="bar-label {{item.isToday ? 'label-today' : ''}}">{{item.isToday ? '今' : item.date}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 单词状态分布 -->
+    <view class="card distribution-card">
+      <view class="card-title">单词状态分布</view>
+      <view class="distribution-list">
+        <view class="dist-item" wx:for="{{statusData}}" wx:key="name">
+          <view class="dist-info">
+            <view class="dist-dot" style="background: {{item.color}}"></view>
+            <text class="dist-name">{{item.name}}</text>
+          </view>
+          <view class="dist-right">
+            <text class="dist-value">{{item.value}} 个</text>
+            <view class="dist-progress-bg">
+              <view class="dist-progress-fill" style="width: {{item.percent}}%; background: {{item.color}}"></view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 学习成就 -->
+    <view class="card achievement-card">
+      <view class="card-title">学习成就</view>
+      <view class="achievement-grid">
+        <view class="achievement-item {{totalLearned >= 10 ? 'achieved' : ''}}">
+          <text class="achievement-icon">🌱</text>
+          <text class="achievement-name">初学者</text>
+          <text class="achievement-desc">累计学习10个单词</text>
+        </view>
+        <view class="achievement-item {{totalLearned >= 50 ? 'achieved' : ''}}">
+          <text class="achievement-icon">📖</text>
+          <text class="achievement-name">勤奋者</text>
+          <text class="achievement-desc">累计学习50个单词</text>
+        </view>
+        <view class="achievement-item {{totalLearned >= 100 ? 'achieved' : ''}}">
+          <text class="achievement-icon">📚</text>
+          <text class="achievement-name">学霸</text>
+          <text class="achievement-desc">累计学习100个单词</text>
+        </view>
+        <view class="achievement-item {{consecutiveDays >= 7 ? 'achieved' : ''}}">
+          <text class="achievement-icon">🔥</text>
+          <text class="achievement-name">坚持不懈</text>
+          <text class="achievement-desc">连续学习7天</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 底部留白 -->
+    <view class="bottom-space"></view>
+  </view>
+</scroll-view>
+
+<!-- 自定义TabBar -->
+<tab-bar selected="3"></tab-bar>

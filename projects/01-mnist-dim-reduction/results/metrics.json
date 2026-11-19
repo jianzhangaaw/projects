@@ -1,0 +1,53 @@
+{
+  "PCA": {
+    "描述": "线性（无监督，方差最大方向）",
+    "fit_time_s": 0.03,
+    "trustworthiness": 0.7381,
+    "knn5_accuracy": 0.4102,
+    "intra_over_inter": 0.527,
+    "tw_time_s": 0.95,
+    "knn_time_s": 0.1
+  },
+  "RandomProjection": {
+    "描述": "线性（无监督，随机高斯矩阵）",
+    "fit_time_s": 0.01,
+    "trustworthiness": 0.6319,
+    "knn5_accuracy": 0.3038,
+    "intra_over_inter": 0.8413,
+    "tw_time_s": 0.96,
+    "knn_time_s": 0.1
+  },
+  "LDA": {
+    "描述": "线性（有监督，类间/类内散度比最大）",
+    "fit_time_s": 0.34,
+    "trustworthiness": 0.6964,
+    "knn5_accuracy": 0.5436,
+    "intra_over_inter": 0.3057,
+    "tw_time_s": 0.96,
+    "knn_time_s": 0.1
+  },
+  "KernelPCA-RBF": {
+    "描述": "非线性（核技巧）",
+    "fit_time_s": 0.35,
+    "trustworthiness": 0.7358,
+    "knn5_accuracy": 0.4138,
+    "intra_over_inter": 0.5264,
+    "tw_time_s": 0.96,
+    "knn_time_s": 0.1
+  },
+  "t-SNE": {
+    "描述": "非线性（流形学习，保持局部邻域）",
+    "fit_time_s": 6.72,
+    "trustworthiness": 0.9895,
+    "knn5_accuracy": 0.9348,
+    "intra_over_inter": 0.2736,
+    "tw_time_s": 0.97,
+    "knn_time_s": 0.1
+  },
+  "_PCA_explained_variance": {
+    "PC1": 0.0954,
+    "PC2": 0.0719,
+    "PC1_PC2_sum": 0.1673,
+    "top50_sum": 0.8274
+  }
+}

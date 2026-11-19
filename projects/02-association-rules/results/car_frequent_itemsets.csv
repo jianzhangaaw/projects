@@ -1,0 +1,32 @@
+﻿itemset,length,count,support
+class=unacc & persons=2,2,576,0.3333
+class=unacc & safety=low,2,576,0.3333
+class=unacc & lug_boot=small,2,450,0.2604
+class=unacc & lug_boot=med,2,392,0.2269
+class=unacc & lug_boot=big,2,368,0.2130
+buying=vhigh & class=unacc,2,360,0.2083
+class=unacc & maint=vhigh,2,360,0.2083
+class=unacc & safety=med,2,357,0.2066
+class=unacc,1,1210,0.7002
+lug_boot=big,1,576,0.3333
+lug_boot=med,1,576,0.3333
+lug_boot=small,1,576,0.3333
+persons=2,1,576,0.3333
+persons=4,1,576,0.3333
+persons=more,1,576,0.3333
+safety=high,1,576,0.3333
+safety=low,1,576,0.3333
+safety=med,1,576,0.3333
+buying=high,1,432,0.2500
+buying=low,1,432,0.2500
+buying=med,1,432,0.2500
+buying=vhigh,1,432,0.2500
+doors=2,1,432,0.2500
+doors=3,1,432,0.2500
+doors=4,1,432,0.2500
+doors=5more,1,432,0.2500
+maint=high,1,432,0.2500
+maint=low,1,432,0.2500
+maint=med,1,432,0.2500
+maint=vhigh,1,432,0.2500
+class=acc,1,384,0.2222

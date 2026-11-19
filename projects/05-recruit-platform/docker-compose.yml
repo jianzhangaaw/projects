@@ -1,0 +1,38 @@
+# 一键起 MySQL 8.0（含建表与演示数据）
+#   docker compose up -d
+#   docker compose logs -f mysql     # 看到 "ready for connections" 即就绪
+#   docker compose down -v           # 连数据一起清掉，下次启动重新初始化
+#
+# 本机拉不动 docker.io 时，先把镜像 tag 成本地名字：
+#   docker pull docker.m.daocloud.io/library/mysql:8.0
+#   docker tag  docker.m.daocloud.io/library/mysql:8.0 mysql:8.0
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: recruit-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root_pwd_2026
+      MYSQL_DATABASE: recruit_resume
+      MYSQL_USER: recruit
+      MYSQL_PASSWORD: recruit_pwd_2026
+      TZ: Asia/Shanghai
+    ports:
+      # 宿主机 3307 -> 容器 3306，避免和本机已装的 MySQL 抢 3306
+      - "3307:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./backend/src/main/resources/db/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+      - ./backend/src/main/resources/db/02-seed.sql:/docker-entrypoint-initdb.d/02-seed.sql:ro
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-proot_pwd_2026"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+      start_period: 20s
+
+volumes:
+  mysql-data:

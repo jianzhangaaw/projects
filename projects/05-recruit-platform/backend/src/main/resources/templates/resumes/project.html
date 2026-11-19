@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <title th:text="${snapshot.resumeName}">Resume</title>
+  <style>
+    @page { size: A4; margin: 0; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: #e9eef5;
+      color: #172033;
+      font-family: "Microsoft YaHei", "PingFang SC", Arial, sans-serif;
+      line-height: 1.5;
+    }
+    .page {
+      width: 210mm;
+      min-height: 297mm;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 61mm minmax(0, 1fr);
+      background: #fff;
+    }
+    .sidebar {
+      padding: 16mm 9mm;
+      background: linear-gradient(180deg, #172554, #0f172a 58%, #111827);
+      color: #e5eefc;
+    }
+    .main {
+      padding: 16mm 14mm;
+    }
+    h1 {
+      margin: 0;
+      font-size: 26px;
+      letter-spacing: 0;
+    }
+    .target {
+      margin-top: 8px;
+      display: inline-block;
+      border: 1px solid rgba(191, 219, 254, 0.38);
+      border-radius: 999px;
+      padding: 5px 9px;
+      color: #bfdbfe;
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .side-block {
+      margin-top: 18px;
+    }
+    .side-title {
+      margin-bottom: 7px;
+      color: #facc15;
+      font-size: 12px;
+      font-weight: 800;
+    }
+    .side-text {
+      color: #dbeafe;
+      font-size: 11px;
+      word-break: break-word;
+    }
+    .skill {
+      display: block;
+      margin-bottom: 6px;
+      border: 1px solid rgba(191, 219, 254, 0.2);
+      border-radius: 7px;
+      padding: 6px 7px;
+      background: rgba(255, 255, 255, 0.06);
+      font-size: 11px;
+    }
+    h2 {
+      margin: 0 0 10px;
+      color: #0f172a;
+      font-size: 16px;
+    }
+    h2::after {
+      display: block;
+      width: 28px;
+      height: 3px;
+      margin-top: 5px;
+      border-radius: 999px;
+      background: #f59e0b;
+      content: "";
+    }
+    .section {
+      margin-bottom: 18px;
+    }
+    .edu {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .muted {
+      color: #526071;
+      font-size: 12px;
+    }
+    .item {
+      position: relative;
+      margin-bottom: 14px;
+      border: 1px solid #e2e8f0;
+      border-left: 4px solid #f59e0b;
+      border-radius: 8px;
+      padding: 10px 12px;
+      background: #fffdfa;
+      break-inside: avoid;
+    }
+    .item-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 13px;
+      font-weight: 800;
+    }
+    .desc {
+      margin-top: 5px;
+      color: #334155;
+      font-size: 12px;
+      white-space: pre-line;
+    }
+  </style>
+</head>
+<body>
+<main class="page">
+  <aside class="sidebar">
+    <h1 th:text="${profile.realName ?: '未填写姓名'}">姓名</h1>
+    <div class="target" th:text="${snapshot.targetPosition ?: profile.expectedPosition ?: '求职目标'}">求职目标</div>
+
+    <div class="side-block">
+      <div class="side-title">联系方式</div>
+      <div class="side-text" th:if="${profile.phone}" th:text="${profile.phone}">phone</div>
+      <div class="side-text" th:if="${profile.email}" th:text="${profile.email}">email</div>
+      <div class="side-text" th:if="${profile.expectedCity}" th:text="${profile.expectedCity}">city</div>
+    </div>
+
+    <div class="side-block" th:if="${skills != null and !skills.isEmpty()}">
+      <div class="side-title">核心技能</div>
+      <span class="skill" th:each="skill : ${skills}">
+        <span th:text="${skill.skillName}">Java</span>
+        <span th:if="${skill.years}" th:text="' · ' + ${skill.years} + '年'"></span>
+      </span>
+    </div>
+
+    <div class="side-block" th:if="${profile.selfIntro}">
+      <div class="side-title">个人简介</div>
+      <div class="side-text" th:text="${profile.selfIntro}">简介</div>
+    </div>
+  </aside>
+
+  <section class="main">
+    <div class="section">
+      <h2>教育背景</h2>
+      <div class="edu">
+        <span th:text="${profile.school ?: '学校未填写'}">学校</span>
+        <span th:text="${profile.graduationDate ?: ''}">毕业时间</span>
+      </div>
+      <div class="muted">
+        <span th:text="${profile.major ?: '专业未填写'}">专业</span>
+        <span th:if="${profile.educationLevel}"> · </span>
+        <span th:text="${profile.educationLevel ?: ''}">学历</span>
+        <span th:if="${profile.gpa}"> · GPA: </span>
+        <span th:text="${profile.gpa ?: ''}">GPA</span>
+      </div>
+    </div>
+
+    <div class="section" th:if="${experiences != null and !experiences.isEmpty()}">
+      <h2>项目与经历</h2>
+      <article class="item" th:each="exp : ${experiences}">
+        <div class="item-head">
+          <span th:text="${exp.title}">经历标题</span>
+          <span class="muted" th:text="${exp.timeRange ?: ''}">时间</span>
+        </div>
+        <div class="muted" th:text="${exp.roleName ?: exp.experienceType ?: ''}">角色</div>
+        <div class="desc" th:text="${exp.description ?: ''}">描述</div>
+      </article>
+    </div>
+  </section>
+</main>
+</body>
+</html>

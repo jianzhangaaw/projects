@@ -1,0 +1,148 @@
+{
+  "dataset": "groceries.csv",
+  "n_transactions": 9835,
+  "n_items": 169,
+  "min_support": 0.01,
+  "min_count": 99,
+  "n_frequent": 333,
+  "itemset_by_len": {
+    "1": 88,
+    "2": 213,
+    "3": 32
+  },
+  "n_rules": 125,
+  "min_confidence": 0.3,
+  "time_s": 0.11535690000027898,
+  "build_time_s": 0.07763250000016342,
+  "tree": {
+    "tree_nodes": 19494,
+    "conditional_tree_nodes": 2957,
+    "conditional_pattern_base": 22118,
+    "recursive_calls": 72
+  },
+  "compression_ratio": 0.5045142095003591,
+  "top_itemsets": [
+    {
+      "itemset": "other vegetables & root vegetables & whole milk",
+      "count": 228,
+      "support": 0.023182511438739197
+    },
+    {
+      "itemset": "other vegetables & whole milk & yogurt",
+      "count": 219,
+      "support": 0.02226741230299949
+    },
+    {
+      "itemset": "other vegetables & rolls/buns & whole milk",
+      "count": 176,
+      "support": 0.017895271987798677
+    },
+    {
+      "itemset": "other vegetables & tropical fruit & whole milk",
+      "count": 168,
+      "support": 0.01708185053380783
+    },
+    {
+      "itemset": "rolls/buns & whole milk & yogurt",
+      "count": 153,
+      "support": 0.015556685307574987
+    },
+    {
+      "itemset": "tropical fruit & whole milk & yogurt",
+      "count": 149,
+      "support": 0.015149974580579562
+    },
+    {
+      "itemset": "other vegetables & whipped/sour cream & whole milk",
+      "count": 144,
+      "support": 0.014641586171835282
+    },
+    {
+      "itemset": "root vegetables & whole milk & yogurt",
+      "count": 143,
+      "support": 0.014539908490086425
+    },
+    {
+      "itemset": "other vegetables & soda & whole milk",
+      "count": 137,
+      "support": 0.013929842399593289
+    },
+    {
+      "itemset": "other vegetables & pip fruit & whole milk",
+      "count": 133,
+      "support": 0.013523131672597865
+    }
+  ],
+  "top_rules": [
+    {
+      "antecedent": "citrus fruit & other vegetables",
+      "consequent": "root vegetables",
+      "support": 0.010371123538383325,
+      "confidence": 0.3591549295774648,
+      "lift": 3.295045459323103
+    },
+    {
+      "antecedent": "other vegetables & tropical fruit",
+      "consequent": "root vegetables",
+      "support": 0.012302999491611592,
+      "confidence": 0.34277620396600567,
+      "lift": 3.144779819035136
+    },
+    {
+      "antecedent": "beef",
+      "consequent": "root vegetables",
+      "support": 0.017386883579054397,
+      "confidence": 0.3313953488372093,
+      "lift": 3.0403668431100312
+    },
+    {
+      "antecedent": "citrus fruit & root vegetables",
+      "consequent": "other vegetables",
+      "support": 0.010371123538383325,
+      "confidence": 0.5862068965517241,
+      "lift": 3.0296084222733612
+    },
+    {
+      "antecedent": "root vegetables & tropical fruit",
+      "consequent": "other vegetables",
+      "support": 0.012302999491611592,
+      "confidence": 0.5845410628019324,
+      "lift": 3.020999134344196
+    },
+    {
+      "antecedent": "other vegetables & whole milk",
+      "consequent": "root vegetables",
+      "support": 0.023182511438739197,
+      "confidence": 0.30978260869565216,
+      "lift": 2.84208204899416
+    },
+    {
+      "antecedent": "curd & whole milk",
+      "consequent": "yogurt",
+      "support": 0.010066090493136757,
+      "confidence": 0.3852140077821012,
+      "lift": 2.761355514968633
+    },
+    {
+      "antecedent": "rolls/buns & root vegetables",
+      "consequent": "other vegetables",
+      "support": 0.012201321809862735,
+      "confidence": 0.502092050209205,
+      "lift": 2.5948898128258175
+    },
+    {
+      "antecedent": "root vegetables & yogurt",
+      "consequent": "other vegetables",
+      "support": 0.012913065582104729,
+      "confidence": 0.5,
+      "lift": 2.5840777719390435
+    },
+    {
+      "antecedent": "tropical fruit & whole milk",
+      "consequent": "yogurt",
+      "support": 0.015149974580579562,
+      "confidence": 0.3581730769230769,
+      "lift": 2.5675161891679745
+    }
+  ]
+}
