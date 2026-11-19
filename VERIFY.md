@@ -11,6 +11,8 @@
 | 03 Titanic | `python src/analyze.py` | exit 0，输出 6 张图 + `results.json`（93 个键），控制台报告完整 |
 | 04 Spaceship | `python src/run_experiment.py --models logreg --seeds 42` | exit 0，5 折 0.4 秒，acc=0.7921 auc=0.8623，`out/cv_summary.json` 落盘 |
 | 05 智聘通 | `docker compose up -d` → `mvnw -s settings.xml -DskipTests package` → `java -jar ...` → `npm run dev` | 容器 healthy；jar 构建 exit 0；登录接口返回 200 + JWT；前端 5173 返回 200；学生端四个页面截图正常，种子数据正确渲染 |
+| 05 前端构建 | `npm run build`（`vue-tsc -b && vite build`） | exit 0，`✓ built in 1.08s`，类型检查通过 |
+| 05 后端测试 | `mvnw -s settings.xml test` | exit 0，10 个测试类全部通过；日志里能看到 OSS 不可用时降级到本地存储的 fallback 正常触发 |
 | 06 小程序 | `node tools/check-miniprogram.js .` | 49 项通过、0 失败（页面完整性 / JSON / JS 语法 / WXML 配对 / 188 条词库 / 记忆算法 17 项断言） |
 | 07 Java Swing | `javac -encoding UTF-8 -d build src/*.java` → `java -cp build Shot docs` | 编译 exit 0，10 个 class；窗口渲染出登录页与主界面，6 条学生数据正确显示 |
 | 08 网页 | 用 Chrome 打开 `index.html` 截图 | 3 张截图，无失败请求；26 张照片引用全部命中磁盘 |
