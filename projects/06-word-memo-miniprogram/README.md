@@ -56,7 +56,22 @@ const REVIEW_INTERVALS = [1, 2, 4, 7, 15, 30, 60];   // 天
 
 **在开发者工具里实际跑过**（微信开发者工具 2.01.2510280，基础库 3.16.1，iPhone 12/13 模拟器）：上面四张截图就是运行截图，登录 → 首页 → 学习 → 统计的跳转、进度条、词卡渲染、统计图表都正常。
 
-验证时登录态已过期，所以用**测试号**（`touristappid`）打开：把项目复制到临时目录、只改 `project.config.json` 的 `appid` 一个字段，其余 49 个代码文件与仓库里逐字节相同（逐文件 MD5 比对过）。为了让模拟器直接进首页，临时把 `pages/index/index` 调到了 `app.json` 的 pages 首位——仓库里的版本仍是登录页在前。
+### 控制台报错的修复
+
+用测试号打开时控制台是 6 个错误、17 个警告，排查后分成两类：
+
+**代码问题（已修）**
+
+- `wx.getSystemInfoSync` 自基础库 2.20.1 起废弃，导航栏组件用它取 `platform` / `windowWidth` / `safeArea`。改成 `wx.getWindowInfo()` + `wx.getDeviceInfo()`，并保留老基础库的 fallback。这一处贡献了 14 条警告。
+- 登录页调 `wx.getUserProfile` 拿真实头像昵称 —— 微信自 2022 年起已回收这个能力（只返回「微信用户」+ 默认灰色头像），API 本身也标记废弃了。头像本来就走 `<button open-type="chooseAvatar">`、昵称走输入框，所以直接删掉这个调用，两个登录按钮改为「提交当前填写的信息」。
+
+改完警告从 17 降到 3，剩下三条都是工具自身的提示（热重载已开启、正在用灰度基础库、HarmonyOS 适配建议），与代码无关。
+
+**环境问题（不是代码）**
+
+- `SystemError: appid missing`（41002）和 `timeout`：底层 SDK 的 `webapi_getwxaaacyncsecinfo` 要拿账号安全信息，`touristappid` 没有 appid 所以必然失败。把 `project.config.json` 的 appid 换成真实的之后重新编译，**这两个错误消失，控制台 0 错误**。
+
+所以仓库里保留的是原开发的 appid，导入时替换成你自己的即可；如果用「测试号」打开，会看到这两条报错，属于已知限制。
 
 另外有一份不依赖开发者工具的静态校验，可以在 CI 或没有 IDE 的机器上跑：
 
@@ -90,5 +105,6 @@ node tools/check-miniprogram.js .
 
 ## 已知限制
 
-- 登录是本地模拟的，`wx.getUserProfile` 在开发者工具里拿不到真实头像，走的是 `fail` 分支的降级逻辑（用输入框里的昵称）。
+- 登录是本地模拟的：头像用 `<button open-type="chooseAvatar">` 拿到的临时文件，昵称用输入框，不接真实账号体系。
 - 发音直接拼有道词典的 TTS 地址（`https://dict.youdao.com/dictvoice?audio=<word>`），**依赖第三方服务**，且真机需要在「downloadFile 合法域名」里加 `dict.youdao.com`。播放失败时 `onError` 会降级为震动 + Toast 显示单词，不会卡住流程。
+- 用「测试号」打开会看到 `appid missing` 与 `timeout` 两条报错，换成真实 appid 即消失（见上节）。

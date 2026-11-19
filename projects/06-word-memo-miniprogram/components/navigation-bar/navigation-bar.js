@@ -60,12 +60,15 @@ Component({
   lifetimes: {
     attached() {
       const rect = wx.getMenuButtonBoundingClientRect()
-      const systemInfo = wx.getSystemInfoSync()
-      const platform = systemInfo.platform
+      // wx.getSystemInfoSync 自基础库 2.20.1 起废弃，拆成 getWindowInfo + getDeviceInfo。
+      // 保留 fallback 是为了兼容还在用老基础库的真机。
+      const windowInfo = wx.getWindowInfo ? wx.getWindowInfo() : wx.getSystemInfoSync()
+      const deviceInfo = wx.getDeviceInfo ? wx.getDeviceInfo() : wx.getSystemInfoSync()
+      const platform = deviceInfo.platform
       const isAndroid = platform === 'android'
       const isDevtools = platform === 'devtools'
-      const windowWidth = systemInfo.windowWidth
-      const safeArea = systemInfo.safeArea
+      const windowWidth = windowInfo.windowWidth
+      const safeArea = windowInfo.safeArea
       const top = safeArea ? safeArea.top : 0
       this.setData({
         ios: !isAndroid,
