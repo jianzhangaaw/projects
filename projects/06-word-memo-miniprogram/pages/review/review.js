@@ -26,7 +26,9 @@ Page({
   },
 
   recordReview() {
+    if (this._reviewRecorded) return; // goBack 与 onUnload 都会调，只记一次
     if (this.data.reviewCount > 0) {
+      this._reviewRecorded = true;
       const duration = Math.round((Date.now() - this.data.startTime) / 1000);
       Storage.recordStudy(this.data.reviewCount, 0, duration);
     }
@@ -164,7 +166,7 @@ Page({
   },
 
   goBack() {
-    this.recordReview();
+    // 时长记录交给 onUnload（页面一定会卸载），这里再调一次就会重复记账
     wx.navigateBack();
   }
 })

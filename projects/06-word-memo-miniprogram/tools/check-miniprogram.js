@@ -119,10 +119,18 @@ eq('超出档位不越界（封顶 60 天）', memory.getNextReviewDate(base, 99
 // needsReview：新词必复习
 eq('新词需要复习', memory.needsReview({ status: memory.WORD_STATUS.NEW }), true);
 eq('学习中需要复习', memory.needsReview({ status: memory.WORD_STATUS.LEARNING }), true);
+
+// 日期一律按本地时区算（原来用 toISOString()，UTC+8 的 0:00–8:00 会算成前一天）
+const localDateStr = (d) =>
+  d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+eq('今天按本地日期计算', memory.getTodayStr(), localDateStr(new Date()));
+
 const past = new Date(); past.setDate(past.getDate() - 1);
-eq('已到期需要复习', memory.needsReview({ status: memory.WORD_STATUS.MASTERED, nextReviewDate: past.toISOString().split('T')[0] }), true);
+eq('已到期需要复习', memory.needsReview({ status: memory.WORD_STATUS.MASTERED, nextReviewDate: localDateStr(past) }), true);
 const future = new Date(); future.setDate(future.getDate() + 3);
-eq('未到期不需要复习', memory.needsReview({ status: memory.WORD_STATUS.MASTERED, nextReviewDate: future.toISOString().split('T')[0] }), false);
+eq('未到期不需要复习', memory.needsReview({ status: memory.WORD_STATUS.MASTERED, nextReviewDate: localDateStr(future) }), false);
+eq('跨年推进不变日期', memory.getNextReviewDate('2026-12-31', 1), '2027-01-02');
+eq('跨月推进不变日期', memory.getNextReviewDate('2026-01-31', 2), '2026-02-04');
 
 eq('答错得 0 分', memory.calculateMemoryScore(500, false), 0);
 eq('1 秒内答对得 5 分', memory.calculateMemoryScore(500, true), 5);

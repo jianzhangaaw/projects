@@ -1,6 +1,6 @@
 // pages/stats/stats.js
 const Storage = require('../../utils/storage.js');
-const { WORD_STATUS, getTodayStr, formatDate } = require('../../utils/memory.js');
+const { WORD_STATUS, getTodayStr, formatDate, toDateStr } = require('../../utils/memory.js');
 
 Page({
   data: {
@@ -71,7 +71,7 @@ Page({
     for (let i = 6; i >= 0; i--) {
       const date = new Date(today);
       date.setDate(date.getDate() - i);
-      const dateStr = date.toISOString().split('T')[0];
+      const dateStr = toDateStr(date);
       const dayStats = dailyStats[dateStr] || { learned: 0 };
 
       data.push({

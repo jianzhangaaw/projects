@@ -27,7 +27,7 @@
 | `wordlist` | 词库浏览、筛选（新词 / 学习中 / 已掌握）、搜索 |
 | `addword` | 手动添加生词 |
 | `stats` | 学习统计：近 7 天趋势、单词状态分布、累计时长 |
-| `profile` | 个人资料、每日目标设置、清空数据 |
+| `profile` | 个人资料、每日目标、学习模式与发音 / 音标开关、清空数据 |
 | `login` | 登录页（本地模拟，不接后端） |
 
 ## 记忆调度
@@ -38,9 +38,9 @@
 const REVIEW_INTERVALS = [1, 2, 4, 7, 15, 30, 60];   // 天
 ```
 
-- 每次答完，`getNextReviewDate(上次复习日期, reviewCount)` 按档位推进；`reviewCount` 超出档位时封顶在 60 天。
+- 每次答完，`getNextReviewDate(上次复习日期, reviewCount)` 按档位推进；`reviewCount` 超出档位时封顶在 60 天。日期一律按本地时区计算（`toDateStr` / `parseDateStr`），不用 `toISOString()`——否则 UTC+8 的 0:00–8:00 会把今天算成昨天。
 - `needsReview(word)`：新词、学习中、或 `nextReviewDate <= 今天` 的都算待复习。
-- `calculateMemoryScore(反应时间, 是否正确)`：答错 0 分；答对按反应时间给 5/4/3/2/1 分，用来调整下一次间隔。
+- `calculateMemoryScore(反应时间, 是否正确)`：答错 0 分；答对按反应时间给 5/4/3/2/1 分。**这个评分已实现且有单测，但当前调度只按复习次数推进，评分还没参与间隔计算**（后续优化点，不在当前版本范围内）。
 
 数据落在 `wx.setStorageSync`，`utils/storage.js` 做了懒加载——词库 27 KB，不在启动时一次性塞进内存。
 
@@ -80,7 +80,19 @@ const REVIEW_INTERVALS = [1, 2, 4, 7, 15, 30, 60];   // 天
 node tools/check-miniprogram.js .
 ```
 
-覆盖 49 项：8 个页面的 `.js/.wxml/.json` 是否齐全、tabBar 指向的页面是否都已注册、14 个 JSON 是否可解析、16 个 JS 语法是否通过、WXML 标签是否配对、词库 188 条是否都有 `word`/`meaning`，以及记忆算法的 17 项断言（各档位间隔、封顶、三种状态的复习判定、四档评分）。
+覆盖 52 项：8 个页面的 `.js/.wxml/.json` 是否齐全、tabBar 指向的页面是否都已注册、14 个 JSON 是否可解析、16 个 JS 语法是否通过、WXML 标签是否配对、词库 188 条是否都有 `word`/`meaning`，以及记忆算法的 20 项断言（各档位间隔、封顶、本地时区日期、三种状态的复习判定、四档评分）。
+
+还有一份按钮级的交互验证，同样不需要开发者工具：
+
+```bash
+node tools/check-buttons.js .
+```
+
+它用假的 `wx` 环境把 8 个页面和 2 个组件真正加载起来，先静态核对全部 55 处 `bind`/`catch` 绑定都能在 JS 里找到实现、`navigateTo` 没有指向 tabBar 页，再逐按钮触发 13 组场景（登录、闪卡 / 拼写 / 听音、词库、复习、统计、我的、添加单词、tabBar、导航栏），断言 setData、跳转、Toast 与存储写入，并对单词状态、复习次数、去重记账、日期是否本地时区做数据断言。
+
+### 2026-11-20 的按钮级复查
+
+用上面两份脚本复查了一遍，修掉 8 个问题：首页「学习新词」用 `navigateTo` 跳 tabBar 页（静默失败）、学习页从不读「学习模式 / 自动播放 / 显示音标」三个设置、日期用 `toISOString()` 在 UTC+8 的 0:00–8:00 错位、复习页退出重复记时长、个人页三个统计永远为 0、`mode=add` 死代码、导航栏 `home` 绑定没有实现、拼写答对提示被立刻覆盖。这轮没有重开开发者工具，改动由 `check-miniprogram.js`（52 项）与 `check-buttons.js`（13 组场景）覆盖；四张截图是修复前的运行截图，界面结构与现在一致。
 
 ## 目录
 

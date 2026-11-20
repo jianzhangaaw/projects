@@ -41,17 +41,17 @@ class Storage {
 
     const words = wx.getStorageSync('words');
     if (!words || words.length === 0) {
-      setTimeout(() => {
-        const initialWords = this.getCet4Words().map(w => ({
-          ...w,
-          id: generateId(),
-          status: 0,
-          reviewCount: 0,
-          nextReviewDate: getTodayStr(),
-          addedDate: getTodayStr()
-        }));
-        wx.setStorageSync('words', initialWords);
-      }, 300);
+      // 同步播种：原来是 setTimeout(300) 异步写入，首页只等 100ms 就刷新，
+      // 冷启动首屏会显示 0 个新词。188 条数据生成不到 10ms，没必要异步。
+      const initialWords = this.getCet4Words().map(w => ({
+        ...w,
+        id: generateId(),
+        status: 0,
+        reviewCount: 0,
+        nextReviewDate: getTodayStr(),
+        addedDate: getTodayStr()
+      }));
+      wx.setStorageSync('words', initialWords);
     }
   }
 

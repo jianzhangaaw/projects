@@ -57,28 +57,6 @@ class User {
     wx.setStorageSync(this.LOGIN_KEY, false);
     this.createDefaultUser();
   }
-
-  static updateStudyStats(studiedWords) {
-    const user = this.getUser();
-    if (!user) return;
-    this.updateUser({
-      totalWords: (user.totalWords || 0) + studiedWords
-    });
-  }
-
-  static incrementStudyDays() {
-    const user = this.getUser();
-    if (!user) return;
-    const today = new Date().toISOString().split('T')[0];
-    const lastStudyDate = user.lastStudyDate ? user.lastStudyDate.split('T')[0] : '';
-    
-    if (lastStudyDate !== today) {
-      this.updateUser({
-        studyDays: (user.studyDays || 0) + 1,
-        lastStudyDate: today
-      });
-    }
-  }
 }
 
 module.exports = User;

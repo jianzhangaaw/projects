@@ -8,12 +8,32 @@ const WORD_STATUS = {
   MASTERED: 2    // 已掌握
 };
 
+function pad2(n) {
+  return n < 10 ? '0' + n : '' + n;
+}
+
+/**
+ * 把 Date 格式化成 YYYY-MM-DD。
+ *
+ * 这里必须用本地时间：原来用 toISOString()，在 UTC+8 下每天 0:00–8:00 都会被算成前一天，
+ * 导致「今日已学」「连续天数」「待复习」在早上全部错位。
+ */
+function toDateStr(date) {
+  return date.getFullYear() + '-' + pad2(date.getMonth() + 1) + '-' + pad2(date.getDate());
+}
+
+/** 解析 YYYY-MM-DD 为本地零点。new Date('YYYY-MM-DD') 会按 UTC 解析，不能用。 */
+function parseDateStr(value) {
+  const parts = String(value).split('-').map(Number);
+  return new Date(parts[0] || 1970, (parts[1] || 1) - 1, parts[2] || 1);
+}
+
 // 获取下一个复习日期
 function getNextReviewDate(lastReviewDate, reviewCount) {
   const interval = REVIEW_INTERVALS[Math.min(reviewCount, REVIEW_INTERVALS.length - 1)];
-  const date = new Date(lastReviewDate);
+  const date = parseDateStr(lastReviewDate);
   date.setDate(date.getDate() + interval);
-  return date.toISOString().split('T')[0];
+  return toDateStr(date);
 }
 
 // 检查是否需要复习
@@ -21,8 +41,7 @@ function needsReview(word) {
   if (word.status === WORD_STATUS.NEW) return true;
   if (word.status === WORD_STATUS.LEARNING) return true;
   if (!word.nextReviewDate) return true;
-  const today = new Date().toISOString().split('T')[0];
-  return word.nextReviewDate <= today;
+  return word.nextReviewDate <= getTodayStr();
 }
 
 // 计算记忆评分（0-5）
@@ -37,15 +56,13 @@ function calculateMemoryScore(responseTime, isCorrect) {
 
 // 格式化日期
 function formatDate(dateStr) {
-  const date = new Date(dateStr);
-  const month = date.getMonth() + 1;
-  const day = date.getDate();
-  return `${month}月${day}日`;
+  const date = parseDateStr(dateStr);
+  return (date.getMonth() + 1) + '月' + date.getDate() + '日';
 }
 
-// 获取今天的日期字符串
+// 获取今天的日期字符串（本地时区）
 function getTodayStr() {
-  return new Date().toISOString().split('T')[0];
+  return toDateStr(new Date());
 }
 
 // 生成唯一ID
@@ -61,5 +78,6 @@ module.exports = {
   calculateMemoryScore,
   formatDate,
   getTodayStr,
+  toDateStr,
   generateId
 };

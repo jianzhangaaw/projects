@@ -1,4 +1,6 @@
 // index.js
+const Storage = require('../../utils/storage.js');
+
 Page({
   data: {
     todayLearned: 0,
@@ -71,7 +73,10 @@ Page({
   },
 
   goNewWords() {
-    wx.navigateTo({ url: '/pages/study/study?mode=new' });
+    // study 是 tabBar 页，wx.navigateTo 会静默失败；switchTab 又不能带 query，
+    // 所以用一条一次性设置把「只看新词」传给学习页（study.onShow 读取后清掉）。
+    Storage.updateSettings({ pendingStudyMode: 'new' });
+    wx.switchTab({ url: '/pages/study/study' });
   },
 
   goWordList() {

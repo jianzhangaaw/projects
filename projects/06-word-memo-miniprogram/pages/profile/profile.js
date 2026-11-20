@@ -1,6 +1,7 @@
 // pages/profile/profile.js
 const Storage = require('../../utils/storage.js');
 const User = require('../../utils/user.js');
+const { WORD_STATUS } = require('../../utils/memory.js');
 
 Page({
   data: {
@@ -27,11 +28,20 @@ Page({
   },
 
   loadUserInfo() {
-    const user = User.getUser();
-    const isLoggedIn = User.isLoggedIn();
+    const user = User.getUser() || {};
+    const stats = Storage.getStats();
+    const words = Storage.getWords();
+
+    // 原来这三个数字读的是 user.totalWords / user.studyDays / user.masteredWords，
+    // 而更新它们的方法从没被调用过，所以永远显示 0。现在直接从学习数据算。
     this.setData({
-      user: user || {},
-      isLoggedIn: isLoggedIn
+      user: {
+        ...user,
+        totalWords: stats.totalLearned || 0,
+        masteredWords: words.filter(w => w.status === WORD_STATUS.MASTERED).length,
+        studyDays: Object.keys(stats.dailyStats || {}).length
+      },
+      isLoggedIn: User.isLoggedIn()
     });
   },
 

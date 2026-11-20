@@ -108,6 +108,14 @@ Component({
         })
       }
       this.triggerEvent('back', { delta: data.delta }, {})
+    },
+    // homeButton 为 true 时渲染的「返回首页」按钮。原来 WXML 绑了 home 但 JS 没有这个方法，
+    // 一旦哪个页面开 homeButton 就会报错，这里补上。
+    home() {
+      wx.switchTab({
+        url: '/pages/index/index'
+      })
+      this.triggerEvent('home', {}, {})
     }
   },
 })
