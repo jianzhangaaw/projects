@@ -2,9 +2,9 @@
 
 南昌大学软件工程专业在读。这里是我从课程作业里挑出来、重新整理并逐个跑通过的项目，覆盖数据分析、机器学习、后端、移动端与前端。
 
-**在线版：https://jianzhangaaw.github.io/projects/**（国内访问 GitHub 不稳时用这个）
+**在线版：** https://jianzhangaaw.github.io/projects/ （国内访问 GitHub 不稳时用这个）
 
-**国内仓库：https://gitee.com/jianzhangaaw/project**（Gitee 镜像，访问 GitHub 慢或打不开时看这个；代码与本仓库同步）
+**国内仓库：** https://gitee.com/jianzhangaaw/project （Gitee 镜像，访问 GitHub 慢或打不开时看这个；代码与本仓库同步）
 
 站内的项目详情页在部署时由 `tools/build_site_docs.py` 从各项目 README 生成，点卡片直接看说明与截图，不跳转任何代码托管站。
 
