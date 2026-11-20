@@ -6,7 +6,9 @@ on:
     branches: [main]
     paths:
       - 'site/**'
+      - 'projects/*/README.md'
       - 'projects/07-guizhou-tourism-web/**'
+      - 'tools/**'
       - '.github/workflows/deploy-pages.yml'
   workflow_dispatch:
 
@@ -31,6 +33,19 @@ jobs:
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
+
+      # 项目详情页由 README 渲染而来（site/projects/*.html），配图从各项目目录复制到
+      # site/assets/docs/。生成物不进仓库，改完 README 推上来就自动重生成。
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install markdown
+        run: pip install "markdown>=3.5,<4"
+
+      - name: Build project detail pages
+        run: python tools/build_site_docs.py
 
       # 站点根是 site/：index.html 是作品集首页，guizhou/ 是从 07 项目复制过来的旅游站。
       # 旅游站的图片只在 projects/07 里存一份，这里靠复制组装，避免仓库里存两份 4.8 MB 的照片。

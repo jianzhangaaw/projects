@@ -39,6 +39,10 @@ _tools/
 _api/
 *.tmp
 
+# 站点项目详情页与配图：部署时由 tools/build_site_docs.py 从 README 生成，不进仓库
+site/projects/
+site/assets/docs/
+
 # 给下一个会话的交接文件，不进仓库
 HANDOFF.md
 
