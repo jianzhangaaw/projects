@@ -2,7 +2,6 @@ package com.recruit_resume.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.recruit_resume.common.Result;
-import com.recruit_resume.entity.FileResource;
 import com.recruit_resume.entity.StudentSkill;
 import com.recruit_resume.security.CurrentUser;
 import com.recruit_resume.security.CurrentUserContext;
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/student/skills")
@@ -59,12 +59,13 @@ public class StudentSkillController extends BaseCrudController<StudentSkill> {
         }
         List<StudentSkill> skills = service.list(new LambdaQueryWrapper<StudentSkill>()
                 .eq(StudentSkill::getStudentId, studentId));
+        // 批量装文件地址：原来是每条技能查一次 file_resource（N 条 = N 次查询）
+        Map<Long, String> fileUrls = fileResourceService.fileUrlsByIds(
+                skills.stream().map(StudentSkill::getFileId).toList());
         skills.forEach(skill -> {
-            if (skill.getFileId() != null) {
-                FileResource file = fileResourceService.getById(skill.getFileId());
-                if (file != null) {
-                    skill.setFileUrl(file.getFileUrl());
-                }
+            String url = skill.getFileId() == null ? null : fileUrls.get(skill.getFileId());
+            if (url != null) {
+                skill.setFileUrl(url);
             }
         });
         return Result.success(skills);

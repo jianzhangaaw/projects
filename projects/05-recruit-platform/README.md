@@ -60,6 +60,8 @@ npm run dev
 
 前端 dev server 通过 `vite.config.ts` 里的 proxy 把 `/api` 转发到 `localhost:8080`；后端连的是 compose 里映射到宿主机 **3307** 的 MySQL。
 
+后端默认按生产口径跑：INFO 级别、不打印 SQL。要在本地看 SQL 与业务 DEBUG 日志，加 `-Dspring-boot.run.profiles=dev`（Maven）或先 `set SPRING_PROFILES_ACTIVE=dev`（Git Bash 用 `export`）。健康检查在 `http://localhost:8080/actuator/health`，正常返回 `{"status":"UP"}`。
+
 ### 不想用 Docker？
 
 本机已有 MySQL 8 的话，手动执行 `backend/src/main/resources/db/schema.sql` 和 `02-seed.sql`，再把 `DB_URL` / `DB_USERNAME` / `DB_PASSWORD` 环境变量指过去即可。
@@ -86,11 +88,20 @@ npm run dev
 - 建岗位 / 建企业资料时忽略请求体里的 `companyId`、`userId`、`status`、`reviewStatus`
 - 列表详情的 N+1 换成批量装配（2 条投递从 7 条 SQL 降到 5 条，且与条数无关）
 
+**第三轮（性能与可观测）**
+
+- 简历列表、技能列表的 N+1 换成批量装配：3 条数据只查 1 次 `file_resource`（改前 3 次），且返回的 `fileUrl` 逐条正确
+- 当前学生资料加了请求级缓存（`RequestCache`），同一请求内只查一次库，由 `RequestLoggingFilter` 在请求结束时清理
+- 日志按 profile 分级：默认 INFO、不打印 SQL 与参数；`dev` profile 才打业务 DEBUG 与 MyBatis SQL
+- 加 Actuator，`/actuator/health` 返回 UP，只暴露 `health` / `info` 两个端点
+
 验证脚本（需要后端在跑）：
 
 ```bash
-python scripts/check-authz.py        # 18 项：越权、合法请求、认证、CORS
-python scripts/check-consistency.py  # 25 项：事务、状态机、审核字段、自封与冒名
+python scripts/check-authz.py           # 18 项：越权、合法请求、认证、CORS
+python scripts/check-consistency.py     # 25 项：事务、状态机、审核字段、自封与冒名
+python scripts/check-observability.py --profile dev   # 16 项：健康检查、日志分级、两处 N+1
+python scripts/check-observability.py --profile prod  # 7 项：确认默认 profile 不打 SQL（N+1 计数在 prod 下 SKIP）
 ```
 
 完整的问题清单、文件行号与四阶段优化方案见 [docs/BACKEND-REVIEW.md](docs/BACKEND-REVIEW.md)。

@@ -52,7 +52,18 @@ resume:
   pdf:
     render-timeout-seconds: ${RESUME_PDF_RENDER_TIMEOUT_SECONDS:60}
 
+# 默认按生产口径：INFO，不打印 SQL 与参数（日志里会带手机号、邮箱、简历内容）。
+# 本地开发用 --spring.profiles.active=dev，见 application-dev.yml。
 logging:
   level:
-    com.recruit_resume: DEBUG
-    com.recruit_resume.mapper: DEBUG
+    com.recruit_resume: INFO
+
+# 健康检查：GET /actuator/health。只暴露 health 与 info，其余端点不开放。
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: never

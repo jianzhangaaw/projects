@@ -1,4 +1,4 @@
-﻿# 后端代码审查
+# 后端代码审查
 
 审查对象：`projects/05-recruit-platform/backend`（Spring Boot 3.3.6 / Java 17）
 
@@ -14,8 +14,8 @@
 
 现在这套代码如果部署到公网，任何一个注册用户都能删掉别人的简历。
 
-> **状态（2026-11-19）**：下面 P0 的 7 项已经修复并跑过越权用例（`scripts/check-authz.py`，18 项全通过）；
-> P1–P4 未动，留作下一阶段。逐项改动见文末「修复记录」。
+> **状态（2026-11-20）**：阶段一（P0 安全 7 项）、阶段二（P1 数据一致性 4 项）、阶段三（P2 性能与可观测 3 项 + P4 健康检查）都已修复，各自跑过验证脚本；
+> P3 架构项与 P4 其余运维项留作阶段四。逐项改动见文末「修复记录」。
 
 ---
 
@@ -173,11 +173,11 @@ if (!"PENDING".equals(status) && !"PASSED".equals(status) && !"REJECTED".equals(
 
 同一个类里 `AdminReviewController.pendingJobs` 已经写了正确做法（`listByIds` + `toMap` 批量装配），照搬即可。
 
-### 13. 每个请求重复查"当前学生/企业"
+### 13. 每个请求重复查"当前学生/企业"　`已修复`
 
 `currentStudentProfile()` 在一个请求里可能被调 2-3 次（`create` 里一次、`scopedWrapper` 里又一次），每次一条 SQL。**改法**：请求级缓存，`StudentProfileResolver` 里用 `ThreadLocal` 存一次（注意在 `afterCompletion` 清理），或者直接查一次传下去。
 
-### 14. 日志级别把 SQL 全打出来
+### 14. 日志级别把 SQL 全打出来　`已修复`
 
 `application.yml`：
 
@@ -227,7 +227,7 @@ public class StudentProfileServiceImpl extends ServiceImpl<StudentProfileMapper,
 
 | 问题 | 现状 | 建议 |
 | --- | --- | --- |
-| 没有健康检查 | 没有 Actuator，docker-compose 只检查 MySQL | 加 `spring-boot-starter-actuator`，`/actuator/health` 加进 compose healthcheck |
+| 没有健康检查 | 没有 Actuator，docker-compose 只检查 MySQL | 加 `spring-boot-starter-actuator`，`/actuator/health` 加进 compose healthcheck（阶段三已加端点，健康检查见文末；compose 里只有 MySQL 一个服务，后端跑在宿主机，没有 app 服务可挂 healthcheck） |
 | 连接池用默认值 | Hikari 默认 10 连接 | 显式配 `maximum-pool-size` / `connection-timeout` |
 | HTTP 状态码恒定 200 | 业务失败也返回 200，只有 body 里 `code` 不同 | 鉴权失败返 401/403，未找到返 404，让网关能按 status 报警 |
 | 没有请求 id | 日志里无法串起一次请求 | 加 `MDC` + `X-Request-Id` |
@@ -259,7 +259,7 @@ public class StudentProfileServiceImpl extends ServiceImpl<StudentProfileMapper,
 4. 投递状态加状态机校验
 5. 审核通过时清空 `reviewReason`
 
-### 阶段三：性能与可观测（1–2 天）
+### 阶段三：性能与可观测（1–2 天）　`已完成，见文末修复记录`
 
 1. 三处 N+1 改成批量装配（照 `pendingJobs` 的写法）
 2. 当前用户 profile 请求级缓存
@@ -382,10 +382,67 @@ Service 方法都显式接收 `userId` / `role`，不读 `CurrentUserContext`—
 - `BaseCrudController.requireOwned` 加了归属校验后，管理员访问 `/api/jobs/{id}` 也被 403——审核场景需要读任意记录，加了 ADMIN 例外（`/api/student/`、`/api/company/` 前缀在拦截器层就挡住了管理员，所以这个例外只影响公共前缀的读接口）。
 - `CompanyController.updateLogo` 改成从上下文取 userId 后，`CompanyControllerTest` 没设置登录上下文，测试从「400 企业不存在」变成「401 未登录」——修了测试，并补了一条「传别人的 userId 返回 403」的用例。
 
-### 还没做的（阶段三、四）
+### 还没做的（阶段四）
 
-- 日志仍是 DEBUG 全量打 SQL（`application-logging` 没拆 dev/prod）
-- 没有 Actuator、连接池仍是默认 10
-- `HTTP 状态码恒 200`：业务失败也返回 200，只有 body 里 code 不同
+- `HTTP 状态码恒 200`：业务失败也返回 200，只有 body 里 code 不同。阶段三跑验证时又撞到一次：被关掉的 `/actuator/env` 抛 `NoResourceFoundException`，被全局异常处理器包成 200 + code 500，日志里还留一条 ERROR
 - 另外 9 个 `ServiceImpl` 仍是空壳（`Resume`、`Company`、`Job`、`StudentProfile` 等），它们的业务逻辑还在 Controller
-- 每个动作的 PATCH/PUT 双端点还在
+- 每个动作的 PATCH/PUT 双端点还在；实体直接当响应；两套权限模型并存
+- 连接池仍是 Hikari 默认 10；文件预览没有大小上限；没有请求 id
+
+---
+
+## 修复记录（阶段三：性能与可观测）
+
+对应 `scripts/check-observability.py`：dev profile 下 16 项全通过；prod（默认）profile 下 7 项通过 + 1 项 SKIP（SQL 计数需要 dev 的 SQL 日志，prod 本来就不该有）。
+阶段一的 18 项、阶段二的 25 项脚本在两种 profile 下都回归通过；`./mvnw test` 13 个测试类、31 个用例全通过。
+
+### 1. 剩下两处 N+1 改成批量装配
+
+`ResumeController.listByStudent` 和 `StudentSkillController.listByStudent` 原来在 `forEach` 里逐条 `fileResourceService.getById`，N 条就是 N 次查询。`FileResourceService` 增加了 `fileUrlsByIds(Collection<Long>)`（一次 `listByIds`，返回 id→url 的 Map），两个接口各调一次。
+
+第三处 `JobApplicationController.toCompanyDetail` 在阶段二已经改完。
+
+实测（dev profile，数日志里的 `Preparing:` 行）：
+
+| 场景 | 改前 | 改后 |
+| --- | --- | --- |
+| 简历列表 3 条 | 3 次 file_resource 查询 | 1 次 |
+| 简历列表 1 条 | 1 次 | 1 次 |
+| 技能列表 3 条 | 3 次 | 1 次 |
+
+「改前」不是估算：把 `ResumeController` 临时还原成逐条查询、重新编译启动，同一个脚本报 `[FAIL] 简历列表 3 条只查 1 次 file_resource  3 次（N+1 就是 3 次）` 和 `[FAIL] 1 条=1 3 条=3`；改回批量后变绿，技能那条（没还原）始终是 1 次。这一步是证明检查脚本确实能变红，而不是对什么代码都报 PASS。
+
+另一半断言是返回体里 3 条记录的 `fileUrl` 必须与夹具写入的 URL 逐条相等。只断言「查询变少」不够——少查的同时把数据丢掉，条数断言照样通过。
+
+### 2. 当前学生资料的请求级缓存
+
+新增 `common/RequestCache`（`ThreadLocal<Map<String,Object>>`），`StudentProfileResolver` 按 `studentProfile:<userId>` 缓存，命中就不再查库。
+
+清理点只有一个：`RequestLoggingFilter` 的 `finally`。它包住所有请求，不依赖 MVC 拦截器是否被命中，也不依赖 Controller 是否抛异常。清理不到位的话，线程池复用线程会把上一个请求的学生资料带到下一个请求——数据泄漏级别的问题，所以单测专门覆盖：同一请求内两次调用只查一次库，`RequestCache.clear()` 之后再调必须重新查库。
+
+### 3. 日志级别分离 dev/prod
+
+| 位置 | 默认（prod） | dev profile |
+| --- | --- | --- |
+| `application.yml` | `com.recruit_resume: INFO` | — |
+| `application-dev.yml`（新增） | — | `com.recruit_resume: DEBUG`、`com.recruit_resume.mapper: DEBUG` |
+| `logback-spring.xml` | `<springProfile name="!dev">` → INFO | `<springProfile name="dev">` → DEBUG + mapper DEBUG |
+
+**这里有个坑**：`logback-spring.xml` 原来写死了 `<logger name="com.recruit_resume" level="DEBUG"/>`，只改 `application.yml` 完全没用——logback 的显式 logger 会盖掉 Spring Boot 从 yml 读到的 `logging.level`。所以两处都按 profile 配，且值保持一致。
+
+验证用阳性对照，不是「没看到 SQL 就算过」：
+
+- dev：一次登录 + 一次列表请求，日志里既有 `登录成功`（INFO）也有 `Preparing:`（DEBUG），证明管道通、级别真的生效
+- prod：同样的请求只有 `登录成功` 一行、0 行 `Preparing:`。前半句是关键——只断言「没有 SQL」的话，日志根本没写也会通过
+
+### 4. Actuator 健康检查
+
+- 加 `spring-boot-starter-actuator`，`/actuator/health` 返回 `{"status":"UP"}`（db 探针通）
+- 只暴露 `health`、`info`：`/actuator` 的 `_links` 只有 `health` / `health-path` / `info`，`/actuator/env` 取不到任何配置内容
+- `/actuator/**` 不在 `JwtAuthInterceptor` 的 `/api/**` 范围里，不需要 token；同时确认 `/api/notifications` 无 token 仍然 401
+
+`docker-compose.yml` 里只有 MySQL 一个服务，后端跑在宿主机，没有 app 服务可挂 healthcheck，所以健康检查的入口是 `/actuator/health` 加上验证脚本里的断言。要把它接进部署流水线，得先给后端加 Dockerfile 和 compose service，那是另一件事。
+
+### 这一轮顺带发现的
+
+`NoResourceFoundException`（访问不存在的路径）会被 `GlobalExceptionHandler` 的兜底分支接住，返回 HTTP 200 + body `code=500`，同时打一条 ERROR「未预期的服务器错误」。这既是 P4「HTTP 状态码恒 200」的又一例，也意味着 404 被当成了服务端故障记进了 ERROR 日志。阶段四一起处理。

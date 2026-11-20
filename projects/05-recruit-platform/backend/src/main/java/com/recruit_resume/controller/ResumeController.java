@@ -7,7 +7,6 @@ import com.recruit_resume.common.ResultCode;
 import com.recruit_resume.dto.GenerateResumeRequest;
 import com.recruit_resume.dto.GeneratedResumeResponse;
 import com.recruit_resume.dto.ResumeGenerationContextResponse;
-import com.recruit_resume.entity.FileResource;
 import com.recruit_resume.entity.Resume;
 import com.recruit_resume.entity.ResumeSnapshot;
 import com.recruit_resume.entity.ResumeTemplate;
@@ -31,6 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/student/resumes")
@@ -141,12 +141,13 @@ public class ResumeController extends BaseCrudController<Resume> {
         }
         List<Resume> resumes = service.list(new LambdaQueryWrapper<Resume>()
                 .eq(Resume::getStudentId, studentId));
+        // 批量装文件地址：原来是每条简历查一次 file_resource（N 条 = N 次查询）
+        Map<Long, String> fileUrls = fileResourceService.fileUrlsByIds(
+                resumes.stream().map(Resume::getFileId).toList());
         resumes.forEach(resume -> {
-            if (resume.getFileId() != null) {
-                FileResource file = fileResourceService.getById(resume.getFileId());
-                if (file != null) {
-                    resume.setFileUrl(file.getFileUrl());
-                }
+            String url = resume.getFileId() == null ? null : fileUrls.get(resume.getFileId());
+            if (url != null) {
+                resume.setFileUrl(url);
             }
         });
         return Result.success(resumes);

@@ -13,10 +13,11 @@
 | 05 智聘通 | `docker compose up -d` → `mvnw -s settings.xml -DskipTests package` → `java -jar ...` → `npm run dev` | 容器 healthy；jar 构建 exit 0；登录接口返回 200 + JWT；前端 5173 返回 200 |
 | 05 三端界面 | 用 puppeteer 驱动 Chrome 登录三种角色后截图 | 学生端 4 页、企业端 3 页、管理端 2 页全部正常渲染，种子数据正确显示 |
 | 05 前端构建 | `npm run build`（`vue-tsc -b && vite build`） | exit 0，`✓ built in 1.08s`，类型检查通过 |
-| 05 后端测试 | `mvnw -s settings.xml test` | exit 0，10 个测试类全部通过；日志里能看到 OSS 不可用时降级到本地存储的 fallback 正常触发 |
+| 05 后端测试 | `mvnw -s settings.xml test` | exit 0，13 个测试类 31 个用例全部通过；日志里能看到 OSS 不可用时降级到本地存储的 fallback 正常触发 |
 | 05 安全回归 | `python scripts/check-authz.py` | 18 项断言全通过：8 条越权用例返回 403、5 条合法请求返回 200、认证 3 条 + CORS 2 条 |
 | 05 一致性回归 | `python scripts/check-consistency.py` | 25 项断言全通过：自封/冒名被忽略、状态机拒绝回退、重复投递 400、审核通过后 reviewReason 为 null、通知落库 |
-| 05 N+1 | 查后端日志的 `Preparing:` 条数 | 2 条投递的 `by-company/detail` 只发 5 条 SQL（1 企业 + 1 投递 + 3 批量），改前是 1+3×2=7 |
+| 05 N+1（阶段二） | 查后端日志的 `Preparing:` 条数 | 2 条投递的 `by-company/detail` 只发 5 条 SQL（1 企业 + 1 投递 + 3 批量），改前是 1+3×2=7 |
+| 05 性能与可观测（阶段三） | `python scripts/check-observability.py --profile dev` / `--profile prod` | dev 16 项全通过、prod 7 项通过 + 1 项 SKIP：`/actuator/health` UP、只暴露 health/info；简历与技能列表 3 条都只查 1 次 `file_resource`（把控制器临时还原成逐条查询后同一脚本报 3 次，证明断言会红）；日志 dev 有 `Preparing:`、prod 只有 `登录成功` 一行 |
 | 05 前端回归 | puppeteer 走 11 个页面（学生端 5 + 企业端 4 + 管理端 2） | 全部正常渲染，0 个 `/api` 请求失败、0 个 JS 异常 |
 | 06 小程序 | 开发者工具打开项目 → 登录 / 首页 / 学习 / 统计 | 4 个页面渲染正常，跳转与进度条工作；修掉废弃 API + 基础库固定 3.15.0 后控制台 **0 错误**，见 `projects/06-word-memo-miniprogram/docs/` |
 | 06 静态校验 | `node tools/check-miniprogram.js .` | 49 项通过、0 失败（页面完整性 / JSON / JS 语法 / WXML 配对 / 188 条词库 / 记忆算法 17 项断言） |
