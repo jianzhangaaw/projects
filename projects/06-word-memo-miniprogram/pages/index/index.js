@@ -33,7 +33,7 @@ Page({
   refreshData() {
     // 按需加载模块
     const Storage = require('../../utils/storage.js');
-    const { needsReview, getTodayStr } = require('../../utils/memory.js');
+    const { needsReview, getTodayStr, WORD_STATUS } = require('../../utils/memory.js');
     
     const stats = Storage.getStats();
     const settings = Storage.getSettings();
@@ -49,7 +49,7 @@ Page({
     // 新词数
     const newCount = words.filter(w => w.status === 0).length;
 
-    const totalWords = words.length;
+    const totalWords = words.filter(w => w.status === WORD_STATUS.MASTERED).length;
     const dailyGoal = settings.dailyGoal || 20;
     const progressPercent = Math.min(100, Math.round((todayLearned / dailyGoal) * 100));
 

@@ -236,9 +236,10 @@ page {
   margin-bottom: 12rpx;
 }
 .action-desc {
-  font-size: 24rpx;
+  font-size: 22rpx;
   color: #999;
   display: block;
+  white-space: nowrap;
 }
 
 /* 开始学习按钮 */

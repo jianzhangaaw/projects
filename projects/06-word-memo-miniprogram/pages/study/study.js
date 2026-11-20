@@ -21,7 +21,10 @@ Page({
     isPlaying: false,
 
     // 设置项：显示音标
-    showPhonetic: true
+    showPhonetic: true,
+
+    // 进度条百分比（原来 WXML 引用了这个字段，JS 里从没赋值，宽度一直按 100% 渲染）
+    progressPercent: 0
   },
 
   audioContext: null,
@@ -80,6 +83,11 @@ Page({
     }
   },
 
+  updateProgress(index) {
+    const total = this.data.studyWords.length;
+    this.setData({ progressPercent: total ? Math.round((index + 1) / total * 100) : 0 });
+  },
+
   onUnload() {
     if (this._advanceTimer) {
       clearTimeout(this._advanceTimer);
@@ -113,6 +121,7 @@ Page({
       currentWord: studyWords[0] || null,
       showAnswer: false
     });
+    this.updateProgress(0);
     this.autoPlayIfEnabled();
   },
 
@@ -132,6 +141,7 @@ Page({
       currentWord: studyWords[0] || null,
       showAnswer: false
     });
+    this.updateProgress(0);
     this.autoPlayIfEnabled();
   },
 
@@ -287,6 +297,7 @@ Page({
         spellingInput: '',
         spellingResult: null
       });
+      this.updateProgress(nextIndex);
       this.autoPlayIfEnabled();
     } else {
       this.showComplete();

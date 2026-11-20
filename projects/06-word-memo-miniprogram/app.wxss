@@ -1,10 +1,12 @@
 /**app.wxss**/
+/**
+ * 各页面的根容器。
+ *
+ * 原来这里是 height: 100% + flex column + justify-content: space-between + 200rpx 上下内边距
+ * （小程序模板的默认样式）。内容超过一屏时，子元素会被 flex 收缩，配合卡片的 overflow: hidden，
+ * 首页「今日进度」卡片里的数字与标签就会被裁掉。现在只保留盒子模型，布局由各页面自己决定。
+ */
 .container {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  padding: 200rpx 0;
   box-sizing: border-box;
-} 
+  min-height: 100%;
+}
