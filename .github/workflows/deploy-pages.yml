@@ -1,13 +1,13 @@
 name: Deploy 作品集
 
-# site/ 是作品集落地页，projects/07-guizhou-tourism-web 在构建时复制到 site/guizhou/
+# site/ 是作品集落地页，项目详情页在构建时由 tools/build_site_docs.py 从各项目 README 生成
 on:
   push:
     branches: [main]
     paths:
       - 'site/**'
       - 'projects/*/README.md'
-      - 'projects/07-guizhou-tourism-web/**'
+      - 'projects/*/docs/**'
       - 'tools/**'
       - '.github/workflows/deploy-pages.yml'
   workflow_dispatch:
@@ -46,16 +46,6 @@ jobs:
 
       - name: Build project detail pages
         run: python tools/build_site_docs.py
-
-      # 站点根是 site/：index.html 是作品集首页，guizhou/ 是从 07 项目复制过来的旅游站。
-      # 旅游站的图片只在 projects/07 里存一份，这里靠复制组装，避免仓库里存两份 4.8 MB 的照片。
-      - name: Assemble site
-        run: |
-          set -euo pipefail
-          mkdir -p site
-          cp -r projects/07-guizhou-tourism-web site/guizhou
-          ls -1 site
-          du -sh site
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

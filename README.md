@@ -93,19 +93,7 @@ Apriori / DHP / FP-Growth 全部用标准库从零实现，用暴力枚举校验
 
 `微信小程序` `WXML/WXSS` `JavaScript`
 
-[代码与说明 →](projects/06-word-memo-miniprogram/) · 开发者工具实跑 + 静态校验 49 项全通过
-
----
-
-### 07 · 多彩贵州 · 旅游站点
-
-纯静态双页站点，26 张实景图。原始 19.3 MB 的 PNG 压到 4.8 MB；修掉了原代码里写死的绝对路径和 5 张依赖外部图床的图片。
-
-<img src="projects/07-guizhou-tourism-web/docs/web-home.png" width="720">
-
-`HTML` `CSS` `Tailwind` `原生 JS`
-
-[代码与说明 →](projects/07-guizhou-tourism-web/) · **在线预览：https://jianzhangaaw.github.io/projects/guizhou/**
+[代码与说明 →](projects/06-word-memo-miniprogram/) · 开发者工具实跑 + 静态校验 52 项全通过
 
 ---
 

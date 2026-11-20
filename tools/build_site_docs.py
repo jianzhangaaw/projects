@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""把 7 个项目的 README 渲染成站点内的详情页（site/projects/*.html）。
+"""把每个项目的 README 渲染成站点内的详情页（site/projects/*.html）。
 
 背景：卡片原来直接跳 github.com / gitee.com 的项目目录。国内打开 github.com 会卡，
 Gitee 的深链对部分访客会弹滑块验证，所以「了解详情」改成站内页面：
@@ -184,7 +184,7 @@ def main():
         raise SystemExit(f"找不到 {index_path}")
 
     cards = read_cards(index_path)
-    if len(cards) != 7:
+    if len(cards) != 6:
         raise SystemExit(f"site/index.html 里解析出 {len(cards)} 张卡片，期望 7 张")
 
     out_dir = site_dir / "projects"
