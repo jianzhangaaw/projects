@@ -38,3 +38,7 @@ _*/
 _tools/
 _api/
 *.tmp
+
+# 给下一个会话的交接文件，不进仓库
+HANDOFF.md
+
