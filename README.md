@@ -4,6 +4,8 @@
 
 **在线版：https://jianzhangaaw.github.io/projects/**（国内访问 GitHub 不稳时用这个）
 
+**国内仓库：https://gitee.com/jianzhangaaw/project**（Gitee 镜像，访问 GitHub 慢或打不开时看这个；代码与本仓库同步）
+
 每个目录下的 README 都写了「怎么跑」。我在一台干净环境里按 README 从头跑过一遍，跑不通的不放进来。
 
 ---
