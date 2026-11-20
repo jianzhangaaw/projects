@@ -113,7 +113,7 @@ Vue 3 + TypeScript + Element Plus + Pinia + Vue Router
         │  /api（axios，请求拦截器注入 JWT）
         ▼
 Spring Boot 3.3 / Java 17
-  ├── Controller  ── 20 个 REST 控制器
+  ├── Controller  ── 14 个 REST 控制器
   ├── Service     ── 业务逻辑（简历生成、文件预览、审核流转）
   ├── Mapper      ── MyBatis-Plus
   └── Security    ── JwtAuthInterceptor + 角色路由校验
@@ -156,7 +156,7 @@ MySQL 8（13 张表，含外键与 CHECK 约束）
 │   ├── pom.xml
 │   └── src/main/
 │       ├── java/com/recruit_resume/
-│       │   ├── controller/   20 个 REST 控制器
+│       │   ├── controller/   14 个 REST 控制器
 │       │   ├── service/      业务层
 │       │   ├── mapper/       MyBatis-Plus Mapper
 │       │   ├── entity/       13 个实体
