@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>夏遂冬 · 软件工程作品集</title>
+<meta name="description" content="7 个课程项目：全栈招聘平台、数据分析、机器学习、微信小程序、静态站点">
+<meta name="theme-color" content="#2563eb">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<style>
+  :root {
+    --bg: #f6f7f9;
+    --card: #ffffff;
+    --ink: #16181d;
+    --muted: #666c78;
+    --line: #e6e8ec;
+    --accent: #2563eb;
+    --accent-soft: #eef3ff;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+          "Hiragino Sans GB", "Microsoft YaHei", "Source Han Sans SC", sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 56px 24px 40px; }
+
+  header { margin-bottom: 40px; }
+  h1 {
+    margin: 0 0 6px;
+    font-size: 34px;
+    letter-spacing: -.5px;
+  }
+  .sub { margin: 0 0 18px; color: var(--muted); font-size: 15px; }
+  .lead { margin: 0 0 20px; max-width: 720px; font-size: 16px; }
+  nav { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  nav a {
+    display: inline-block;
+    padding: 7px 14px;
+    border-radius: 999px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    color: var(--ink);
+    text-decoration: none;
+    font-size: 14px;
+    transition: border-color .15s, color .15s;
+  }
+  nav a:hover { border-color: var(--accent); color: var(--accent); }
+  nav a.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+  nav a.primary:hover { color: #fff; opacity: .9; }
+
+  h2.section {
+    margin: 44px 0 18px;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--muted);
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+    gap: 22px;
+  }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: box-shadow .18s, transform .18s, border-color .18s;
+  }
+  .card:hover {
+    box-shadow: 0 10px 28px -12px rgba(16, 24, 40, .22);
+    transform: translateY(-2px);
+    border-color: #d5d9e0;
+  }
+
+  .shot { display: block; background: #f0f2f5; }
+  .shot img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    object-position: top center;
+  }
+  .shot img.contain {
+    object-fit: contain;
+    object-position: center;
+    background: #eef0f4;
+  }
+
+  .body { padding: 18px 20px 20px; display: flex; flex-direction: column; flex: 1; }
+  .body h3 {
+    margin: 0 0 8px;
+    font-size: 17px;
+    line-height: 1.35;
+  }
+  .body h3 .num {
+    display: inline-block;
+    margin-right: 8px;
+    color: var(--accent);
+    font-variant-numeric: tabular-nums;
+    font-weight: 700;
+  }
+  .body p {
+    margin: 0 0 14px;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .tags {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 0 0 16px;
+    padding: 0;
+  }
+  .tags li {
+    font-size: 12px;
+    padding: 3px 9px;
+    border-radius: 5px;
+    background: var(--accent-soft);
+    color: #2f4fbf;
+    white-space: nowrap;
+  }
+  .more {
+    margin-top: auto;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--accent);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .more:hover { text-decoration: underline; }
+  .live {
+    display: inline-block;
+    margin-left: 10px;
+    font-size: 12px;
+    padding: 2px 8px;
+    border-radius: 5px;
+    background: #e8f7ee;
+    color: #137a3e;
+    text-decoration: none;
+    vertical-align: middle;
+  }
+
+  footer {
+    margin-top: 56px;
+    padding-top: 22px;
+    border-top: 1px solid var(--line);
+    color: var(--muted);
+    font-size: 13px;
+  }
+  footer a { color: var(--accent); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+
+  @media (max-width: 560px) {
+    .wrap { padding: 36px 18px 28px; }
+    h1 { font-size: 28px; }
+    .grid { grid-template-columns: 1fr; gap: 18px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>夏遂冬</h1>
+    <p class="sub">南昌大学 · 软件工程 · 2027 届 &nbsp;|&nbsp; 学号 8002124117</p>
+    <p class="lead">
+      7 个从课程作业里挑出来、重新整理并逐个跑通的项目，覆盖全栈系统、数据分析、机器学习、微信小程序与前端。
+      每个项目的 README 都写了「怎么跑」，也都在干净环境里验证过。
+    </p>
+    <nav>
+      <a class="primary" href="https://github.com/jianzhangaaw/projects">GitHub 仓库</a>
+      <a href="#projects">项目列表</a>
+      <a href="guizhou/">在线演示</a>
+    </nav>
+  </header>
+
+  <h2 class="section">全部项目 · 7 个</h2>
+
+  <main id="projects" class="grid">
+
+    <article class="card">
+      <a class="shot" href="https://github.com/jianzhangaaw/projects/tree/main/projects/05-recruit-platform">
+        <img src="assets/shots/01-recruit.jpg" alt="智聘通招聘平台的职位大厅界面" loading="lazy">
+      </a>
+      <div class="body">
+        <h3><span class="num">01</span>智聘通 · 校园招聘简历平台</h3>
+        <p>Spring Boot 3 + Vue 3 全栈系统，学生 / 企业 / 管理员三角色，覆盖投递、简历生成、审核、通知的完整闭环。1.4 万行代码，13 张表，Docker 一键起库。</p>
+        <ul class="tags">
+          <li>Java 17</li><li>Spring Boot 3.3</li><li>MyBatis-Plus</li><li>MySQL 8</li><li>Vue 3</li><li>Element Plus</li>
+        </ul>
+        <a class="more" href="https://github.com/jianzhangaaw/projects/tree/main/projects/05-recruit-platform">代码与说明 →</a>
+      </div>
+    </article>
+
+    <article class="card">
+      <a class="shot" href="https://github.com/jianzhangaaw/projects/tree/main/projects/01-mnist-dim-reduction">
+        <img src="assets/shots/02-mnist.jpg" alt="五种降维算法的二维散点对比" loading="lazy">
+      </a>
+      <div class="body">
+        <h3><span class="num">02</span>MNIST 降维与可视化</h3>
+        <p>五种降维算法压到二维，用 trustworthiness、5-NN 准确率、类内类间距离比三个指标给出可复现的排序。t-SNE 三项全胜，随机投影三项垫底。</p>
+        <ul class="tags"><li>Python</li><li>scikit-learn</li><li>matplotlib</li></ul>
+        <a class="more" href="https://github.com/jianzhangaaw/projects/tree/main/projects/01-mnist-dim-reduction">代码与说明 →</a>
+      </div>
+    </article>
+
+    <article class="card">
+      <a class="shot" href="https://github.com/jianzhangaaw/projects/tree/main/projects/02-association-rules">
+        <img src="assets/shots/03-rules.jpg" alt="三种关联规则算法的耗时对比曲线" loading="lazy">
+      </a>
+      <div class="body">
+        <h3><span class="num">03</span>关联规则挖掘：三种算法手写</h3>
+        <p>Apriori / DHP / FP-Growth 全部用标准库从零实现，用暴力枚举校验正确性。同一套代码在两种数据规模上给出相反结论——DHP 的哈希裁剪只在候选集膨胀时划算。</p>
+        <ul class="tags"><li>Python</li><li>算法零第三方依赖</li></ul>
+        <a class="more" href="https://github.com/jianzhangaaw/projects/tree/main/projects/02-association-rules">代码与说明 →</a>
+      </div>
+    </article>
+
+    <article class="card">
+      <a class="shot" href="https://github.com/jianzhangaaw/projects/tree/main/projects/04-spaceship-titanic">
+        <img src="assets/shots/04-spaceship.jpg" alt="五类模型的指标对比柱状图" loading="lazy">
+      </a>
+      <div class="body">
+        <h3><span class="num">04</span>Spaceship Titanic 预测</h3>
+        <p>五类模型在分层 5 折 × 3 种子下评测。LightGBM 0.8157、TabPFN 0.8163，准确率只差 0.0006，但单次推理成本差三个数量级。</p>
+        <ul class="tags"><li>Python</li><li>LightGBM</li><li>PyTorch</li><li>TabPFN</li></ul>
+        <a class="more" href="https://github.com/jianzhangaaw/projects/tree/main/projects/04-spaceship-titanic">代码与说明 →</a>
+      </div>
+    </article>
+
+    <article class="card">
+      <a class="shot" href="https://github.com/jianzhangaaw/projects/tree/main/projects/03-titanic-preprocessing">
+        <img src="assets/shots/05-titanic.jpg" alt="泰坦尼克数据集各字段的分布直方图" loading="lazy">
+      </a>
+      <div class="body">
+        <h3><span class="num">05</span>Titanic 数据预处理</h3>
+        <p>从原始 CSV 走到可直接建模的 21 列干净表：缺失填补、异常值判定、编码转换、共线性检验，每一步都有断言。填补引入的系统性偏移如实写进结果，不藏。</p>
+        <ul class="tags"><li>Python</li><li>pandas</li><li>scipy</li></ul>
+        <a class="more" href="https://github.com/jianzhangaaw/projects/tree/main/projects/03-titanic-preprocessing">代码与说明 →</a>
+      </div>
+    </article>
+
+    <article class="card">
+      <a class="shot" href="https://github.com/jianzhangaaw/projects/tree/main/projects/06-word-memo-miniprogram">
+        <img class="contain" src="assets/shots/06-miniprogram.jpg" alt="单词背诵小程序的首页" loading="lazy">
+      </a>
+      <div class="body">
+        <h3><span class="num">06</span>单词背诵助手（微信小程序）</h3>
+        <p>基于艾宾浩斯遗忘曲线的背单词小程序：8 个页面、188 个 CET-4 词条、闪卡 / 拼写 / 听音三种模式。记忆算法抽成纯函数，可在 Node 里单测。</p>
+        <ul class="tags"><li>微信小程序</li><li>WXML/WXSS</li><li>JavaScript</li></ul>
+        <a class="more" href="https://github.com/jianzhangaaw/projects/tree/main/projects/06-word-memo-miniprogram">代码与说明 →</a>
+      </div>
+    </article>
+
+    <article class="card">
+      <a class="shot" href="guizhou/">
+        <img src="assets/shots/07-guizhou.jpg" alt="多彩贵州旅游站首页" loading="lazy">
+      </a>
+      <div class="body">
+        <h3><span class="num">07</span>多彩贵州 · 旅游站点</h3>
+        <p>纯静态双页站点，26 张实景图。19.3 MB 的 PNG 压到 4.8 MB，修掉了原代码里写死的绝对路径和 5 张依赖外部图床的图片。</p>
+        <ul class="tags"><li>HTML</li><li>CSS</li><li>Tailwind</li><li>原生 JS</li></ul>
+        <a class="more" href="guizhou/">在线打开 →</a>
+        <a class="live" href="https://github.com/jianzhangaaw/projects/tree/main/projects/07-guizhou-tourism-web">源码</a>
+      </div>
+    </article>
+
+  </main>
+
+  <footer>
+    <p>源码都在 <a href="https://github.com/jianzhangaaw/projects">github.com/jianzhangaaw/projects</a>；每个项目目录下的 README 写了运行方式与验证记录。</p>
+  </footer>
+
+</div>
+</body>
+</html>

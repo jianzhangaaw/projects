@@ -1,12 +1,13 @@
-name: Deploy 多彩贵州
+name: Deploy 作品集
 
-# 只在这个子目录变更时部署，避免改 README 或后端代码也触发一次 Pages 构建
+# site/ 是作品集落地页，projects/07-guizhou-tourism-web 在构建时复制到 site/guizhou/
 on:
   push:
     branches: [main]
     paths:
+      - 'site/**'
       - 'projects/07-guizhou-tourism-web/**'
-      - '.github/workflows/deploy-guizhou.yml'
+      - '.github/workflows/deploy-pages.yml'
   workflow_dispatch:
 
 permissions:
@@ -28,17 +29,23 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # enablement: true 让它在 Pages 尚未启用时自动建站点，省去手动去 Settings 点一次
       - name: Setup Pages
         uses: actions/configure-pages@v5
-        with:
-          enablement: true
 
-      # 站点根就是这个子目录：index.html、more-attractions.html、photos/、assets/
+      # 站点根是 site/：index.html 是作品集首页，guizhou/ 是从 07 项目复制过来的旅游站。
+      # 旅游站的图片只在 projects/07 里存一份，这里靠复制组装，避免仓库里存两份 4.8 MB 的照片。
+      - name: Assemble site
+        run: |
+          set -euo pipefail
+          mkdir -p site
+          cp -r projects/07-guizhou-tourism-web site/guizhou
+          ls -1 site
+          du -sh site
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: projects/07-guizhou-tourism-web
+          path: site
 
       - name: Deploy to GitHub Pages
         id: deployment

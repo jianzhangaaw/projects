@@ -2,6 +2,8 @@
 
 南昌大学软件工程专业在读。这里是我从课程作业里挑出来、重新整理并逐个跑通过的项目，覆盖数据分析、机器学习、后端、移动端与前端。
 
+**在线版：https://jianzhangaaw.github.io/projects/**（国内访问 GitHub 不稳时用这个）
+
 每个目录下的 README 都写了「怎么跑」。我在一台干净环境里按 README 从头跑过一遍，跑不通的不放进来。
 
 ---
@@ -99,7 +101,7 @@ Apriori / DHP / FP-Growth 全部用标准库从零实现，用暴力枚举校验
 
 `HTML` `CSS` `Tailwind` `原生 JS`
 
-[代码与说明 →](projects/07-guizhou-tourism-web/) · **在线预览：https://jianzhangaaw.github.io/projects/**
+[代码与说明 →](projects/07-guizhou-tourism-web/) · **在线预览：https://jianzhangaaw.github.io/projects/guizhou/**
 
 ---
 
