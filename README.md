@@ -6,6 +6,8 @@
 
 **国内仓库：https://gitee.com/jianzhangaaw/project**（Gitee 镜像，访问 GitHub 慢或打不开时看这个；代码与本仓库同步）
 
+站内的项目详情页在部署时由 `tools/build_site_docs.py` 从各项目 README 生成，点卡片直接看说明与截图，不跳转任何代码托管站。
+
 每个目录下的 README 都写了「怎么跑」。我在一台干净环境里按 README 从头跑过一遍，跑不通的不放进来。
 
 ---
